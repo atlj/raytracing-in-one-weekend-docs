@@ -95,35 +95,35 @@ start with a plain text ppm file. Here’s a nice description from Wikipedia:
 
 Let’s make some C++ code to output such a thing:
 
-    ```C++
-    #include <iostream>
+```C++
+#include <iostream>
 
-    int main() {
+int main() {
 
-        // Image
+    // Image
 
-        int image_width = 256;
-        int image_height = 256;
+    int image_width = 256;
+    int image_height = 256;
 
-        // Render
+    // Render
 
-        std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+    std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
-        for (int j = 0; j < image_height; ++j) {
-            for (int i = 0; i < image_width; ++i) {
-                auto r = double(i) / (image_width-1);
-                auto g = double(j) / (image_height-1);
-                auto b = 0;
+    for (int j = 0; j < image_height; ++j) {
+        for (int i = 0; i < image_width; ++i) {
+            auto r = double(i) / (image_width-1);
+            auto g = double(j) / (image_height-1);
+            auto b = 0;
 
-                int ir = static_cast<int>(255.999 * r);
-                int ig = static_cast<int>(255.999 * g);
-                int ib = static_cast<int>(255.999 * b);
+            int ir = static_cast<int>(255.999 * r);
+            int ig = static_cast<int>(255.999 * g);
+            int ib = static_cast<int>(255.999 * b);
 
-                std::cout << ir << ' ' << ig << ' ' << ib << '\n';
-            }
+            std::cout << ir << ' ' << ig << ' ' << ib << '\n';
         }
     }
-    ```
+}
+```
 
 
 There are some things to note in this code:
@@ -147,9 +147,9 @@ There are some things to note in this code:
 Because the file is written to the standard output stream, you'll need to redirect it to an image
 file. Typically this is done from the command-line by using the `>` redirection operator, like so:
 
-    ```
-    build\Release\inOneWeekend.exe > image.ppm
-    ```
+```
+build\Release\inOneWeekend.exe > image.ppm
+```
 
 (This example assumes that you are building with CMake, using the same approach as the
 `CMakeLists.txt` file in the included source. Use whatever build environment (and language) you're
@@ -157,9 +157,9 @@ comfortable with.)
 
 This is how things would look on Windows with CMake. On Mac or Linux, it might look like this:
 
-    ```
-    build/inOneWeekend > image.ppm
-    ```
+```
+build/inOneWeekend > image.ppm
+```
 
 Opening the output file (in `ToyViewer` on my Mac, but try it in your favorite image viewer and
 Google “ppm viewer” if your viewer doesn’t support it) shows this result:
@@ -170,25 +170,25 @@ Google “ppm viewer” if your viewer doesn’t support it) shows this result:
 Hooray! This is the graphics “hello world”. If your image doesn’t look like that, open the output
 file in a text editor and see what it looks like. It should start something like this:
 
-    ```
-    P3
-    256 256
-    255
-    0 0 0
-    1 0 0
-    2 0 0
-    3 0 0
-    4 0 0
-    5 0 0
-    6 0 0
-    7 0 0
-    8 0 0
-    9 0 0
-    10 0 0
-    11 0 0
-    12 0 0
-    ...
-    ```
+```
+P3
+256 256
+255
+0 0 0
+1 0 0
+2 0 0
+3 0 0
+4 0 0
+5 0 0
+6 0 0
+7 0 0
+8 0 0
+9 0 0
+10 0 0
+11 0 0
+12 0 0
+...
+```
 
 If your PPM file doesn't look like this, then double-check your formatting code.
 If it _does_ look like this but fails to render, then you may have line-ending differences or
@@ -219,28 +219,28 @@ loop or other problem.
 Our program outputs the image to the standard output stream (`std::cout`), so leave that alone and
 instead write to the logging output stream (`std::clog`):
 
-    ```C++
-        for (int j = 0; j < image_height; ++j) {
-    ```highlight
+```C++
+    for (int j = 0; j < image_height; ++j) {
+```highlight
             std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
-    ```C++
-            for (int i = 0; i < image_width; ++i) {
-                auto r = double(i) / (image_width-1);
-                auto g = double(j) / (image_height-1);
-                auto b = 0;
+```C++
+        for (int i = 0; i < image_width; ++i) {
+            auto r = double(i) / (image_width-1);
+            auto g = double(j) / (image_height-1);
+            auto b = 0;
 
-                int ir = static_cast<int>(255.999 * r);
-                int ig = static_cast<int>(255.999 * g);
-                int ib = static_cast<int>(255.999 * b);
+            int ir = static_cast<int>(255.999 * r);
+            int ig = static_cast<int>(255.999 * g);
+            int ib = static_cast<int>(255.999 * b);
 
-                std::cout << ir << ' ' << ig << ' ' << ib << '\n';
-            }
+            std::cout << ir << ' ' << ig << ' ' << ib << '\n';
         }
+    }
 
 
-    ```highlight
+```highlight
         std::clog << "\rDone.                 \n";
-    ```
+```
 
 
 Now when running, you'll see a running count of the number of scanlines remaining. Hopefully this
@@ -263,7 +263,7 @@ the code a little bit easier to read and to understand.
 We define the `vec3` class in the top half of a new `vec3.h` header file, and define a set of useful
 vector utility functions in the bottom half:
 
-    ```C++
+```C++
     #ifndef VEC3_H
     #define VEC3_H
 
@@ -365,7 +365,7 @@ vector utility functions in the bottom half:
     }
 
     #endif
-    ```
+```
 
 We use `double` here, but some ray tracers use `float`. `double` has greater precision and range,
 but is twice the size compared to `float`. This increase in size may be important if you're
@@ -377,7 +377,7 @@ your own tastes.
 Using our new `vec3` class, we'll create a new `color.h` header file and define a utility function
 that writes a single pixel's color out to the standard output stream.
 
-    ```C++
+```C++
     #ifndef COLOR_H
     #define COLOR_H
 
@@ -395,41 +395,41 @@ that writes a single pixel's color out to the standard output stream.
     }
 
     #endif
-    ```
+```
 
 Now we can change our main to use both of these:
 
-    ```highlight
+```highlight
     #include "color.h"
     #include "vec3.h"
-    ```C++
+```C++
 
-    #include <iostream>
+#include <iostream>
 
-    int main() {
+int main() {
 
-        // Image
+    // Image
 
-        int image_width = 256;
-        int image_height = 256;
+    int image_width = 256;
+    int image_height = 256;
 
-        // Render
+    // Render
 
-        std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+    std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
-        for (int j = 0; j < image_height; ++j) {
-            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
-            for (int i = 0; i < image_width; ++i) {
-    ```highlight
+    for (int j = 0; j < image_height; ++j) {
+        std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+        for (int i = 0; i < image_width; ++i) {
+```highlight
                 auto pixel_color = color(double(i)/(image_width-1), double(j)/(image_height-1), 0);
                 write_color(std::cout, pixel_color);
-    ```C++
-            }
+```C++
         }
-
-        std::clog << "\rDone.                 \n";
     }
-    ```
+
+    std::clog << "\rDone.                 \n";
+}
+```
 
 
 And you should get the exact same picture as before.
@@ -452,32 +452,32 @@ and this is what is often called a half-line or a ray.
 We can represent the idea of a ray as a class, and represent the function $\mathbf{P}(t)$ as a
 function that we'll call `ray::at(t)`:
 
-    ```C++
-    #ifndef RAY_H
-    #define RAY_H
+```C++
+#ifndef RAY_H
+#define RAY_H
 
-    #include "vec3.h"
+#include "vec3.h"
 
-    class ray {
-      public:
-        ray() {}
+class ray {
+  public:
+    ray() {}
 
-        ray(const point3& origin, const vec3& direction) : orig(origin), dir(direction) {}
+    ray(const point3& origin, const vec3& direction) : orig(origin), dir(direction) {}
 
-        point3 origin() const  { return orig; }
-        vec3 direction() const { return dir; }
+    point3 origin() const  { return orig; }
+    vec3 direction() const { return dir; }
 
-        point3 at(double t) const {
-            return orig + t*dir;
-        }
+    point3 at(double t) const {
+        return orig + t*dir;
+    }
 
-      private:
-        point3 orig;
-        vec3 dir;
-    };
+  private:
+    point3 orig;
+    vec3 dir;
+};
 
-    #endif
-    ```
+#endif
+```
 
 
 
@@ -522,18 +522,18 @@ To start things off, we'll choose an arbitrary viewport height of 2.0, and scale
 to give us the desired aspect ratio.
 Here's a snippet of what this code will look like:
 
-    ```C++
-    auto aspect_ratio = 16.0 / 9.0;
-    int image_width = 400;
+```C++
+auto aspect_ratio = 16.0 / 9.0;
+int image_width = 400;
 
-    // Calculate the image height, and ensure that it's at least 1.
-    int image_height = static_cast<int>(image_width / aspect_ratio);
-    image_height = (image_height < 1) ? 1 : image_height;
+// Calculate the image height, and ensure that it's at least 1.
+int image_height = static_cast<int>(image_width / aspect_ratio);
+image_height = (image_height < 1) ? 1 : image_height;
 
-    // Viewport widths less than one are ok since they are real valued.
-    auto viewport_height = 2.0;
-    auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
-    ```
+// Viewport widths less than one are ok since they are real valued.
+auto viewport_height = 2.0;
+auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
+```
 
 If you're wondering why we don't just use `aspect_ratio` when computing `viewport_width`, it's
 because the value set to `aspect_ratio` is the ideal ratio, it may not be the _actual_ ratio
@@ -586,28 +586,28 @@ Drawing from all of this, here's the code that implements the camera.
 We'll stub in a function `ray_color(const ray& r)` that returns the color for a given scene ray
   -- which we'll set to always return black for now.
 
-    ```C++
-    #include "color.h"
-    ```highlight
+```C++
+#include "color.h"
+```highlight
     #include "ray.h"
-    ```C++
-    #include "vec3.h"
+```C++
+#include "vec3.h"
 
-    #include <iostream>
+#include <iostream>
 
 
-    ```highlight
+```highlight
     color ray_color(const ray& r) {
         return color(0,0,0);
     }
-    ```C++
+```C++
 
-    int main() {
+int main() {
 
-        // Image
+    // Image
 
 
-    ```highlight
+```highlight
         auto aspect_ratio = 16.0 / 9.0;
         int image_width = 400;
 
@@ -634,29 +634,29 @@ We'll stub in a function `ray_color(const ray& r)` that returns the color for a 
         auto viewport_upper_left = camera_center
                                  - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
         auto pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
-    ```C++
+```C++
 
-        // Render
+    // Render
 
-        std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
+    std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
 
-        for (int j = 0; j < image_height; ++j) {
-            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
-            for (int i = 0; i < image_width; ++i) {
-    ```highlight
+    for (int j = 0; j < image_height; ++j) {
+        std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+        for (int i = 0; i < image_width; ++i) {
+```highlight
                 auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
                 auto ray_direction = pixel_center - camera_center;
                 ray r(camera_center, ray_direction);
 
                 color pixel_color = ray_color(r);
-    ```C++
-                write_color(std::cout, pixel_color);
-            }
+```C++
+            write_color(std::cout, pixel_color);
         }
-
-        std::clog << "\rDone.                 \n";
     }
-    ```
+
+    std::clog << "\rDone.                 \n";
+}
+```
 
 
 Notice that in the code above, I didn't make `ray_direction` a unit vector, because I think not
@@ -682,24 +682,24 @@ with $a$ going from zero to one.
 
 Putting all this together, here's what we get:
 
-    ```C++
-    #include "color.h"
-    #include "ray.h"
-    #include "vec3.h"
+```C++
+#include "color.h"
+#include "ray.h"
+#include "vec3.h"
 
-    #include <iostream>
+#include <iostream>
 
 
-    color ray_color(const ray& r) {
-    ```highlight
+color ray_color(const ray& r) {
+```highlight
         vec3 unit_direction = unit_vector(r.direction());
         auto a = 0.5*(unit_direction.y() + 1.0);
         return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
-    ```C++
-    }
+```C++
+}
 
-    ...
-    ```
+...
+```
 
 
 In our case this produces:
@@ -803,30 +803,30 @@ we have is:
 If we take that math and hard-code it into our program, we can test our code by placing a small
 sphere at -1 on the z-axis and then coloring red any pixel that intersects it.
 
-    ```highlight
-    bool hit_sphere(const point3& center, double radius, const ray& r) {
-        vec3 oc = r.origin() - center;
-        auto a = dot(r.direction(), r.direction());
-        auto b = 2.0 * dot(oc, r.direction());
-        auto c = dot(oc, oc) - radius*radius;
-        auto discriminant = b*b - 4*a*c;
-        return (discriminant >= 0);
-    }
-    ```C++
+```highlight
+bool hit_sphere(const point3& center, double radius, const ray& r) {
+    vec3 oc = r.origin() - center;
+    auto a = dot(r.direction(), r.direction());
+    auto b = 2.0 * dot(oc, r.direction());
+    auto c = dot(oc, oc) - radius*radius;
+    auto discriminant = b*b - 4*a*c;
+    return (discriminant >= 0);
+}
+```C++
 
 
-    ```C++
-    color ray_color(const ray& r) {
-    ```highlight
+```C++
+color ray_color(const ray& r) {
+```highlight
         if (hit_sphere(point3(0,0,-1), 0.5, r))
             return color(1, 0, 0);
-    ```C++
+```C++
 
-        vec3 unit_direction = unit_vector(r.direction());
-        auto a = 0.5*(unit_direction.y() + 1.0);
-        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
-    }
-    ```
+    vec3 unit_direction = unit_vector(r.direction());
+    auto a = 0.5*(unit_direction.y() + 1.0);
+    return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+}
+```
 
 What we get is this:
 
@@ -886,9 +886,9 @@ about negative values of $t$ yet.
 We'll just assume the closest hit point (smallest $t$) is the one that we want.
 These changes in the code let us compute and visualize $\mathbf{n}$:
 
-    ```highlight
-    double hit_sphere(const point3& center, double radius, const ray& r) {
-    ```C++
+```highlight
+double hit_sphere(const point3& center, double radius, const ray& r) {
+```C++
         vec3 oc = r.origin() - center;
         auto a = dot(r.direction(), r.direction());
         auto b = 2.0 * dot(oc, r.direction());
@@ -896,41 +896,41 @@ These changes in the code let us compute and visualize $\mathbf{n}$:
         auto discriminant = b*b - 4*a*c;
 
 
-    ```highlight
-        if (discriminant < 0) {
-            return -1.0;
-        } else {
-            return (-b - sqrt(discriminant) ) / (2.0*a);
-        }
-    ```C++
+```highlight
+    if (discriminant < 0) {
+        return -1.0;
+    } else {
+        return (-b - sqrt(discriminant) ) / (2.0*a);
+    }
+```C++
     }
 
     color ray_color(const ray& r) {
-    ```highlight
-        auto t = hit_sphere(point3(0,0,-1), 0.5, r);
-        if (t > 0.0) {
-            vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
-            return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
-        }
-    ```C++
+```highlight
+    auto t = hit_sphere(point3(0,0,-1), 0.5, r);
+    if (t > 0.0) {
+        vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
+        return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
+    }
+```C++
 
         vec3 unit_direction = unit_vector(r.direction());
         auto a = 0.5*(unit_direction.y() + 1.0);
         return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
     }
-    ```
+```
 
 And that yields this picture:
 
-  ![<span class='num'>Image 4:</span> A sphere colored according to its normal vectors
-  ](../images/img-1.04-normals-sphere.png class='pixel')
+![<span class='num'>Image 4:</span> A sphere colored according to its normal vectors
+](../images/img-1.04-normals-sphere.png class='pixel')
 
 
 
 ### Simplifying the Ray-Sphere Intersection Code
 Let’s revisit the ray-sphere function:
 
-    ```C++
+```C++
     double hit_sphere(const point3& center, double radius, const ray& r) {
         vec3 oc = r.origin() - center;
         auto a = dot(r.direction(), r.direction());
@@ -944,42 +944,42 @@ Let’s revisit the ray-sphere function:
             return (-b - sqrt(discriminant) ) / (2.0*a);
         }
     }
-    ```
+```
 
 First, recall that a vector dotted with itself is equal to the squared length of that vector.
 
 Second, notice how the equation for `b` has a factor of two in it. Consider what happens to the
 quadratic equation if $b = 2h$:
 
-  $$ \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
+$$ \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
 
-  $$ = \frac{-2h \pm \sqrt{(2h)^2 - 4ac}}{2a} $$
+$$ = \frac{-2h \pm \sqrt{(2h)^2 - 4ac}}{2a} $$
 
-  $$ = \frac{-2h \pm 2\sqrt{h^2 - ac}}{2a} $$
+$$ = \frac{-2h \pm 2\sqrt{h^2 - ac}}{2a} $$
 
-  $$ = \frac{-h \pm \sqrt{h^2 - ac}}{a} $$
+$$ = \frac{-h \pm \sqrt{h^2 - ac}}{a} $$
 
 Using these observations, we can now simplify the sphere-intersection code to this:
 
-    ```C++
+```C++
     double hit_sphere(const point3& center, double radius, const ray& r) {
         vec3 oc = r.origin() - center;
-    ```highlight
-        auto a = r.direction().length_squared();
-        auto half_b = dot(oc, r.direction());
-        auto c = oc.length_squared() - radius*radius;
-        auto discriminant = half_b*half_b - a*c;
-    ```C++
+```highlight
+    auto a = r.direction().length_squared();
+    auto half_b = dot(oc, r.direction());
+    auto c = oc.length_squared() - radius*radius;
+    auto discriminant = half_b*half_b - a*c;
+```C++
 
         if (discriminant < 0) {
             return -1.0;
         } else {
-    ```highlight
-            return (-half_b - sqrt(discriminant) ) / a;
-    ```C++
+```highlight
+        return (-half_b - sqrt(discriminant) ) / a;
+```C++
         }
     }
-    ```
+```
 
 
 
@@ -1001,7 +1001,7 @@ the normal if we hit something. We might end up hitting something closer as we d
 will only need the normal of the closest thing. I will go with the simple solution and compute a
 bundle of stuff I will store in some structure. Here’s the abstract class:
 
-    ```C++
+```C++
     #ifndef HITTABLE_H
     #define HITTABLE_H
 
@@ -1022,11 +1022,11 @@ bundle of stuff I will store in some structure. Here’s the abstract class:
     };
 
     #endif
-    ```
+```
 
 And here’s the sphere:
 
-    ```C++
+```C++
     #ifndef SPHERE_H
     #define SPHERE_H
 
@@ -1068,7 +1068,7 @@ And here’s the sphere:
     };
 
     #endif
-    ```
+```
 
 
 
@@ -1081,8 +1081,8 @@ the ray. Alternatively, we can have the normal always point against the ray. If 
 the sphere, the normal will point outward, but if the ray is inside the sphere, the normal will
 point inward.
 
-  ![Figure [normal-sides]: Possible directions for sphere surface-normal geometry
-  ](../images/fig-1.07-normal-sides.jpg)
+![Figure [normal-sides]: Possible directions for sphere surface-normal geometry
+](../images/fig-1.07-normal-sides.jpg)
 
 We need to choose one of these possibilities because we will eventually want to determine which
 side of the surface that the ray is coming from. This is important for objects that are rendered
@@ -1096,7 +1096,7 @@ face in the opposite direction, then the ray is outside the object. This can be 
 taking the dot product of the two vectors, where if their dot is positive, the ray is inside the
 sphere.
 
-    ```C++
+```C++
     if (dot(ray_direction, outward_normal) > 0.0) {
         // ray is inside the sphere
         ...
@@ -1104,13 +1104,13 @@ sphere.
         // ray is outside the sphere
         ...
     }
-    ```
+```
 
 If we decide to have the normals always point against the ray, we won't be able to use the dot
 product to determine which side of the surface the ray is on. Instead, we would need to store that
 information:
 
-    ```C++
+```C++
     bool front_face;
     if (dot(ray_direction, outward_normal) > 0.0) {
         // ray is inside the sphere
@@ -1121,7 +1121,7 @@ information:
         normal = outward_normal;
         front_face = true;
     }
-    ```
+```
 
 
 We can set things up so that normals always point “outward” from the surface, or always point
@@ -1138,30 +1138,30 @@ unit length.
 We could always normalize the parameter explicitly, but it's more efficient if the geometry code
 does this, as it's usually easier when you know more about the specific geometry.
 
-    ```C++
+```C++
     class hit_record {
       public:
         point3 p;
         vec3 normal;
         double t;
-    ```highlight
-        bool front_face;
+```highlight
+    bool front_face;
 
-        void set_face_normal(const ray& r, const vec3& outward_normal) {
-            // Sets the hit record normal vector.
-            // NOTE: the parameter `outward_normal` is assumed to have unit length.
+    void set_face_normal(const ray& r, const vec3& outward_normal) {
+        // Sets the hit record normal vector.
+        // NOTE: the parameter `outward_normal` is assumed to have unit length.
 
-            front_face = dot(r.direction(), outward_normal) < 0;
-            normal = front_face ? outward_normal : -outward_normal;
-        }
-    ```C++
+        front_face = dot(r.direction(), outward_normal) < 0;
+        normal = front_face ? outward_normal : -outward_normal;
+    }
+```C++
     };
-    ```
-        Adding front-face tracking to hit_record]
+```
+    Adding front-face tracking to hit_record]
 
 And then we add the surface side determination to the class:
 
-    ```C++
+```C++
     class sphere : public hittable {
       public:
         ...
@@ -1170,16 +1170,16 @@ And then we add the surface side determination to the class:
 
             rec.t = root;
             rec.p = r.at(rec.t);
-    ```highlight
-            vec3 outward_normal = (rec.p - center) / radius;
-            rec.set_face_normal(r, outward_normal);
-    ```C++
+```highlight
+        vec3 outward_normal = (rec.p - center) / radius;
+        rec.set_face_normal(r, outward_normal);
+```C++
 
             return true;
         }
         ...
     };
-    ```
+```
 
 
 
@@ -1187,7 +1187,7 @@ And then we add the surface side determination to the class:
 We have a generic object called a `hittable` that the ray can intersect with. We now add a class
 that stores a list of `hittable`s:
 
-    ```C++
+```C++
     #ifndef HITTABLE_LIST_H
     #define HITTABLE_LIST_H
 
@@ -1230,7 +1230,7 @@ that stores a list of `hittable`s:
     };
 
     #endif
-    ```
+```
 
 
 ### Some New C++ Features
@@ -1245,11 +1245,11 @@ deleted.
 
 Typically, a shared pointer is first initialized with a newly-allocated object, something like this:
 
-    ```C++
+```C++
     shared_ptr<double> double_ptr = make_shared<double>(0.37);
     shared_ptr<vec3>   vec3_ptr   = make_shared<vec3>(1.414214, 2.718281, 1.618034);
     shared_ptr<sphere> sphere_ptr = make_shared<sphere>(point3(0,0,0), 1.0);
-    ```
+```
 
 
 `make_shared<thing>(thing_constructor_params ...)` allocates a new instance of type `thing`, using
@@ -1258,11 +1258,11 @@ the constructor parameters. It returns a `shared_ptr<thing>`.
 Since the type can be automatically deduced by the return type of `make_shared<type>(...)`, the
 above lines can be more simply expressed using C++'s `auto` type specifier:
 
-    ```C++
+```C++
     auto double_ptr = make_shared<double>(0.37);
     auto vec3_ptr   = make_shared<vec3>(1.414214, 2.718281, 1.618034);
     auto sphere_ptr = make_shared<sphere>(point3(0,0,0), 1.0);
-    ```
+```
 
 
 We'll use shared pointers in our code, because it allows multiple geometries to share a common
@@ -1290,7 +1290,7 @@ There is no standard portable definition of pi, so we just define our own consta
 throw common useful constants and future utility functions in `rtweekend.h`, our general main header
 file.
 
-    ```C++
+```C++
     #ifndef RTWEEKEND_H
     #define RTWEEKEND_H
 
@@ -1322,107 +1322,107 @@ file.
     #include "vec3.h"
 
     #endif
-    ```
+```
 
 And the new main:
 
-    ```highlight
+```highlight
     #include "rtweekend.h"
-    ```C++
+```C++
 
-    #include "color.h"
-    ```highlight
+#include "color.h"
+```highlight
     #include "hittable.h"
     #include "hittable_list.h"
     #include "sphere.h"
-    ```C++
+```C++
 
-    #include <iostream>
+#include <iostream>
 
 
-    ```delete
+```delete
     double hit_sphere(const point3& center, double radius, const ray& r) {
         ...
     }
-    ```C++
+```C++
 
 
-    ```highlight
+```highlight
     color ray_color(const ray& r, const hittable& world) {
         hit_record rec;
         if (world.hit(r, 0, infinity, rec)) {
             return 0.5 * (rec.normal + color(1,1,1));
         }
-    ```C++
+```C++
 
-        vec3 unit_direction = unit_vector(r.direction());
-        auto a = 0.5*(unit_direction.y() + 1.0);
-        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
-    }
+    vec3 unit_direction = unit_vector(r.direction());
+    auto a = 0.5*(unit_direction.y() + 1.0);
+    return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+}
 
-    int main() {
+int main() {
 
-        // Image
+    // Image
 
-        auto aspect_ratio = 16.0 / 9.0;
-        int image_width = 400;
+    auto aspect_ratio = 16.0 / 9.0;
+    int image_width = 400;
 
-        // Calculate the image height, and ensure that it's at least 1.
-        int image_height = static_cast<int>(image_width / aspect_ratio);
-        image_height = (image_height < 1) ? 1 : image_height;
+    // Calculate the image height, and ensure that it's at least 1.
+    int image_height = static_cast<int>(image_width / aspect_ratio);
+    image_height = (image_height < 1) ? 1 : image_height;
 
 
-    ```highlight
+```highlight
         // World
 
         hittable_list world;
 
         world.add(make_shared<sphere>(point3(0,0,-1), 0.5));
         world.add(make_shared<sphere>(point3(0,-100.5,-1), 100));
-    ```C++
+```C++
 
-        // Camera
+    // Camera
 
-        auto focal_length = 1.0;
-        auto viewport_height = 2.0;
-        auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
-        auto camera_center = point3(0, 0, 0);
+    auto focal_length = 1.0;
+    auto viewport_height = 2.0;
+    auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
+    auto camera_center = point3(0, 0, 0);
 
-        // Calculate the vectors across the horizontal and down the vertical viewport edges.
-        auto viewport_u = vec3(viewport_width, 0, 0);
-        auto viewport_v = vec3(0, -viewport_height, 0);
+    // Calculate the vectors across the horizontal and down the vertical viewport edges.
+    auto viewport_u = vec3(viewport_width, 0, 0);
+    auto viewport_v = vec3(0, -viewport_height, 0);
 
-        // Calculate the horizontal and vertical delta vectors from pixel to pixel.
-        auto pixel_delta_u = viewport_u / image_width;
-        auto pixel_delta_v = viewport_v / image_height;
+    // Calculate the horizontal and vertical delta vectors from pixel to pixel.
+    auto pixel_delta_u = viewport_u / image_width;
+    auto pixel_delta_v = viewport_v / image_height;
 
-        // Calculate the location of the upper left pixel.
-        auto viewport_upper_left = camera_center
-                                 - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
-        auto pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
+    // Calculate the location of the upper left pixel.
+    auto viewport_upper_left = camera_center
+                             - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
+    auto pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
 
-        // Render
+    // Render
 
-        std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+    std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
-        for (int j = 0; j < image_height; ++j) {
-            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
-            for (int i = 0; i < image_width; ++i) {
-                auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
-                auto ray_direction = pixel_center - camera_center;
-                ray r(camera_center, ray_direction);
+    for (int j = 0; j < image_height; ++j) {
+        std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+        for (int i = 0; i < image_width; ++i) {
+            auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
+            auto ray_direction = pixel_center - camera_center;
+            ray r(camera_center, ray_direction);
 
 
-    ```highlight
+```highlight
                 color pixel_color = ray_color(r, world);
-    ```C++
-                write_color(std::cout, pixel_color);
-            }
+```C++
+            write_color(std::cout, pixel_color);
         }
-
-        std::clog << "\rDone.                 \n";
     }
-    ```
+
+    std::clog << "\rDone.                 \n";
+}
+```
 
 
 This yields a picture that is really just a visualization of where the spheres are located along
@@ -1437,133 +1437,133 @@ of a geometric model.
 Before we continue, we'll implement an interval class to manage real-valued intervals with a minimum
 and a maximum. We'll end up using this class quite often as we proceed.
 
-    ```C++
-    #ifndef INTERVAL_H
-    #define INTERVAL_H
+```C++
+#ifndef INTERVAL_H
+#define INTERVAL_H
 
-    class interval {
-      public:
-        double min, max;
+class interval {
+  public:
+    double min, max;
 
-        interval() : min(+infinity), max(-infinity) {} // Default interval is empty
+    interval() : min(+infinity), max(-infinity) {} // Default interval is empty
 
-        interval(double _min, double _max) : min(_min), max(_max) {}
+    interval(double _min, double _max) : min(_min), max(_max) {}
 
-        bool contains(double x) const {
-            return min <= x && x <= max;
-        }
+    bool contains(double x) const {
+        return min <= x && x <= max;
+    }
 
-        bool surrounds(double x) const {
-            return min < x && x < max;
-        }
+    bool surrounds(double x) const {
+        return min < x && x < max;
+    }
 
-        static const interval empty, universe;
-    };
+    static const interval empty, universe;
+};
 
-    const static interval empty   (+infinity, -infinity);
-    const static interval universe(-infinity, +infinity);
+const static interval empty   (+infinity, -infinity);
+const static interval universe(-infinity, +infinity);
 
-    #endif
-    ```
-
-
-    ```C++
-    // Common Headers
+#endif
+```
 
 
-    ```Highlight
+```C++
+// Common Headers
+
+
+```Highlight
     #include "interval.h"
-    ```C++
-    #include "ray.h"
-    #include "vec3.h"
-    ```
+```C++
+#include "ray.h"
+#include "vec3.h"
+```
 
 
-    ```C++
-    class hittable {
-      public:
-        ...
-    ```highlight
+```C++
+class hittable {
+  public:
+    ...
+```highlight
         virtual bool hit(const ray& r, interval ray_t, hit_record& rec) const = 0;
-    ```C++
-    };
-    ```
+```C++
+};
+```
 
 
-    ```C++
-    class hittable_list : public hittable {
-      public:
-        ...
-    ```highlight
+```C++
+class hittable_list : public hittable {
+  public:
+    ...
+```highlight
         bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
-    ```C++
-            hit_record temp_rec;
-            bool hit_anything = false;
-    ```highlight
+```C++
+        hit_record temp_rec;
+        bool hit_anything = false;
+```highlight
             auto closest_so_far = ray_t.max;
-    ```C++
+```C++
 
-            for (const auto& object : objects) {
-    ```highlight
+        for (const auto& object : objects) {
+```highlight
                 if (object->hit(r, interval(ray_t.min, closest_so_far), temp_rec)) {
-    ```C++
-                    hit_anything = true;
-                    closest_so_far = temp_rec.t;
-                    rec = temp_rec;
-                }
+```C++
+                hit_anything = true;
+                closest_so_far = temp_rec.t;
+                rec = temp_rec;
             }
-
-            return hit_anything;
         }
-        ...
-    };
-    ```
+
+        return hit_anything;
+    }
+    ...
+};
+```
         hittable_list::hit() using interval]
 
 
-    ```C++
-    class sphere : public hittable {
-      public:
-        ...
-    ```highlight
-        bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
-    ```C++
-            ...
-
-            // Find the nearest root that lies in the acceptable range.
-            auto root = (-half_b - sqrtd) / a;
-    ```highlight
-            if (!ray_t.surrounds(root)) {
-    ```C++
-                root = (-half_b + sqrtd) / a;
-    ```highlight
-                if (!ray_t.surrounds(root))
-    ```C++
-                    return false;
-            }
-            ...
-        }
-        ...
-    };
-    ```
-
-
-    ```C++
+```C++
+class sphere : public hittable {
+  public:
     ...
-    color ray_color(const ray& r, const hittable& world) {
-        hit_record rec;
-    ```highlight
-        if (world.hit(r, interval(0, infinity), rec)) {
-    ```C++
-            return 0.5 * (rec.normal + color(1,1,1));
-        }
+```highlight
+        bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
+```C++
+        ...
 
-        vec3 unit_direction = unit_vector(r.direction());
-        auto a = 0.5*(unit_direction.y() + 1.0);
-        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+        // Find the nearest root that lies in the acceptable range.
+        auto root = (-half_b - sqrtd) / a;
+```highlight
+            if (!ray_t.surrounds(root)) {
+```C++
+            root = (-half_b + sqrtd) / a;
+```highlight
+                if (!ray_t.surrounds(root))
+```C++
+                return false;
+        }
+        ...
     }
     ...
-    ```
+};
+```
+
+
+```C++
+...
+color ray_color(const ray& r, const hittable& world) {
+    hit_record rec;
+```highlight
+        if (world.hit(r, interval(0, infinity), rec)) {
+```C++
+        return 0.5 * (rec.normal + color(1,1,1));
+    }
+
+    vec3 unit_direction = unit_vector(r.direction());
+    auto a = 0.5*(unit_direction.y() + 1.0);
+    return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+}
+...
+```
 
 
 
@@ -1594,50 +1594,50 @@ The `render()` method will prepare the camera for rendering and then execute the
 
 Here's the skeleton of our new `camera` class:
 
-    ```C++
-    #ifndef CAMERA_H
-    #define CAMERA_H
+```C++
+#ifndef CAMERA_H
+#define CAMERA_H
 
-    #include "rtweekend.h"
+#include "rtweekend.h"
 
-    #include "color.h"
-    #include "hittable.h"
+#include "color.h"
+#include "hittable.h"
 
-    class camera {
-      public:
-        /* Public Camera Parameters Here */
+class camera {
+  public:
+    /* Public Camera Parameters Here */
 
-        void render(const hittable& world) {
-            ...
-        }
+    void render(const hittable& world) {
+        ...
+    }
 
-      private:
-        /* Private Camera Variables Here */
+  private:
+    /* Private Camera Variables Here */
 
-        void initialize() {
-            ...
-        }
+    void initialize() {
+        ...
+    }
 
-        color ray_color(const ray& r, const hittable& world) const {
-            ...
-        }
-    };
+    color ray_color(const ray& r, const hittable& world) const {
+        ...
+    }
+};
 
-    #endif
-    ```
+#endif
+```
 
 
 To begin with, let's fill in the `ray_color()` function from `main.cc`:
 
-    ```C++
-    class camera {
-      ...
+```C++
+class camera {
+  ...
 
-      private:
-        ...
+  private:
+    ...
 
 
-    ```highlight
+```highlight
         color ray_color(const ray& r, const hittable& world) const {
             hit_record rec;
 
@@ -1649,32 +1649,32 @@ To begin with, let's fill in the `ray_color()` function from `main.cc`:
             auto a = 0.5*(unit_direction.y() + 1.0);
             return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
         }
-    ```C++
-    };
+```C++
+};
 
-    #endif
-    ```
+#endif
+```
 
 
 Now we move almost everything from the `main()` function into our new camera class.
 The only thing remaining in the `main()` function is the world construction.
 Here's the camera class with newly migrated code:
 
-    ```C++
-    ...
-    #include "rtweekend.h"
+```C++
+...
+#include "rtweekend.h"
 
-    #include "color.h"
-    #include "hittable.h"
+#include "color.h"
+#include "hittable.h"
 
 
-    ```highlight
+```highlight
     #include <iostream>
-    ```C++
+```C++
 
-    class camera {
-      public:
-    ```highlight
+class camera {
+  public:
+```highlight
         double aspect_ratio = 1.0;  // Ratio of image width over height
         int    image_width  = 100;  // Rendered image width in pixel count
 
@@ -1697,10 +1697,10 @@ Here's the camera class with newly migrated code:
 
             std::clog << "\rDone.                 \n";
         }
-    ```C++
+```C++
 
-      private:
-    ```highlight
+  private:
+```highlight
         int    image_height;   // Rendered image height
         point3 center;         // Camera center
         point3 pixel00_loc;    // Location of pixel 0, 0
@@ -1731,40 +1731,40 @@ Here's the camera class with newly migrated code:
                 center - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
             pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
         }
-    ```C++
+```C++
 
-        color ray_color(const ray& r, const hittable& world) const {
-            ...
-        }
-    };
+    color ray_color(const ray& r, const hittable& world) const {
+        ...
+    }
+};
 
-    #endif
-    ```
+#endif
+```
 
 
 And here's the much reduced main:
 
-    ```highlight
-    #include "rtweekend.h"
+```highlight
+#include "rtweekend.h"
 
-    #include "camera.h"
-    #include "hittable_list.h"
-    #include "sphere.h"
+#include "camera.h"
+#include "hittable_list.h"
+#include "sphere.h"
 
-    int main() {
-        hittable_list world;
+int main() {
+    hittable_list world;
 
-        world.add(make_shared<sphere>(point3(0,0,-1), 0.5));
-        world.add(make_shared<sphere>(point3(0,-100.5,-1), 100));
+    world.add(make_shared<sphere>(point3(0,0,-1), 0.5));
+    world.add(make_shared<sphere>(point3(0,-100.5,-1), 100));
 
-        camera cam;
+    camera cam;
 
-        cam.aspect_ratio = 16.0 / 9.0;
-        cam.image_width  = 400;
+    cam.aspect_ratio = 16.0 / 9.0;
+    cam.image_width  = 400;
 
-        cam.render(world);
-    }
-    ```
+    cam.render(world);
+}
+```
 
 
 Running this newly refactored program should give us the same rendered image as before.
@@ -1816,23 +1816,23 @@ returns a random integer in the range 0 and `RAND_MAX`.
 Hence we can get a real random number as desired with the following code snippet, added to
 `rtweekend.h`:
 
-    ```C++
-    #include <cmath>
-    ```Highlight
+```C++
+#include <cmath>
+```Highlight
     #include <cstdlib>
-    ```C++
-    #include <limits>
-    #include <memory>
-    ...
+```C++
+#include <limits>
+#include <memory>
+...
 
-    // Utility Functions
+// Utility Functions
 
-    inline double degrees_to_radians(double degrees) {
-        return degrees * pi / 180.0;
-    }
+inline double degrees_to_radians(double degrees) {
+    return degrees * pi / 180.0;
+}
 
 
-    ```Highlight
+```Highlight
     inline double random_double() {
         // Returns a random real in [0,1).
         return rand() / (RAND_MAX + 1.0);
@@ -1842,13 +1842,13 @@ Hence we can get a real random number as desired with the following code snippet
         // Returns a random real in [min,max).
         return min + (max-min)*random_double();
     }
-    ```
+```
 
 C++ did not traditionally have a standard random number generator, but newer versions of C++ have
 addressed this issue with the `<random>` header (if imperfectly according to some experts).
 If you want to use this, you can obtain a random number with the conditions we need as follows:
 
-    ```C++
+```C++
     #include <random>
 
     inline double random_double() {
@@ -1856,7 +1856,7 @@ If you want to use this, you can obtain a random number with the conditions we n
         static std::mt19937 generator;
         return distribution(generator);
     }
-    ```
+```
 
 
 ### Generating Pixels with Multiple Samples
@@ -1870,7 +1870,7 @@ the number of samples) at the end, before writing out the color.
 To ensure that the color components of the final result remain within the proper $[0,1]$ bounds,
 we'll add and use a small helper function: `interval::clamp(x)`.
 
-    ```C++
+```C++
     class interval {
       public:
         ...
@@ -1880,21 +1880,21 @@ we'll add and use a small helper function: `interval::clamp(x)`.
         }
 
 
-    ```highlight
-        double clamp(double x) const {
-            if (x < min) return min;
-            if (x > max) return max;
-            return x;
-        }
-    ```C++
+```highlight
+    double clamp(double x) const {
+        if (x < min) return min;
+        if (x > max) return max;
+        return x;
+    }
+```C++
         ...
     };
-    ```
+```
 
 And here's the updated `write_color()` function that takes the sum total of all light for the pixel
 and the number of samples involved:
 
-    ```highlight
+```highlight
     void write_color(std::ostream &out, color pixel_color, int samples_per_pixel) {
         auto r = pixel_color.x();
         auto g = pixel_color.y();
@@ -1912,7 +1912,7 @@ and the number of samples involved:
             << static_cast<int>(256 * intensity.clamp(g)) << ' '
             << static_cast<int>(256 * intensity.clamp(b)) << '\n';
     }
-    ```
+```
 
 Now let's update the camera class to define and use a new `camera::get_ray(i,j)` function, which
 will generate different samples for each pixel.
@@ -1921,14 +1921,14 @@ point within the unit square centered at the origin.
 We then transform the random sample from this ideal square back to the particular pixel we're
 currently sampling.
 
-    ```C++
+```C++
     class camera {
       public:
         double aspect_ratio      = 1.0;  // Ratio of image width over height
         int    image_width       = 100;  // Rendered image width in pixel count
-    ```highlight
-        int    samples_per_pixel = 10;   // Count of random samples for each pixel
-    ```C++
+```highlight
+    int    samples_per_pixel = 10;   // Count of random samples for each pixel
+```C++
 
         void render(const hittable& world) {
             initialize();
@@ -1938,14 +1938,14 @@ currently sampling.
             for (int j = 0; j < image_height; ++j) {
                 std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
                 for (int i = 0; i < image_width; ++i) {
-    ```highlight
-                    color pixel_color(0,0,0);
-                    for (int sample = 0; sample < samples_per_pixel; ++sample) {
-                        ray r = get_ray(i, j);
-                        pixel_color += ray_color(r, world);
-                    }
-                    write_color(std::cout, pixel_color, samples_per_pixel);
-    ```C++
+```highlight
+                color pixel_color(0,0,0);
+                for (int sample = 0; sample < samples_per_pixel; ++sample) {
+                    ray r = get_ray(i, j);
+                    pixel_color += ray_color(r, world);
+                }
+                write_color(std::cout, pixel_color, samples_per_pixel);
+```C++
                 }
             }
 
@@ -1959,32 +1959,32 @@ currently sampling.
         }
 
 
-    ```highlight
-        ray get_ray(int i, int j) const {
-            // Get a randomly sampled camera ray for the pixel at location i,j.
+```highlight
+    ray get_ray(int i, int j) const {
+        // Get a randomly sampled camera ray for the pixel at location i,j.
 
-            auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
-            auto pixel_sample = pixel_center + pixel_sample_square();
+        auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
+        auto pixel_sample = pixel_center + pixel_sample_square();
 
-            auto ray_origin = center;
-            auto ray_direction = pixel_sample - ray_origin;
+        auto ray_origin = center;
+        auto ray_direction = pixel_sample - ray_origin;
 
-            return ray(ray_origin, ray_direction);
-        }
+        return ray(ray_origin, ray_direction);
+    }
 
-        vec3 pixel_sample_square() const {
-            // Returns a random point in the square surrounding a pixel at the origin.
-            auto px = -0.5 + random_double();
-            auto py = -0.5 + random_double();
-            return (px * pixel_delta_u) + (py * pixel_delta_v);
-        }
-    ```C++
+    vec3 pixel_sample_square() const {
+        // Returns a random point in the square surrounding a pixel at the origin.
+        auto px = -0.5 + random_double();
+        auto py = -0.5 + random_double();
+        return (px * pixel_delta_u) + (py * pixel_delta_v);
+    }
+```C++
 
         ...
     };
 
     #endif
-    ```
+```
 
 
 (In addition to the new `pixel_sample_square()` function above, you'll also find the function
@@ -1994,7 +1994,7 @@ function `random_in_unit_disk()` which is defined later on.)
 
 Main is updated to set the new camera parameter.
 
-    ```C++
+```C++
     int main() {
         ...
 
@@ -2002,19 +2002,19 @@ Main is updated to set the new camera parameter.
 
         cam.aspect_ratio      = 16.0 / 9.0;
         cam.image_width       = 400;
-    ```highlight
-        cam.samples_per_pixel = 100;
-    ```C++
+```highlight
+    cam.samples_per_pixel = 100;
+```C++
 
         cam.render(world);
     }
-    ```
+```
 
 
 Zooming into the image that is produced, we can see the difference in edge pixels.
 
-  ![<span class='num'>Image 6:</span> Before and after antialiasing
-  ](../images/img-1.06-antialias-before-after.png class='pixel')
+![<span class='num'>Image 6:</span> Before and after antialiasing
+](../images/img-1.06-antialias-before-after.png class='pixel')
 
 
 
@@ -2033,7 +2033,7 @@ they do modulate that with their own intrinsic color. Light that reflects off a 
 its direction randomized, so, if we send three rays into a crack between two diffuse surfaces they will
 each have different random behavior:
 
-  ![Figure [light-bounce]: Light ray bounces](../images/fig-1.09-light-bounce.jpg)
+![Figure [light-bounce]: Light ray bounces](../images/fig-1.09-light-bounce.jpg)
 
 They might also be absorbed rather than reflected. The darker the surface, the more likely
 the ray is absorbed (that’s why it's dark!). Really any algorithm that randomizes direction will
@@ -2041,8 +2041,8 @@ produce surfaces that look matte. Let's start with the most intuitive: a surface
 bounces a ray equally in all directions. For this material, a ray that hits the surface has an
 equal probability of bouncing in any direction away from the surface.
 
-  ![Figure [random-vec-hor]: Equal reflection above the horizon
-  ](../images/fig-1.10-random-vec-horizon.jpg)
+![Figure [random-vec-hor]: Equal reflection above the horizon
+](../images/fig-1.10-random-vec-horizon.jpg)
 
 This very intuitive material is the simplest kind of diffuse and -- indeed -- many of the first
 raytracing papers used this diffuse method (before adopting a more accurate method that we'll be
@@ -2050,7 +2050,7 @@ implementing a little bit later). We don't currently have a way to randomly refl
 need to add a few functions to our vector utility header. The first thing we need is the ability to
 generate arbitrary random vectors:
 
-    ```C++
+```C++
     class vec3 {
       public:
         ...
@@ -2060,17 +2060,17 @@ generate arbitrary random vectors:
         }
 
 
-    ```Highlight
-        static vec3 random() {
-            return vec3(random_double(), random_double(), random_double());
-        }
+```Highlight
+    static vec3 random() {
+        return vec3(random_double(), random_double(), random_double());
+    }
 
-        static vec3 random(double min, double max) {
-            return vec3(random_double(min,max), random_double(min,max), random_double(min,max));
-        }
-    ```C++
+    static vec3 random(double min, double max) {
+        return vec3(random_double(min,max), random_double(min,max), random_double(min,max));
+    }
+```C++
     };
-    ```
+```
 
 Then we need to figure out how to manipulate a random vector so that we only get results that are on
 the surface of a hemisphere. There are analytical methods of doing this, but they are actually
@@ -2090,10 +2090,10 @@ First, we will use a rejection method to generate the random vector inside of th
 a random point in the unit cube, where $x$, $y$, and $z$ all range from -1 to +1, and reject this
 point if it is outside the unit sphere.
 
-  ![Figure [sphere-vec]: Two vectors were rejected before finding a good one
-  ](../images/fig-1.11-sphere-vec.jpg)
+![Figure [sphere-vec]: Two vectors were rejected before finding a good one
+](../images/fig-1.11-sphere-vec.jpg)
 
-    ```C++
+```C++
     ...
 
     inline vec3 unit_vector(vec3 v) {
@@ -2101,15 +2101,15 @@ point if it is outside the unit sphere.
     }
 
 
-    ```Highlight
-    inline vec3 random_in_unit_sphere() {
-        while (true) {
-            auto p = vec3::random(-1,1);
-            if (p.length_squared() < 1)
-                return p;
-        }
+```Highlight
+inline vec3 random_in_unit_sphere() {
+    while (true) {
+        auto p = vec3::random(-1,1);
+        if (p.length_squared() < 1)
+            return p;
     }
-    ```
+}
+```
 
 
 Once we have a random vector in the unit sphere we need to normalize it to get a vector _on_ the
@@ -2118,37 +2118,37 @@ unit sphere.
   ![Figure [sphere-vec]: The accepted random vector is normalized to produce a unit vector
   ](../images/fig-1.12-sphere-unit-vec.jpg)
 
-    ```C++
-    ...
+```C++
+...
 
-    inline vec3 random_in_unit_sphere() {
-        while (true) {
-            auto p = vec3::random(-1,1);
-            if (p.length_squared() < 1)
-                return p;
-        }
+inline vec3 random_in_unit_sphere() {
+    while (true) {
+        auto p = vec3::random(-1,1);
+        if (p.length_squared() < 1)
+            return p;
     }
+}
 
 
-    ```Highlight
+```Highlight
     inline vec3 random_unit_vector() {
         return unit_vector(random_in_unit_sphere());
     }
-    ```
+```
 
 
 And now that we have a random vector on the surface of the unit sphere, we can determine if it is on
 the correct hemisphere by comparing against the surface normal:
 
-  ![Figure [normal-hor]: The normal vector tells us which hemisphere we need
-  ](../images/fig-1.13-surface-normal.jpg)
+![Figure [normal-hor]: The normal vector tells us which hemisphere we need
+](../images/fig-1.13-surface-normal.jpg)
 
 
 We can take the dot product of the surface normal and our random vector to determine if it's in the
 correct hemisphere. If the dot product is positive, then the vector is in the correct hemisphere. If
 the dot product is negative, then we need to invert the vector.
 
-    ```C++
+```C++
     ...
 
     inline vec3 random_unit_vector() {
@@ -2156,15 +2156,15 @@ the dot product is negative, then we need to invert the vector.
     }
 
 
-    ```Highlight
-    inline vec3 random_on_hemisphere(const vec3& normal) {
-        vec3 on_unit_sphere = random_unit_vector();
-        if (dot(on_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
-            return on_unit_sphere;
-        else
-            return -on_unit_sphere;
-    }
-    ```
+```Highlight
+inline vec3 random_on_hemisphere(const vec3& normal) {
+    vec3 on_unit_sphere = random_unit_vector();
+    if (dot(on_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
+        return on_unit_sphere;
+    else
+        return -on_unit_sphere;
+}
+```
 
 
 If a ray bounces off of a material and keeps 100% of its color, then we say that the material is
@@ -2172,27 +2172,27 @@ _white_. If a ray bounces off of a material and keeps 0% of its color, then we s
 material is black. As a first demonstration of our new diffuse material we'll set the `ray_color`
 function to return 50% of the color from a bounce. We should expect to get a nice gray color.
 
-    ```C++
-    class camera {
-      ...
-      private:
-        ...
-        color ray_color(const ray& r, const hittable& world) const {
-            hit_record rec;
+```C++
+class camera {
+  ...
+  private:
+    ...
+    color ray_color(const ray& r, const hittable& world) const {
+        hit_record rec;
 
-            if (world.hit(r, interval(0, infinity), rec)) {
-    ```highlight
+        if (world.hit(r, interval(0, infinity), rec)) {
+```highlight
                 vec3 direction = random_on_hemisphere(rec.normal);
                 return 0.5 * ray_color(ray(rec.p, direction), world);
-    ```C++
-            }
-
-            vec3 unit_direction = unit_vector(r.direction());
-            auto a = 0.5*(unit_direction.y() + 1.0);
-            return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+```C++
         }
-    };
-    ```
+
+        vec3 unit_direction = unit_vector(r.direction());
+        auto a = 0.5*(unit_direction.y() + 1.0);
+        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+    }
+};
+```
         ray_color() using a random ray direction]
 
 ... Indeed we do get rather nice gray spheres:
@@ -2208,84 +2208,84 @@ will it stop recursing? When it fails to hit anything. In some cases, however, t
 time — long enough to blow the stack. To guard against that, let's limit the maximum recursion
 depth, returning no light contribution at the maximum depth:
 
-    ```C++
-    class camera {
-      public:
-        double aspect_ratio      = 1.0;  // Ratio of image width over height
-        int    image_width       = 100;  // Rendered image width in pixel count
-        int    samples_per_pixel = 10;   // Count of random samples for each pixel
-    ```highlight
+```C++
+class camera {
+  public:
+    double aspect_ratio      = 1.0;  // Ratio of image width over height
+    int    image_width       = 100;  // Rendered image width in pixel count
+    int    samples_per_pixel = 10;   // Count of random samples for each pixel
+```highlight
         int    max_depth         = 10;   // Maximum number of ray bounces into scene
-    ```C++
+```C++
 
-        void render(const hittable& world) {
-            initialize();
+    void render(const hittable& world) {
+        initialize();
 
-            std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+        std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
-            for (int j = 0; j < image_height; ++j) {
-                std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
-                for (int i = 0; i < image_width; ++i) {
-                    color pixel_color(0,0,0);
-                    for (int sample = 0; sample < samples_per_pixel; ++sample) {
-                        ray r = get_ray(i, j);
-    ```highlight
+        for (int j = 0; j < image_height; ++j) {
+            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i) {
+                color pixel_color(0,0,0);
+                for (int sample = 0; sample < samples_per_pixel; ++sample) {
+                    ray r = get_ray(i, j);
+```highlight
                         pixel_color += ray_color(r, max_depth, world);
-    ```C++
-                    }
-                    write_color(std::cout, pixel_color, samples_per_pixel);
+```C++
                 }
+                write_color(std::cout, pixel_color, samples_per_pixel);
             }
-
-            std::clog << "\rDone.                 \n";
         }
-        ...
-      private:
-        ...
-    ```highlight
+
+        std::clog << "\rDone.                 \n";
+    }
+    ...
+  private:
+    ...
+```highlight
         color ray_color(const ray& r, int depth, const hittable& world) const {
-    ```C++
-            hit_record rec;
+```C++
+        hit_record rec;
 
 
-    ```highlight
+```highlight
             // If we've exceeded the ray bounce limit, no more light is gathered.
             if (depth <= 0)
                 return color(0,0,0);
-    ```C++
+```C++
 
-            if (world.hit(r, interval(0, infinity), rec)) {
-                vec3 direction = random_on_hemisphere(rec.normal);
-    ```highlight
+        if (world.hit(r, interval(0, infinity), rec)) {
+            vec3 direction = random_on_hemisphere(rec.normal);
+```highlight
                 return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
-    ```C++
-            }
-
-            vec3 unit_direction = unit_vector(r.direction());
-            auto a = 0.5*(unit_direction.y() + 1.0);
-            return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+```C++
         }
-    };
-    ```
+
+        vec3 unit_direction = unit_vector(r.direction());
+        auto a = 0.5*(unit_direction.y() + 1.0);
+        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+    }
+};
+```
 
 Update the main() function to use this new depth limit:
 
-    ```C++
-    int main() {
-        ...
+```C++
+int main() {
+    ...
 
-        camera cam;
+    camera cam;
 
-        cam.aspect_ratio      = 16.0 / 9.0;
-        cam.image_width       = 400;
-        cam.samples_per_pixel = 100;
-    ```highlight
+    cam.aspect_ratio      = 16.0 / 9.0;
+    cam.image_width       = 400;
+    cam.samples_per_pixel = 100;
+```highlight
         cam.max_depth         = 50;
-    ```C++
+```C++
 
-        cam.render(world);
-    }
-    ```
+    cam.render(world);
+}
+```
 
 
 For this very simple scene we should get basically the same result:
@@ -2306,32 +2306,32 @@ intersect with that surface again. Which means that it will find the nearest sur
 $t=0.00000001$ or whatever floating point approximation the hit function gives us. The simplest hack
 to address this is just to ignore hits that are very close to the calculated intersection point:
 
-    ```C++
-    class camera {
-      ...
-      private:
-        ...
-        color ray_color(const ray& r, int depth, const hittable& world) const {
-            hit_record rec;
+```C++
+class camera {
+  ...
+  private:
+    ...
+    color ray_color(const ray& r, int depth, const hittable& world) const {
+        hit_record rec;
 
-            // If we've exceeded the ray bounce limit, no more light is gathered.
-            if (depth <= 0)
-                return color(0,0,0);
+        // If we've exceeded the ray bounce limit, no more light is gathered.
+        if (depth <= 0)
+            return color(0,0,0);
 
 
-    ```highlight
+```highlight
             if (world.hit(r, interval(0.001, infinity), rec)) {
-    ```C++
-                vec3 direction = random_on_hemisphere(rec.normal);
-                return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
-            }
-
-            vec3 unit_direction = unit_vector(r.direction());
-            auto a = 0.5*(unit_direction.y() + 1.0);
-            return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+```C++
+            vec3 direction = random_on_hemisphere(rec.normal);
+            return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
         }
-    };
-    ```
+
+        vec3 unit_direction = unit_vector(r.direction());
+        auto a = 0.5*(unit_direction.y() + 1.0);
+        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+    }
+};
+```
         Calculating reflected ray origins with tolerance]
 
 This gets rid of the shadow acne problem. Yes it is really called that. Here's the result:
@@ -2376,29 +2376,29 @@ point $\mathbf{P}$ to the random point $\mathbf{S}$ (this is the vector $(\mathb
 
 The change is actually fairly minimal:
 
-    ```C++
-    class camera {
-        ...
-        color ray_color(const ray& r, int depth, const hittable& world) const {
-            hit_record rec;
+```C++
+class camera {
+    ...
+    color ray_color(const ray& r, int depth, const hittable& world) const {
+        hit_record rec;
 
-            // If we've exceeded the ray bounce limit, no more light is gathered.
-            if (depth <= 0)
-                return color(0,0,0);
+        // If we've exceeded the ray bounce limit, no more light is gathered.
+        if (depth <= 0)
+            return color(0,0,0);
 
-            if (world.hit(r, interval(0.001, infinity), rec)) {
-    ```highlight
+        if (world.hit(r, interval(0.001, infinity), rec)) {
+```highlight
                 vec3 direction = rec.normal + random_unit_vector();
-    ```C++
-                return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
-        }
+```C++
+            return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
+    }
 
-            vec3 unit_direction = unit_vector(r.direction());
-            auto a = 0.5*(unit_direction.y() + 1.0);
-            return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
-        }
-    };
-    ```
+        vec3 unit_direction = unit_vector(r.direction());
+        auto a = 0.5*(unit_direction.y() + 1.0);
+        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+    }
+};
+```
 
 
 After rendering we get a similar image:
@@ -2481,12 +2481,12 @@ transform, which is the power that you use when going from gamma space to linear
 go from linear space to gamma space, which means taking the inverse of "gamma 2", which means an
 exponent of $1/\mathit{gamma}$, which is just the square-root.
 
-    ```highlight
-    inline double linear_to_gamma(double linear_component)
-    {
-        return sqrt(linear_component);
-    }
-    ```C++
+```highlight
+inline double linear_to_gamma(double linear_component)
+{
+    return sqrt(linear_component);
+}
+```C++
 
     void write_color(std::ostream &out, color pixel_color, int samples_per_pixel) {
         auto r = pixel_color.x();
@@ -2500,12 +2500,12 @@ exponent of $1/\mathit{gamma}$, which is just the square-root.
         b *= scale;
 
 
-    ```highlight
-        // Apply the linear to gamma transform.
-        r = linear_to_gamma(r);
-        g = linear_to_gamma(g);
-        b = linear_to_gamma(b);
-    ```C++
+```highlight
+    // Apply the linear to gamma transform.
+    r = linear_to_gamma(r);
+    g = linear_to_gamma(g);
+    b = linear_to_gamma(b);
+```C++
 
         // Write the translated [0,255] value of each color component.
         static const interval intensity(0.000, 0.999);
@@ -2513,13 +2513,13 @@ exponent of $1/\mathit{gamma}$, which is just the square-root.
             << static_cast<int>(256 * intensity.clamp(g)) << ' '
             << static_cast<int>(256 * intensity.clamp(b)) << '\n';
     }
-    ```
+```
 
 
 Using this gamma correction, we now get a much more consistent ramp from darkness to lightness:
 
-  ![<span class='num'>Image 12:</span> The gamma-corrected render of two diffuse spheres
-  ](../images/img-1.12-gamma-gamut.png class='pixel')
+![<span class='num'>Image 12:</span> The gamma-corrected render of two diffuse spheres
+](../images/img-1.12-gamma-gamut.png class='pixel')
 
 
 
@@ -2532,12 +2532,12 @@ the parameters that don't affect it. This is not a bad approach. Or we could hav
 material class that encapsulates unique behavior. I am a fan of the latter approach. For our
 program the material needs to do two things:
 
-  1. Produce a scattered ray (or say it absorbed the incident ray).
-  2. If scattered, say how much the ray should be attenuated.
+1. Produce a scattered ray (or say it absorbed the incident ray).
+2. If scattered, say how much the ray should be attenuated.
 
 This suggests the abstract class:
 
-    ```C++
+```C++
     #ifndef MATERIAL_H
     #define MATERIAL_H
 
@@ -2554,7 +2554,7 @@ This suggests the abstract class:
     };
 
     #endif
-    ```
+```
 
 
 
@@ -2566,21 +2566,21 @@ references. In C++ we add the line `class material;` to tell the compiler that `
 that will be defined later. Since we're just specifying a pointer to the class, the compiler
 doesn't need to know the details of the class, solving the circular reference issue.
 
-    ```C++
+```C++
 
-    ```highlight
-    #include "rtweekend.h"
+```highlight
+#include "rtweekend.h"
 
-    class material;
-    ```C++
+class material;
+```C++
 
     class hit_record {
       public:
         point3 p;
         vec3 normal;
-    ```highlight
-        shared_ptr<material> mat;
-    ```C++
+```highlight
+    shared_ptr<material> mat;
+```C++
         double t;
         bool front_face;
 
@@ -2589,7 +2589,7 @@ doesn't need to know the details of the class, solving the circular reference is
             normal = front_face ? outward_normal : -outward_normal;
         }
     };
-    ```
+```
 
 `hit_record` is just a way to stuff a bunch of arguments into a class so we can send them as a
 group. When a ray hits a surface (a particular sphere for example), the material pointer in the
@@ -2599,13 +2599,13 @@ functions of the material pointer to find out what ray, if any, is scattered.
 
 To achieve this, `hit_record` needs to be told the material that is assigned to the sphere.
 
-    ```C++
+```C++
     class sphere : public hittable {
       public:
-    ```highlight
-        sphere(point3 _center, double _radius, shared_ptr<material> _material)
-          : center(_center), radius(_radius), mat(_material) {}
-    ```C++
+```highlight
+    sphere(point3 _center, double _radius, shared_ptr<material> _material)
+      : center(_center), radius(_radius), mat(_material) {}
+```C++
 
         bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             ...
@@ -2614,9 +2614,9 @@ To achieve this, `hit_record` needs to be told the material that is assigned to 
             rec.p = r.at(rec.t);
             vec3 outward_normal = (rec.p - center) / radius;
             rec.set_face_normal(r, outward_normal);
-    ```highlight
-            rec.mat = mat;
-    ```C++
+```highlight
+        rec.mat = mat;
+```C++
 
             return true;
         }
@@ -2624,12 +2624,12 @@ To achieve this, `hit_record` needs to be told the material that is assigned to 
       private:
         point3 center;
         double radius;
-    ```highlight
-        shared_ptr<material> mat;
-    ```C++
+```highlight
+    shared_ptr<material> mat;
+```C++
     };
-    ```
-        Ray-sphere intersection with added material information]
+```
+    Ray-sphere intersection with added material information]
 
 
 
@@ -2639,29 +2639,29 @@ its reflectance $R$, or it can sometimes scatter (with probabilty $1-R$) with no
 a ray that isn't scattered is just absorbed into the material). It could also be a mixture of both
 those strategies. We will choose to always scatter, so Lambertian materials become this simple class:
 
-    ```C++
+```C++
     class material {
         ...
     };
 
 
-    ```Highlight
-    class lambertian : public material {
-      public:
-        lambertian(const color& a) : albedo(a) {}
+```Highlight
+class lambertian : public material {
+  public:
+    lambertian(const color& a) : albedo(a) {}
 
-        bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
-        const override {
-            auto scatter_direction = rec.normal + random_unit_vector();
-            scattered = ray(rec.p, scatter_direction);
-            attenuation = albedo;
-            return true;
-        }
+    bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
+    const override {
+        auto scatter_direction = rec.normal + random_unit_vector();
+        scattered = ray(rec.p, scatter_direction);
+        attenuation = albedo;
+        return true;
+    }
 
-      private:
-        color albedo;
-    };
-    ```
+  private:
+    color albedo;
+};
+```
 
 Note the third option that we could scatter with some fixed probability $p$ and have attenuation be
 $\mathit{albedo}/p$. Your choice.
@@ -2674,52 +2674,52 @@ NaNs), so we need to intercept the condition before we pass it on.
 In service of this, we'll create a new vector method -- `vec3::near_zero()` -- that returns true if
 the vector is very close to zero in all dimensions.
 
-    ```C++
-    class vec3 {
-        ...
+```C++
+class vec3 {
+    ...
 
-        double length_squared() const {
-            return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
-        }
+    double length_squared() const {
+        return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
+    }
 
 
-    ```Highlight
+```Highlight
         bool near_zero() const {
             // Return true if the vector is close to zero in all dimensions.
             auto s = 1e-8;
             return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2]) < s);
         }
-    ```C++
+```C++
 
-        ...
-    };
-    ```
+    ...
+};
+```
 
-    ```C++
-    class lambertian : public material {
-      public:
-        lambertian(const color& a) : albedo(a) {}
+```C++
+class lambertian : public material {
+  public:
+    lambertian(const color& a) : albedo(a) {}
 
-        bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
-        const override {
-            auto scatter_direction = rec.normal + random_unit_vector();
+    bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
+    const override {
+        auto scatter_direction = rec.normal + random_unit_vector();
 
 
-    ```highlight
+```highlight
             // Catch degenerate scatter direction
             if (scatter_direction.near_zero())
                 scatter_direction = rec.normal;
-    ```C++
+```C++
 
-            scattered = ray(rec.p, scatter_direction);
-            attenuation = albedo;
-            return true;
-        }
+        scattered = ray(rec.p, scatter_direction);
+        attenuation = albedo;
+        return true;
+    }
 
-      private:
-        color albedo;
-    };
-    ```
+  private:
+    color albedo;
+};
+```
 
 
 ### Mirrored Light Reflection
@@ -2732,34 +2732,34 @@ The reflected ray direction in red is just $\mathbf{v} + 2\mathbf{b}$. In our de
 is a unit vector, but $\mathbf{v}$ may not be. The length of $\mathbf{b}$ should be $\mathbf{v}
 \cdot \mathbf{n}$. Because $\mathbf{v}$ points in, we will need a minus sign, yielding:
 
-    ```C++
+```C++
+...
+
+inline vec3 random_on_hemisphere(const vec3& normal) {
     ...
-
-    inline vec3 random_on_hemisphere(const vec3& normal) {
-        ...
-    }
+}
 
 
-    ```Highlight
+```Highlight
     vec3 reflect(const vec3& v, const vec3& n) {
         return v - 2*dot(v,n)*n;
     }
-    ```C++
+```C++
 
-    ...
-    ```
+...
+```
 
 The metal material just reflects rays using that formula:
 
-    ```C++
+```C++
+...
+
+class lambertian : public material {
     ...
-
-    class lambertian : public material {
-        ...
-    };
+};
 
 
-    ```Highlight
+```Highlight
     class metal : public material {
       public:
         metal(const color& a) : albedo(a) {}
@@ -2775,20 +2775,20 @@ The metal material just reflects rays using that formula:
       private:
         color albedo;
     };
-    ```
+```
 
 
 We need to modify the `ray_color()` function for all of our changes:
 
-    ```C++
+```C++
     ...
     #include "rtweekend.h"
 
     #include "color.h"
     #include "hittable.h"
-    ```highlight
-    #include "material.h"
-    ```C++
+```highlight
+#include "material.h"
+```C++
     ...
 
     class camera {
@@ -2803,13 +2803,13 @@ We need to modify the `ray_color()` function for all of our changes:
                 return color(0,0,0);
 
             if (world.hit(r, interval(0.001, infinity), rec)) {
-    ```highlight
-                ray scattered;
-                color attenuation;
-                if (rec.mat->scatter(r, rec, attenuation, scattered))
-                    return attenuation * ray_color(scattered, depth-1, world);
-                return color(0,0,0);
-    ```C++
+```highlight
+            ray scattered;
+            color attenuation;
+            if (rec.mat->scatter(r, rec, attenuation, scattered))
+                return attenuation * ray_color(scattered, depth-1, world);
+            return color(0,0,0);
+```C++
             }
 
             vec3 unit_direction = unit_vector(r.direction());
@@ -2817,41 +2817,41 @@ We need to modify the `ray_color()` function for all of our changes:
             return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
         }
     };
-    ```
+```
 
 
 
 ### A Scene with Metal Spheres
 Now let’s add some metal spheres to our scene:
 
-    ```C++
+```C++
     #include "rtweekend.h"
 
     #include "camera.h"
-    ```highlight
-    #include "color.h"
-    ```C++
+```highlight
+#include "color.h"
+```C++
     #include "hittable_list.h"
-    ```highlight
-    #include "material.h"
-    ```C++
+```highlight
+#include "material.h"
+```C++
     #include "sphere.h"
 
     int main() {
         hittable_list world;
 
 
-    ```highlight
-        auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-        auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
-        auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8));
-        auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2));
+```highlight
+    auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
+    auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
+    auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8));
+    auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2));
 
-        world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-        world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
-        world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
-        world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
-    ```C++
+    world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
+    world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
+    world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
+```C++
 
         camera cam;
 
@@ -2862,12 +2862,12 @@ Now let’s add some metal spheres to our scene:
 
         cam.render(world);
     }
-    ```
+```
 
 Which gives:
 
-  ![<span class='num'>Image 13:</span> Shiny metal
-  ](../images/img-1.13-metal-shiny.png class='pixel')
+![<span class='num'>Image 13:</span> Shiny metal
+](../images/img-1.13-metal-shiny.png class='pixel')
 
 
 
@@ -2877,57 +2877,57 @@ for the ray.
 We'll use a random point from the surface of a sphere centered on the original endpoint, scaled by
 the fuzz factor.
 
-  ![Figure [reflect-fuzzy]: Generating fuzzed reflection rays](../images/fig-1.16-reflect-fuzzy.jpg)
+![Figure [reflect-fuzzy]: Generating fuzzed reflection rays](../images/fig-1.16-reflect-fuzzy.jpg)
 
 The bigger the sphere, the fuzzier the reflections will be. This suggests adding a fuzziness
 parameter that is just the radius of the sphere (so zero is no perturbation). The catch is that for
 big spheres or grazing rays, we may scatter below the surface. We can just have the surface
 absorb those.
 
-    ```C++
+```C++
     class metal : public material {
       public:
-    ```highlight
-        metal(const color& a, double f) : albedo(a), fuzz(f < 1 ? f : 1) {}
-    ```C++
+```highlight
+    metal(const color& a, double f) : albedo(a), fuzz(f < 1 ? f : 1) {}
+```C++
 
         bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
         const override {
             vec3 reflected = reflect(unit_vector(r_in.direction()), rec.normal);
-    ```highlight
-            scattered = ray(rec.p, reflected + fuzz*random_unit_vector());
-    ```C++
+```highlight
+        scattered = ray(rec.p, reflected + fuzz*random_unit_vector());
+```C++
             attenuation = albedo;
-    ```highlight
-            return (dot(scattered.direction(), rec.normal) > 0);
-    ```C++
+```highlight
+        return (dot(scattered.direction(), rec.normal) > 0);
+```C++
         }
 
       private:
         color albedo;
-    ```highlight
-        double fuzz;
-    ```C++
+```highlight
+    double fuzz;
+```C++
     };
-    ```
+```
 
 We can try that out by adding fuzziness 0.3 and 1.0 to the metals:
 
-    ```C++
+```C++
     int main() {
         ...
         auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
         auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
-    ```highlight
-        auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
-        auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
-    ```C++
+```highlight
+    auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
+    auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
+```C++
         ...
     }
-    ```
+```
 
-  ![<span class='num'>Image 14:</span> Fuzzed metal
-  ](../images/img-1.14-metal-fuzz.png class='pixel')
+![<span class='num'>Image 14:</span> Fuzzed metal
+](../images/img-1.14-metal-fuzz.png class='pixel')
 
 
 
@@ -2942,8 +2942,8 @@ The hardest part to debug is the refracted ray. I usually first just have all th
 there is a refraction ray at all. For this project, I tried to put two glass balls in our scene, and
 I got this (I have not told you how to do this right or wrong yet, but soon!):
 
-  ![<span class='num'>Image 15:</span> Glass first
-  ](../images/img-1.15-glass-first.png class='pixel')
+![<span class='num'>Image 15:</span> Glass first
+](../images/img-1.15-glass-first.png class='pixel')
 
 Is that right? Glass balls look odd in real life. But no, it isn’t right. The world should be
 flipped upside down and no weird black stuff. I just printed out the ray straight through the middle
@@ -2953,28 +2953,28 @@ of the image and it was clearly wrong. That often does the job.
 ### Snell's Law
 The refraction is described by Snell’s law:
 
-  $$ \eta \cdot \sin\theta = \eta' \cdot \sin\theta' $$
+$$ \eta \cdot \sin\theta = \eta' \cdot \sin\theta' $$
 
 Where $\theta$ and $\theta'$ are the angles from the normal, and $\eta$ and $\eta'$ (pronounced
 "eta" and "eta prime") are the refractive indices (typically air = 1.0, glass = 1.3–1.7, diamond =
 2.4). The geometry is:
 
-  ![Figure [refraction]: Ray refraction](../images/fig-1.17-refraction.jpg)
+![Figure [refraction]: Ray refraction](../images/fig-1.17-refraction.jpg)
 
 In order to determine the direction of the refracted ray, we have to solve for $\sin\theta'$:
 
-  $$ \sin\theta' = \frac{\eta}{\eta'} \cdot \sin\theta $$
+$$ \sin\theta' = \frac{\eta}{\eta'} \cdot \sin\theta $$
 
 On the refracted side of the surface there is a refracted ray $\mathbf{R'}$ and a normal
 $\mathbf{n'}$, and there exists an angle, $\theta'$, between them. We can split $\mathbf{R'}$ into
 the parts of the ray that are perpendicular to $\mathbf{n'}$ and parallel to $\mathbf{n'}$:
 
-  $$ \mathbf{R'} = \mathbf{R'}_{\bot} + \mathbf{R'}_{\parallel} $$
+$$ \mathbf{R'} = \mathbf{R'}_{\bot} + \mathbf{R'}_{\parallel} $$
 
 If we solve for $\mathbf{R'}_{\bot}$ and $\mathbf{R'}_{\parallel}$ we get:
 
-  $$ \mathbf{R'}_{\bot} = \frac{\eta}{\eta'} (\mathbf{R} + \cos\theta \mathbf{n}) $$
-  $$ \mathbf{R'}_{\parallel} = -\sqrt{1 - |\mathbf{R'}_{\bot}|^2} \mathbf{n} $$
+$$ \mathbf{R'}_{\bot} = \frac{\eta}{\eta'} (\mathbf{R} + \cos\theta \mathbf{n}) $$
+$$ \mathbf{R'}_{\parallel} = -\sqrt{1 - |\mathbf{R'}_{\bot}|^2} \mathbf{n} $$
 
 You can go ahead and prove this for yourself if you want, but we will treat it as fact and move on.
 The rest of the book will not require you to understand the proof.
@@ -2983,20 +2983,20 @@ We know the value of every term on the right-hand side except for $\cos\theta$. 
 that the dot product of two vectors can be explained in terms of the cosine of the angle between
 them:
 
-  $$ \mathbf{a} \cdot \mathbf{b} = |\mathbf{a}| |\mathbf{b}| \cos\theta $$
+$$ \mathbf{a} \cdot \mathbf{b} = |\mathbf{a}| |\mathbf{b}| \cos\theta $$
 
 If we restrict $\mathbf{a}$ and $\mathbf{b}$ to be unit vectors:
 
-  $$ \mathbf{a} \cdot \mathbf{b} = \cos\theta $$
+$$ \mathbf{a} \cdot \mathbf{b} = \cos\theta $$
 
 We can now rewrite $\mathbf{R'}_{\bot}$ in terms of known quantities:
 
-  $$ \mathbf{R'}_{\bot} =
-     \frac{\eta}{\eta'} (\mathbf{R} + (\mathbf{-R} \cdot \mathbf{n}) \mathbf{n}) $$
+$$ \mathbf{R'}_{\bot} =
+ \frac{\eta}{\eta'} (\mathbf{R} + (\mathbf{-R} \cdot \mathbf{n}) \mathbf{n}) $$
 
 When we combine them back together, we can write a function to calculate $\mathbf{R'}$:
 
-    ```C++
+```C++
     ...
 
     inline vec3 reflect(const vec3& v, const vec3& n) {
@@ -3004,27 +3004,27 @@ When we combine them back together, we can write a function to calculate $\mathb
     }
 
 
-    ```Highlight
-    inline vec3 refract(const vec3& uv, const vec3& n, double etai_over_etat) {
-        auto cos_theta = fmin(dot(-uv, n), 1.0);
-        vec3 r_out_perp =  etai_over_etat * (uv + cos_theta*n);
-        vec3 r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.length_squared())) * n;
-        return r_out_perp + r_out_parallel;
-    }
-    ```
+```Highlight
+inline vec3 refract(const vec3& uv, const vec3& n, double etai_over_etat) {
+    auto cos_theta = fmin(dot(-uv, n), 1.0);
+    vec3 r_out_perp =  etai_over_etat * (uv + cos_theta*n);
+    vec3 r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.length_squared())) * n;
+    return r_out_perp + r_out_parallel;
+}
+```
 
 
 And the dielectric material that always refracts is:
 
-    ```C++
+```C++
+...
+
+class metal : public material {
     ...
-
-    class metal : public material {
-        ...
-    };
+};
 
 
-    ```Highlight
+```Highlight
     class dielectric : public material {
       public:
         dielectric(double index_of_refraction) : ir(index_of_refraction) {}
@@ -3044,26 +3044,26 @@ And the dielectric material that always refracts is:
       private:
         double ir; // Index of Refraction
     };
-    ```
-        Dielectric material class that always refracts]
+```
+    Dielectric material class that always refracts]
 
 
 Now we'll update the scene to change the left and center spheres to glass:
 
-    ```C++
+```C++
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    ```highlight
-    auto material_center = make_shared<dielectric>(1.5);
-    auto material_left   = make_shared<dielectric>(1.5);
-    ```C++
+```highlight
+auto material_center = make_shared<dielectric>(1.5);
+auto material_left   = make_shared<dielectric>(1.5);
+```C++
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
-    ```
+```
 
 
 This gives us the following result:
 
-  ![<span class='num'>Image 16:</span> Glass sphere that always refracts
-  ](../images/img-1.16-glass-always-refract.png class='pixel')
+![<span class='num'>Image 16:</span> Glass sphere that always refracts
+](../images/img-1.16-glass-always-refract.png class='pixel')
 
 
 
@@ -3072,20 +3072,20 @@ That definitely doesn't look right. One troublesome practical issue is that when
 material with the higher refractive index, there is no real solution to Snell’s law, and thus there
 is no refraction possible. If we refer back to Snell's law and the derivation of $\sin\theta'$:
 
-  $$ \sin\theta' = \frac{\eta}{\eta'} \cdot \sin\theta $$
+$$ \sin\theta' = \frac{\eta}{\eta'} \cdot \sin\theta $$
 
 If the ray is inside glass and outside is air ($\eta = 1.5$ and $\eta' = 1.0$):
 
-  $$ \sin\theta' = \frac{1.5}{1.0} \cdot \sin\theta $$
+$$ \sin\theta' = \frac{1.5}{1.0} \cdot \sin\theta $$
 
 The value of $\sin\theta'$ cannot be greater than 1. So, if,
 
-  $$ \frac{1.5}{1.0} \cdot \sin\theta > 1.0 $$
+$$ \frac{1.5}{1.0} \cdot \sin\theta > 1.0 $$
 
 the equality between the two sides of the equation is broken, and a solution cannot exist. If a
 solution does not exist, the glass cannot refract, and therefore must reflect the ray:
 
-    ```C++
+```C++
     if (refraction_ratio * sin_theta > 1.0) {
         // Must Reflect
         ...
@@ -3093,7 +3093,7 @@ solution does not exist, the glass cannot refract, and therefore must reflect th
         // Can Refract
         ...
     }
-    ```
+```
 
 Here all the light is reflected, and because in practice that is usually inside solid objects, it
 is called “total internal reflection”. This is why sometimes the water-air boundary acts as a
@@ -3101,13 +3101,13 @@ perfect mirror when you are submerged.
 
 We can solve for `sin_theta` using the trigonometric qualities:
 
-  $$ \sin\theta  = \sqrt{1 - \cos^2\theta} $$
+$$ \sin\theta  = \sqrt{1 - \cos^2\theta} $$
 
 and
 
-  $$ \cos\theta = \mathbf{R} \cdot \mathbf{n} $$
+$$ \cos\theta = \mathbf{R} \cdot \mathbf{n} $$
 
-    ```C++
+```C++
     double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
     double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
 
@@ -3118,11 +3118,11 @@ and
         // Can Refract
         ...
     }
-    ```
+```
 
 And the dielectric material that always refracts (when possible) is:
 
-    ```C++
+```C++
     class dielectric : public material {
       public:
         dielectric(double index_of_refraction) : ir(index_of_refraction) {}
@@ -3133,45 +3133,45 @@ And the dielectric material that always refracts (when possible) is:
             double refraction_ratio = rec.front_face ? (1.0/ir) : ir;
 
             vec3 unit_direction = unit_vector(r_in.direction());
-    ```highlight
-            double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
-            double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
+```highlight
+        double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
+        double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
 
-            bool cannot_refract = refraction_ratio * sin_theta > 1.0;
-            vec3 direction;
+        bool cannot_refract = refraction_ratio * sin_theta > 1.0;
+        vec3 direction;
 
-            if (cannot_refract)
-                direction = reflect(unit_direction, rec.normal);
-            else
-                direction = refract(unit_direction, rec.normal, refraction_ratio);
+        if (cannot_refract)
+            direction = reflect(unit_direction, rec.normal);
+        else
+            direction = refract(unit_direction, rec.normal, refraction_ratio);
 
-            scattered = ray(rec.p, direction);
-    ```C++
+        scattered = ray(rec.p, direction);
+```C++
             return true;
         }
 
       private:
         double ir; // Index of Refraction
     };
-    ```
-        Dielectric material class with reflection]
+```
+    Dielectric material class with reflection]
 
 
 Attenuation is always 1 -- the glass surface absorbs nothing. If we try that out with these
 parameters:
 
-    ```Highlight
+```Highlight
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
     auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
     auto material_left   = make_shared<dielectric>(1.5);
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
-    ```
+```
 
 
 We get:
 
-  ![<span class='num'>Image 17:</span> Glass sphere that sometimes refracts
-  ](../images/img-1.17-glass-sometimes-refract.png class='pixel')
+![<span class='num'>Image 17:</span> Glass sphere that sometimes refracts
+](../images/img-1.17-glass-sometimes-refract.png class='pixel')
 
 
 
@@ -3181,7 +3181,7 @@ becomes a mirror. There is a big ugly equation for that, but almost everybody us
 surprisingly accurate polynomial approximation by Christophe Schlick. This yields our full glass
 material:
 
-    ```C++
+```C++
     class dielectric : public material {
       public:
         dielectric(double index_of_refraction) : ir(index_of_refraction) {}
@@ -3198,9 +3198,9 @@ material:
             bool cannot_refract = refraction_ratio * sin_theta > 1.0;
             vec3 direction;
 
-    ```highlight
-            if (cannot_refract || reflectance(cos_theta, refraction_ratio) > random_double())
-    ```C++
+```highlight
+        if (cannot_refract || reflectance(cos_theta, refraction_ratio) > random_double())
+```C++
                 direction = reflect(unit_direction, rec.normal);
             else
                 direction = refract(unit_direction, rec.normal, refraction_ratio);
@@ -3213,16 +3213,16 @@ material:
         double ir; // Index of Refraction
 
 
-    ```highlight
-        static double reflectance(double cosine, double ref_idx) {
-            // Use Schlick's approximation for reflectance.
-            auto r0 = (1-ref_idx) / (1+ref_idx);
-            r0 = r0*r0;
-            return r0 + (1-r0)*pow((1 - cosine),5);
-        }
-    ```C++
+```highlight
+    static double reflectance(double cosine, double ref_idx) {
+        // Use Schlick's approximation for reflectance.
+        auto r0 = (1-ref_idx) / (1+ref_idx);
+        r0 = r0*r0;
+        return r0 + (1-r0)*pow((1 - cosine),5);
+    }
+```C++
     };
-    ```
+```
 
 
 ### Modeling a Hollow Glass Sphere
@@ -3230,22 +3230,22 @@ An interesting and easy trick with dielectric spheres is to note that if you use
 the geometry is unaffected, but the surface normal points inward. This can be used as a bubble to
 make a hollow glass sphere:
 
-    ```C++
+```C++
     ...
     world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
     world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
-    ```highlight
-    world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left));
-    ```C++
+```highlight
+world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left));
+```C++
     world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
     ...
-    ```
+```
 
 This gives:
 
-  ![<span class='num'>Image 18:</span> A hollow glass sphere
-  ](../images/img-1.18-glass-hollow.png class='pixel')
+![<span class='num'>Image 18:</span> A hollow glass sphere
+](../images/img-1.18-glass-hollow.png class='pixel')
 
 
 
@@ -3265,12 +3265,12 @@ First, we'll keep the rays coming from the origin and heading to the $z = -1$ pl
 it the $z = -2$ plane, or whatever, as long as we made $h$ a ratio to that distance. Here is our
 setup:
 
-  ![Figure [cam-view-geom]: Camera viewing geometry (from the side)
-  ](../images/fig-1.18-cam-view-geom.jpg)
+![Figure [cam-view-geom]: Camera viewing geometry (from the side)
+](../images/fig-1.18-cam-view-geom.jpg)
 
 This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
 
-    ```C++
+```C++
     class camera {
       public:
         double aspect_ratio      = 1.0;  // Ratio of image width over height
@@ -3279,9 +3279,9 @@ This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
         int    max_depth         = 10;   // Maximum number of ray bounces into scene
 
 
-    ```highlight
-        double vfov = 90;  // Vertical view angle (field of view)
-    ```C++
+```highlight
+    double vfov = 90;  // Vertical view angle (field of view)
+```C++
 
         void render(const hittable& world) {
         ...
@@ -3297,11 +3297,11 @@ This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
 
             // Determine viewport dimensions.
             auto focal_length = 1.0;
-    ```highlight
-            auto theta = degrees_to_radians(vfov);
-            auto h = tan(theta/2);
-            auto viewport_height = 2 * h * focal_length;
-    ```C++
+```highlight
+        auto theta = degrees_to_radians(vfov);
+        auto h = tan(theta/2);
+        auto viewport_height = 2 * h * focal_length;
+```C++
             auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
 
             // Calculate the vectors across the horizontal and down the vertical viewport edges.
@@ -3320,25 +3320,25 @@ This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
 
         ...
     };
-    ```
+```
 
 
 We'll test out these changes with a simple scene of two touching spheres, using a 90° field of view.
 
-    ```C++
+```C++
     int main() {
         hittable_list world;
 
 
-    ```highlight
-        auto R = cos(pi/4);
+```highlight
+    auto R = cos(pi/4);
 
-        auto material_left  = make_shared<lambertian>(color(0,0,1));
-        auto material_right = make_shared<lambertian>(color(1,0,0));
+    auto material_left  = make_shared<lambertian>(color(0,0,1));
+    auto material_right = make_shared<lambertian>(color(1,0,0));
 
-        world.add(make_shared<sphere>(point3(-R, 0, -1), R, material_left));
-        world.add(make_shared<sphere>(point3( R, 0, -1), R, material_right));
-    ```C++
+    world.add(make_shared<sphere>(point3(-R, 0, -1), R, material_left));
+    world.add(make_shared<sphere>(point3( R, 0, -1), R, material_right));
+```C++
 
         camera cam;
 
@@ -3348,19 +3348,19 @@ We'll test out these changes with a simple scene of two touching spheres, using 
         cam.max_depth         = 50;
 
 
-    ```highlight
-        cam.vfov = 90;
-    ```C++
+```highlight
+    cam.vfov = 90;
+```C++
 
         cam.render(world);
     }
-    ```
+```
 
 
 This gives us the rendering:
 
-  ![<span class='num'>Image 19:</span> A wide-angle view
-  ](../images/img-1.19-wide-view.png class='pixel')
+![<span class='num'>Image 19:</span> A wide-angle view
+](../images/img-1.19-wide-view.png class='pixel')
 
 
 
@@ -3375,7 +3375,7 @@ Another way to think about it is that even if you keep `lookfrom` and `lookat` c
 still rotate your head around your nose. What we need is a way to specify an “up” vector for the
 camera.
 
-  ![Figure [cam-view-dir]: Camera view direction](../images/fig-1.19-cam-view-dir.jpg)
+![Figure [cam-view-dir]: Camera view direction](../images/fig-1.19-cam-view-dir.jpg)
 
 We can specify any up vector we want, as long as it's not parallel to the view direction.
 Project this up vector onto the plane orthogonal to the view direction to get a camera-relative up
@@ -3387,14 +3387,14 @@ $u$ will be the unit vector pointing to camera right, $v$ is the unit vector poi
 $w$ is the unit vector pointing opposite the view direction (since we use right-hand coordinates),
 and the camera center is at the origin.
 
-  ![Figure [cam-view-up]: Camera view up direction](../images/fig-1.20-cam-view-up.jpg)
+![Figure [cam-view-up]: Camera view up direction](../images/fig-1.20-cam-view-up.jpg)
 
 Like before, when our fixed camera faced $-Z$, our arbitrary view camera faces $-w$.
 Keep in mind that we can -- but we don’t have to -- use world up $(0,1,0)$ to specify vup.
 This is convenient and will naturally keep your camera horizontally level until you decide to
 experiment with crazy camera angles.
 
-    ```C++
+```C++
     class camera {
       public:
         double aspect_ratio      = 1.0;  // Ratio of image width over height
@@ -3403,11 +3403,11 @@ experiment with crazy camera angles.
         int    max_depth         = 10;   // Maximum number of ray bounces into scene
 
         double vfov     = 90;              // Vertical view angle (field of view)
-    ```highlight
-        point3 lookfrom = point3(0,0,-1);  // Point camera is looking from
-        point3 lookat   = point3(0,0,0);   // Point camera is looking at
-        vec3   vup      = vec3(0,1,0);     // Camera-relative "up" direction
-    ```C++
+```highlight
+    point3 lookfrom = point3(0,0,-1);  // Point camera is looking from
+    point3 lookat   = point3(0,0,0);   // Point camera is looking at
+    vec3   vup      = vec3(0,1,0);     // Camera-relative "up" direction
+```C++
 
         ...
 
@@ -3417,50 +3417,50 @@ experiment with crazy camera angles.
         point3 pixel00_loc;    // Location of pixel 0, 0
         vec3   pixel_delta_u;  // Offset to pixel to the right
         vec3   pixel_delta_v;  // Offset to pixel below
-    ```highlight
-        vec3   u, v, w;        // Camera frame basis vectors
-    ```C++
+```highlight
+    vec3   u, v, w;        // Camera frame basis vectors
+```C++
 
         void initialize() {
             image_height = static_cast<int>(image_width / aspect_ratio);
             image_height = (image_height < 1) ? 1 : image_height;
 
 
-    ```highlight
-            center = lookfrom;
-    ```C++
+```highlight
+        center = lookfrom;
+```C++
 
             // Determine viewport dimensions.
-    ```highlight
-            auto focal_length = (lookfrom - lookat).length();
-    ```C++
+```highlight
+        auto focal_length = (lookfrom - lookat).length();
+```C++
             auto theta = degrees_to_radians(vfov);
             auto h = tan(theta/2);
             auto viewport_height = 2 * h * focal_length;
             auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
 
 
-    ```highlight
-            // Calculate the u,v,w unit basis vectors for the camera coordinate frame.
-            w = unit_vector(lookfrom - lookat);
-            u = unit_vector(cross(vup, w));
-            v = cross(w, u);
-    ```C++
+```highlight
+        // Calculate the u,v,w unit basis vectors for the camera coordinate frame.
+        w = unit_vector(lookfrom - lookat);
+        u = unit_vector(cross(vup, w));
+        v = cross(w, u);
+```C++
 
             // Calculate the vectors across the horizontal and down the vertical viewport edges.
-    ```highlight
-            vec3 viewport_u = viewport_width * u;    // Vector across viewport horizontal edge
-            vec3 viewport_v = viewport_height * -v;  // Vector down viewport vertical edge
-    ```C++
+```highlight
+        vec3 viewport_u = viewport_width * u;    // Vector across viewport horizontal edge
+        vec3 viewport_v = viewport_height * -v;  // Vector down viewport vertical edge
+```C++
 
             // Calculate the horizontal and vertical delta vectors from pixel to pixel.
             pixel_delta_u = viewport_u / image_width;
             pixel_delta_v = viewport_v / image_height;
 
             // Calculate the location of the upper left pixel.
-    ```highlight
-            auto viewport_upper_left = center - (focal_length * w) - viewport_u/2 - viewport_v/2;
-    ```C++
+```highlight
+        auto viewport_upper_left = center - (focal_length * w) - viewport_u/2 - viewport_v/2;
+```C++
             pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
         }
 
@@ -3468,27 +3468,27 @@ experiment with crazy camera angles.
 
       private:
     };
-    ```
+```
 
 We'll change back to the prior scene, and use the new viewpoint:
 
-    ```C++
+```C++
     int main() {
         hittable_list world;
 
 
-    ```highlight
-        auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-        auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
-        auto material_left   = make_shared<dielectric>(1.5);
-        auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
+```highlight
+    auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
+    auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
+    auto material_left   = make_shared<dielectric>(1.5);
+    auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
 
-        world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-        world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
-        world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
-        world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left));
-        world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
-    ```C++
+    world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
+    world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
+    world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left));
+    world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
+```C++
 
         camera cam;
 
@@ -3498,34 +3498,34 @@ We'll change back to the prior scene, and use the new viewpoint:
         cam.max_depth         = 50;
 
 
-    ```highlight
-        cam.vfov     = 90;
-        cam.lookfrom = point3(-2,2,1);
-        cam.lookat   = point3(0,0,-1);
-        cam.vup      = vec3(0,1,0);
-    ```C++
+```highlight
+    cam.vfov     = 90;
+    cam.lookfrom = point3(-2,2,1);
+    cam.lookat   = point3(0,0,-1);
+    cam.vup      = vec3(0,1,0);
+```C++
 
         cam.render(world);
     }
-    ```
+```
 
 
 to get:
 
-  ![<span class='num'>Image 20:</span> A distant view
-  ](../images/img-1.20-view-distant.png class='pixel')
+![<span class='num'>Image 20:</span> A distant view
+](../images/img-1.20-view-distant.png class='pixel')
 
 
 And we can change field of view:
 
-    ```highlight
+```highlight
         cam.vfov     = 20;
-    ```
+```
 
 
 to get:
 
-  ![<span class='num'>Image 21:</span> Zooming in](../images/img-1.21-view-zoom.png class='pixel')
+![<span class='num'>Image 21:</span> Zooming in](../images/img-1.21-view-zoom.png class='pixel')
 
 
 
@@ -3568,7 +3568,7 @@ then lens, then aperture. Then we could figure out where to send the rays, and f
 it's computed (the image is projected upside down on the film). Graphics people, however, usually
 use a thin lens approximation:
 
-  ![Figure [cam-lens]: Camera lens model](../images/fig-1.21-cam-lens.jpg)
+![Figure [cam-lens]: Camera lens model](../images/fig-1.21-cam-lens.jpg)
 
 We don’t need to simulate any of the inside of the camera -- for the purposes of rendering an image
 outside the camera, that would be unnecessary complexity.
@@ -3579,14 +3579,14 @@ plane in the 3D world is in perfect focus.
 In practice, we accomplish this by placing the viewport in this plane.
 Putting everything together:
 
-  1. The focus plane is orthogonal to the camera view direction.
-  2. The focus distance is the distance between the camera center and the focus plane.
-  3. The viewport lies on the focus plane, centered on the camera view direction vector.
-  4. The grid of pixel locations lies inside the viewport (located in the 3D world).
-  5. Random image sample locations are chosen from the region around the current pixel location.
-  6. The camera fires rays from random points on the lens through the current image sample location.
+1. The focus plane is orthogonal to the camera view direction.
+2. The focus distance is the distance between the camera center and the focus plane.
+3. The viewport lies on the focus plane, centered on the camera view direction vector.
+4. The grid of pixel locations lies inside the viewport (located in the 3D world).
+5. Random image sample locations are chosen from the region around the current pixel location.
+6. The camera fires rays from random points on the lens through the current image sample location.
 
-  ![Figure [cam-film-plane]: Camera focus plane](../images/fig-1.22-cam-film-plane.jpg)
+![Figure [cam-film-plane]: Camera focus plane](../images/fig-1.22-cam-film-plane.jpg)
 
 
 ### Generating Sample Rays
@@ -3610,163 +3610,163 @@ Since we'll be choosing random points from the defocus disk, we'll need a functi
 This function works using the same kind of method we use in `random_in_unit_sphere()`, just for two
 dimensions.
 
-    ```C++
+```C++
     inline vec3 unit_vector(vec3 u) {
         return v / v.length();
     }
 
 
-    ```Highlight
-    inline vec3 random_in_unit_disk() {
-        while (true) {
-            auto p = vec3(random_double(-1,1), random_double(-1,1), 0);
-            if (p.length_squared() < 1)
-                return p;
-        }
+```Highlight
+inline vec3 random_in_unit_disk() {
+    while (true) {
+        auto p = vec3(random_double(-1,1), random_double(-1,1), 0);
+        if (p.length_squared() < 1)
+            return p;
     }
-    ```
+}
+```
 
 Now let's update the camera to originate rays from the defocus disk:
 
-    ```C++
-    class camera {
-      public:
-        double aspect_ratio      = 1.0;  // Ratio of image width over height
-        int    image_width       = 100;  // Rendered image width in pixel count
-        int    samples_per_pixel = 10;   // Count of random samples for each pixel
-        int    max_depth         = 10;   // Maximum number of ray bounces into scene
+```C++
+class camera {
+  public:
+    double aspect_ratio      = 1.0;  // Ratio of image width over height
+    int    image_width       = 100;  // Rendered image width in pixel count
+    int    samples_per_pixel = 10;   // Count of random samples for each pixel
+    int    max_depth         = 10;   // Maximum number of ray bounces into scene
 
-        double vfov     = 90;              // Vertical view angle (field of view)
-        point3 lookfrom = point3(0,0,-1);  // Point camera is looking from
-        point3 lookat   = point3(0,0,0);   // Point camera is looking at
-        vec3   vup      = vec3(0,1,0);     // Camera-relative "up" direction
+    double vfov     = 90;              // Vertical view angle (field of view)
+    point3 lookfrom = point3(0,0,-1);  // Point camera is looking from
+    point3 lookat   = point3(0,0,0);   // Point camera is looking at
+    vec3   vup      = vec3(0,1,0);     // Camera-relative "up" direction
 
 
-    ```highlight
+```highlight
         double defocus_angle = 0;  // Variation angle of rays through each pixel
         double focus_dist = 10;    // Distance from camera lookfrom point to plane of perfect focus
-    ```C++
+```C++
 
-        ...
+    ...
 
-      private:
-        int    image_height;    // Rendered image height
-        point3 center;          // Camera center
-        point3 pixel00_loc;     // Location of pixel 0, 0
-        vec3   pixel_delta_u;   // Offset to pixel to the right
-        vec3   pixel_delta_v;   // Offset to pixel below
-        vec3   u, v, w;         // Camera frame basis vectors
-    ```highlight
+  private:
+    int    image_height;    // Rendered image height
+    point3 center;          // Camera center
+    point3 pixel00_loc;     // Location of pixel 0, 0
+    vec3   pixel_delta_u;   // Offset to pixel to the right
+    vec3   pixel_delta_v;   // Offset to pixel below
+    vec3   u, v, w;         // Camera frame basis vectors
+```highlight
         vec3   defocus_disk_u;  // Defocus disk horizontal radius
         vec3   defocus_disk_v;  // Defocus disk vertical radius
-    ```C++
+```C++
 
-        void initialize() {
-            image_height = static_cast<int>(image_width / aspect_ratio);
-            image_height = (image_height < 1) ? 1 : image_height;
+    void initialize() {
+        image_height = static_cast<int>(image_width / aspect_ratio);
+        image_height = (image_height < 1) ? 1 : image_height;
 
-            center = lookfrom;
+        center = lookfrom;
 
-            // Determine viewport dimensions.
-    ```delete
+        // Determine viewport dimensions.
+```delete
             auto focal_length = (lookfrom - lookat).length();
-    ```C++
-            auto theta = degrees_to_radians(vfov);
-            auto h = tan(theta/2);
-    ```highlight
+```C++
+        auto theta = degrees_to_radians(vfov);
+        auto h = tan(theta/2);
+```highlight
             auto viewport_height = 2 * h * focus_dist;
-    ```C++
-            auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
+```C++
+        auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
 
-            // Calculate the u,v,w unit basis vectors for the camera coordinate frame.
-            w = unit_vector(lookfrom - lookat);
-            u = unit_vector(cross(vup, w));
-            v = cross(w, u);
+        // Calculate the u,v,w unit basis vectors for the camera coordinate frame.
+        w = unit_vector(lookfrom - lookat);
+        u = unit_vector(cross(vup, w));
+        v = cross(w, u);
 
-            // Calculate the vectors across the horizontal and down the vertical viewport edges.
-            vec3 viewport_u = viewport_width * u;    // Vector across viewport horizontal edge
-            vec3 viewport_v = viewport_height * -v;  // Vector down viewport vertical edge
+        // Calculate the vectors across the horizontal and down the vertical viewport edges.
+        vec3 viewport_u = viewport_width * u;    // Vector across viewport horizontal edge
+        vec3 viewport_v = viewport_height * -v;  // Vector down viewport vertical edge
 
-            // Calculate the horizontal and vertical delta vectors to the next pixel.
-            pixel_delta_u = viewport_u / image_width;
-            pixel_delta_v = viewport_v / image_height;
+        // Calculate the horizontal and vertical delta vectors to the next pixel.
+        pixel_delta_u = viewport_u / image_width;
+        pixel_delta_v = viewport_v / image_height;
 
-            // Calculate the location of the upper left pixel.
-    ```highlight
+        // Calculate the location of the upper left pixel.
+```highlight
             auto viewport_upper_left = center - (focus_dist * w) - viewport_u/2 - viewport_v/2;
-    ```C++
-            pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
+```C++
+        pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
 
 
-    ```highlight
+```highlight
             // Calculate the camera defocus disk basis vectors.
             auto defocus_radius = focus_dist * tan(degrees_to_radians(defocus_angle / 2));
             defocus_disk_u = u * defocus_radius;
             defocus_disk_v = v * defocus_radius;
-    ```C++
-        }
+```C++
+    }
 
 
-        ray get_ray(int i, int j) const {
-    ```highlight
+    ray get_ray(int i, int j) const {
+```highlight
             // Get a randomly-sampled camera ray for the pixel at location i,j, originating from
             // the camera defocus disk.
-    ```C++
+```C++
 
-            auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
-            auto pixel_sample = pixel_center + pixel_sample_square();
+        auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
+        auto pixel_sample = pixel_center + pixel_sample_square();
 
 
-    ```highlight
+```highlight
             auto ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample();
-    ```C++
-            auto ray_direction = pixel_sample - ray_origin;
+```C++
+        auto ray_direction = pixel_sample - ray_origin;
 
-            return ray(ray_origin, ray_direction);
-        }
+        return ray(ray_origin, ray_direction);
+    }
 
-        ...
+    ...
 
-    ```highlight
+```highlight
         point3 defocus_disk_sample() const {
             // Returns a random point in the camera defocus disk.
             auto p = random_in_unit_disk();
             return center + (p[0] * defocus_disk_u) + (p[1] * defocus_disk_v);
         }
-    ```C++
+```C++
 
-        color ray_color(const ray& r, int depth, const hittable& world) const {
-        ...
-    };
-    ```
+    color ray_color(const ray& r, int depth, const hittable& world) const {
+    ...
+};
+```
 
 Using a large aperture:
 
-    ```C++
-    int main() {
-        ...
+```C++
+int main() {
+    ...
 
-        camera cam;
+    camera cam;
 
-        cam.aspect_ratio      = 16.0 / 9.0;
-        cam.image_width       = 400;
-        cam.samples_per_pixel = 100;
-        cam.max_depth         = 50;
+    cam.aspect_ratio      = 16.0 / 9.0;
+    cam.image_width       = 400;
+    cam.samples_per_pixel = 100;
+    cam.max_depth         = 50;
 
-        cam.vfov     = 20;
-        cam.lookfrom = point3(-2,2,1);
-        cam.lookat   = point3(0,0,-1);
-        cam.vup      = vec3(0,1,0);
+    cam.vfov     = 20;
+    cam.lookfrom = point3(-2,2,1);
+    cam.lookat   = point3(0,0,-1);
+    cam.vup      = vec3(0,1,0);
 
 
-    ```highlight
+```highlight
         cam.defocus_angle = 10.0;
         cam.focus_dist    = 3.4;
-    ```C++
+```C++
 
-        cam.render(world);
-    }
-    ```
+    cam.render(world);
+}
+```
 
 
 We get:
@@ -3782,12 +3782,12 @@ We get:
 ### A Final Render
 Let’s make the image on the cover of this book -- lots of random spheres.
 
-    ```C++
-    int main() {
-        hittable_list world;
+```C++
+int main() {
+    hittable_list world;
 
 
-    ```Highlight
+```Highlight
         auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
         world.add(make_shared<sphere>(point3(0,-1000,0), 1000, ground_material));
 
@@ -3827,12 +3827,12 @@ Let’s make the image on the cover of this book -- lots of random spheres.
 
         auto material3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
         world.add(make_shared<sphere>(point3(4, 1, 0), 1.0, material3));
-    ```C++
+```C++
 
-        camera cam;
+    camera cam;
 
 
-    ```Highlight
+```Highlight
         cam.aspect_ratio      = 16.0 / 9.0;
         cam.image_width       = 1200;
         cam.samples_per_pixel = 500;
@@ -3845,11 +3845,11 @@ Let’s make the image on the cover of this book -- lots of random spheres.
 
         cam.defocus_angle = 0.6;
         cam.focus_dist    = 10.0;
-    ```C++
+```C++
 
-        cam.render(world);
-    }
-    ```
+    cam.render(world);
+}
+```
 
 (Note that the code above differs slightly from the project sample code: the `samples_per_pixel` is
 set to 500 above for a high-quality image that will take quite a while to render.
@@ -3918,20 +3918,20 @@ you are citing this book, we ask that you try to use one of the following forms 
 ### Snippets
 
   ### Markdown
-    ```
-    [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
-    ```
+```
+[_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
+```
 
   ### HTML
-    ```
-    <a href='https://raytracing.github.io/books/RayTracingInOneWeekend.html'>
-        <cite>Ray Tracing in One Weekend</cite>
-    </a>
-    ```
+```
+<a href='https://raytracing.github.io/books/RayTracingInOneWeekend.html'>
+    <cite>Ray Tracing in One Weekend</cite>
+</a>
+```
 
   ### LaTeX and BibTex
-    ```
-    ```
+```
+```
 
     @misc{Shirley2023RTW1,
        title = {Ray Tracing in One Weekend},
@@ -3941,34 +3941,34 @@ you are citing this book, we ask that you try to use one of the following forms 
        note = {\small \texttt{https://raytracing.github.io/books/RayTracingInOneWeekend.html}},
        url = {https://raytracing.github.io/books/RayTracingInOneWeekend.html}
     }
-    ```
+```
 
-  ### BibLaTeX
-    ```
+### BibLaTeX
+```
     \usepackage{biblatex}
 
-    ```
+```
 
-    @online{Shirley2023RTW1,
-       title = {Ray Tracing in One Weekend},
-       author = {Peter Shirley, Trevor David Black, Steve Hollasch},
-       year = {2023},
-       month = {August},
-       url = {https://raytracing.github.io/books/RayTracingInOneWeekend.html}
-    }
-    ```
+@online{Shirley2023RTW1,
+   title = {Ray Tracing in One Weekend},
+   author = {Peter Shirley, Trevor David Black, Steve Hollasch},
+   year = {2023},
+   month = {August},
+   url = {https://raytracing.github.io/books/RayTracingInOneWeekend.html}
+}
+```
 
   ### IEEE
-    ```
-    “Ray Tracing in One Weekend.” raytracing.github.io/books/RayTracingInOneWeekend.html
-    (accessed MMM. DD, YYYY)
-    ```
+```
+“Ray Tracing in One Weekend.” raytracing.github.io/books/RayTracingInOneWeekend.html
+(accessed MMM. DD, YYYY)
+```
 
   ### MLA:
-    ```
-    Ray Tracing in One Weekend. raytracing.github.io/books/RayTracingInOneWeekend.html
-    Accessed DD MMM. YYYY.
-    ```
+```
+Ray Tracing in One Weekend. raytracing.github.io/books/RayTracingInOneWeekend.html
+Accessed DD MMM. YYYY.
+```
 
 
 
