@@ -93,7 +93,6 @@ start with a plain text ppm file. Here’s a nice description from Wikipedia:
 
   ![Figure [ppm]: PPM Example](../images/fig-1.01-ppm.jpg)
 
-<div class='together'>
 Let’s make some C++ code to output such a thing:
 
     ```C++
@@ -125,9 +124,7 @@ Let’s make some C++ code to output such a thing:
         }
     }
     ```
-    [Listing [main-initial]: <kbd>[main.cc]</kbd> Creating your first image]
 
-</div>
 
 There are some things to note in this code:
 
@@ -192,7 +189,6 @@ file in a text editor and see what it looks like. It should start something like
     12 0 0
     ...
     ```
-    [Listing [first-img]: First image output]
 
 If your PPM file doesn't look like this, then double-check your formatting code.
 If it _does_ look like this but fails to render, then you may have line-ending differences or
@@ -220,7 +216,6 @@ Before we continue, let's add a progress indicator to our output. This is a hand
 progress of a long render, and also to possibly identify a run that's stalled out due to an infinite
 loop or other problem.
 
-<div class='together'>
 Our program outputs the image to the standard output stream (`std::cout`), so leave that alone and
 instead write to the logging output stream (`std::clog`):
 
@@ -246,9 +241,7 @@ instead write to the logging output stream (`std::clog`):
     ```highlight
         std::clog << "\rDone.                 \n";
     ```
-    [Listing [main-progress]: <kbd>[main.cc]</kbd> Main render loop with progress reporting]
 
-</div>
 
 Now when running, you'll see a running count of the number of scanlines remaining. Hopefully this
 runs so fast that you don't even see it! Don't worry -- you'll have lots of time in the future to
@@ -373,7 +366,6 @@ vector utility functions in the bottom half:
 
     #endif
     ```
-    [Listing [vec3-class]: <kbd>[vec3.h]</kbd> vec3 definitions and helper functions]
 
 We use `double` here, but some ray tracers use `float`. `double` has greater precision and range,
 but is twice the size compared to `float`. This increase in size may be important if you're
@@ -404,9 +396,7 @@ that writes a single pixel's color out to the standard output stream.
 
     #endif
     ```
-    [Listing [color]: <kbd>[color.h]</kbd> color utility functions]
 
-<div class='together'>
 Now we can change our main to use both of these:
 
     ```highlight
@@ -440,9 +430,7 @@ Now we can change our main to use both of these:
         std::clog << "\rDone.                 \n";
     }
     ```
-    [Listing [ppm-2]: <kbd>[main.cc]</kbd> Final code for the first PPM image]
 
-</div>
 
 And you should get the exact same picture as before.
 
@@ -461,7 +449,6 @@ and this is what is often called a half-line or a ray.
 
   ![Figure [lerp]: Linear interpolation](../images/fig-1.02-lerp.jpg)
 
-<div class='together'>
 We can represent the idea of a ray as a class, and represent the function $\mathbf{P}(t)$ as a
 function that we'll call `ray::at(t)`:
 
@@ -491,9 +478,7 @@ function that we'll call `ray::at(t)`:
 
     #endif
     ```
-    [Listing [ray-initial]: <kbd>[ray.h]</kbd> The ray class]
 
-</div>
 
 
 ### Sending Rays Into the Scene
@@ -549,7 +534,6 @@ Here's a snippet of what this code will look like:
     auto viewport_height = 2.0;
     auto viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
     ```
-    [Listing [image-setup]: Rendered image setup]
 
 If you're wondering why we don't just use `aspect_ratio` when computing `viewport_width`, it's
 because the value set to `aspect_ratio` is the ideal ratio, it may not be the _actual_ ratio
@@ -598,7 +582,6 @@ upper left corner $\mathbf{Q}$, the pixel $\mathbf{P_{0,0}}$ location, the viewp
 $\mathbf{V_u}$ (`viewport_u`), the viewport vector $\mathbf{V_v}$ (`viewport_v`), and the pixel
 delta vectors $\mathbf{\Delta u}$ and $\mathbf{\Delta v}$.
 
-<div class='together'>
 Drawing from all of this, here's the code that implements the camera.
 We'll stub in a function `ray_color(const ray& r)` that returns the color for a given scene ray
   -- which we'll set to always return black for now.
@@ -674,9 +657,7 @@ We'll stub in a function `ray_color(const ray& r)` that returns the color for a 
         std::clog << "\rDone.                 \n";
     }
     ```
-    [Listing [creating-rays]: <kbd>[main.cc]</kbd> Creating scene rays]
 
-</div>
 
 Notice that in the code above, I didn't make `ray_direction` a unit vector, because I think not
 doing that makes for simpler and slightly faster code.
@@ -699,7 +680,6 @@ A lerp is always of the form
 
 with $a$ going from zero to one.
 
-<div class='together'>
 Putting all this together, here's what we get:
 
     ```C++
@@ -720,17 +700,13 @@ Putting all this together, here's what we get:
 
     ...
     ```
-    [Listing [main-blue-white-blend]: <kbd>[main.cc]</kbd> Rendering a blue-to-white gradient]
 
-</div>
 
-<div class='together'>
 In our case this produces:
 
   ![<span class='num'>Image 2:</span> A blue-to-white gradient depending on ray Y coordinate
   ](../images/img-1.02-blue-to-white.png class='pixel')
 
-</div>
 
 
 
@@ -851,15 +827,12 @@ sphere at -1 on the z-axis and then coloring red any pixel that intersects it.
         return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
     }
     ```
-    [Listing [main-red-sphere]: <kbd>[main.cc]</kbd> Rendering a red sphere]
 
-<div class='together'>
 What we get is this:
 
   ![<span class='num'>Image 3:</span> A simple red sphere
   ](../images/img-1.03-red-sphere.png class='pixel')
 
-</div>
 
 Now this lacks all sorts of things -- like shading, reflection rays, and more than one object --
 but we are closer to halfway done than we are to our start! One thing to be aware of is that we
@@ -946,15 +919,12 @@ These changes in the code let us compute and visualize $\mathbf{n}$:
         return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
     }
     ```
-    [Listing [render-surface-normal]: <kbd>[main.cc]</kbd> Rendering surface normals on a sphere]
 
-<div class='together'>
 And that yields this picture:
 
   ![<span class='num'>Image 4:</span> A sphere colored according to its normal vectors
   ](../images/img-1.04-normals-sphere.png class='pixel')
 
-</div>
 
 
 ### Simplifying the Ray-Sphere Intersection Code
@@ -975,7 +945,6 @@ Let’s revisit the ray-sphere function:
         }
     }
     ```
-    [Listing [ray-sphere-before]: <kbd>[main.cc]</kbd> Ray-sphere intersection code (before)]
 
 First, recall that a vector dotted with itself is equal to the squared length of that vector.
 
@@ -990,7 +959,6 @@ quadratic equation if $b = 2h$:
 
   $$ = \frac{-h \pm \sqrt{h^2 - ac}}{a} $$
 
-<div class='together'>
 Using these observations, we can now simplify the sphere-intersection code to this:
 
     ```C++
@@ -1012,9 +980,7 @@ Using these observations, we can now simplify the sphere-intersection code to th
         }
     }
     ```
-    [Listing [ray-sphere-after]: <kbd>[main.cc]</kbd> Ray-sphere intersection code (after)]
 
-</div>
 
 
 ### An Abstraction for Hittable Objects
@@ -1057,9 +1023,7 @@ bundle of stuff I will store in some structure. Here’s the abstract class:
 
     #endif
     ```
-    [Listing [hittable-initial]: <kbd>[hittable.h]</kbd> The hittable class]
 
-<div class='together'>
 And here’s the sphere:
 
     ```C++
@@ -1105,9 +1069,7 @@ And here’s the sphere:
 
     #endif
     ```
-    [Listing [sphere-initial]: <kbd>[sphere.h]</kbd> The sphere class]
 
-</div>
 
 
 ### Front Faces Versus Back Faces
@@ -1143,9 +1105,7 @@ sphere.
         ...
     }
     ```
-    [Listing [ray-normal-comparison]: Comparing the ray and the normal]
 
-<div class='together'>
 If we decide to have the normals always point against the ray, we won't be able to use the dot
 product to determine which side of the surface the ray is on. Instead, we would need to store that
 information:
@@ -1162,9 +1122,7 @@ information:
         front_face = true;
     }
     ```
-    [Listing [normals-point-against]: Remembering the side of the surface]
 
-</div>
 
 We can set things up so that normals always point “outward” from the surface, or always point
 against the incident ray. This decision is determined by whether you want to determine the side of
@@ -1199,10 +1157,8 @@ does this, as it's usually easier when you know more about the specific geometry
     ```C++
     };
     ```
-    [Listing [front-face-tracking]: <kbd>[hittable.h]</kbd>
         Adding front-face tracking to hit_record]
 
-<div class='together'>
 And then we add the surface side determination to the class:
 
     ```C++
@@ -1224,9 +1180,7 @@ And then we add the surface side determination to the class:
         ...
     };
     ```
-    [Listing [sphere-final]: <kbd>[sphere.h]</kbd> The sphere class with normal determination]
 
-</div>
 
 
 ### A List of Hittable Objects
@@ -1277,7 +1231,6 @@ that stores a list of `hittable`s:
 
     #endif
     ```
-    [Listing [hittable-list-initial]: <kbd>[hittable_list.h]</kbd> The hittable_list class]
 
 
 ### Some New C++ Features
@@ -1290,7 +1243,6 @@ reference count is incremented. As shared pointers go out of scope (like at the 
 function), the reference count is decremented. Once the count goes to zero, the object is safely
 deleted.
 
-<div class='together'>
 Typically, a shared pointer is first initialized with a newly-allocated object, something like this:
 
     ```C++
@@ -1298,14 +1250,11 @@ Typically, a shared pointer is first initialized with a newly-allocated object, 
     shared_ptr<vec3>   vec3_ptr   = make_shared<vec3>(1.414214, 2.718281, 1.618034);
     shared_ptr<sphere> sphere_ptr = make_shared<sphere>(point3(0,0,0), 1.0);
     ```
-    [Listing [shared-ptr]: An example allocation using shared_ptr]
 
-</div>
 
 `make_shared<thing>(thing_constructor_params ...)` allocates a new instance of type `thing`, using
 the constructor parameters. It returns a `shared_ptr<thing>`.
 
-<div class='together'>
 Since the type can be automatically deduced by the return type of `make_shared<type>(...)`, the
 above lines can be more simply expressed using C++'s `auto` type specifier:
 
@@ -1314,9 +1263,7 @@ above lines can be more simply expressed using C++'s `auto` type specifier:
     auto vec3_ptr   = make_shared<vec3>(1.414214, 2.718281, 1.618034);
     auto sphere_ptr = make_shared<sphere>(point3(0,0,0), 1.0);
     ```
-    [Listing [shared-ptr-auto]: An example allocation using shared_ptr with auto type]
 
-</div>
 
 We'll use shared pointers in our code, because it allows multiple geometries to share a common
 instance (for example, a bunch of spheres that all use the same color material), and because
@@ -1376,9 +1323,7 @@ file.
 
     #endif
     ```
-    [Listing [rtweekend-initial]: <kbd>[rtweekend.h]</kbd> The rtweekend.h common header]
 
-<div class='together'>
 And the new main:
 
     ```highlight
@@ -1478,9 +1423,7 @@ And the new main:
         std::clog << "\rDone.                 \n";
     }
     ```
-    [Listing [main-with-rtweekend-h]: <kbd>[main.cc]</kbd> The new main with hittables]
 
-</div>
 
 This yields a picture that is really just a visualization of where the spheres are located along
 with their surface normal. This is often a great way to view any flaws or specific characteristics
@@ -1522,7 +1465,6 @@ and a maximum. We'll end up using this class quite often as we proceed.
 
     #endif
     ```
-    [Listing [interval-initial]: <kbd>[interval.h]</kbd> Introducing the new interval class]
 
 
     ```C++
@@ -1535,7 +1477,6 @@ and a maximum. We'll end up using this class quite often as we proceed.
     #include "ray.h"
     #include "vec3.h"
     ```
-    [Listing [interval-rtweekend]: <kbd>[rtweekend.h]</kbd> Including the new interval class]
 
 
     ```C++
@@ -1547,7 +1488,6 @@ and a maximum. We'll end up using this class quite often as we proceed.
     ```C++
     };
     ```
-    [Listing [hittable-with-interval]: <kbd>[hittable.h]</kbd> hittable::hit() using interval]
 
 
     ```C++
@@ -1578,7 +1518,6 @@ and a maximum. We'll end up using this class quite often as we proceed.
         ...
     };
     ```
-    [Listing [hittable-list-with-interval]: <kbd>[hittable_list.h]</kbd>
         hittable_list::hit() using interval]
 
 
@@ -1607,7 +1546,6 @@ and a maximum. We'll end up using this class quite often as we proceed.
         ...
     };
     ```
-    [Listing [sphere-with-interval]: <kbd>[sphere.h]</kbd> sphere using interval]
 
 
     ```C++
@@ -1626,7 +1564,6 @@ and a maximum. We'll end up using this class quite often as we proceed.
     }
     ...
     ```
-    [Listing [main-with-interval]: <kbd>[main.cc]</kbd> The new main using interval]
 
 
 
@@ -1655,7 +1592,6 @@ second approach.
 After main creates a camera and sets default values, it will call the `render()` method.
 The `render()` method will prepare the camera for rendering and then execute the render loop.
 
-<div class='together'>
 Here's the skeleton of our new `camera` class:
 
     ```C++
@@ -1689,11 +1625,8 @@ Here's the skeleton of our new `camera` class:
 
     #endif
     ```
-    [Listing [camera-skeleton]: <kbd>[camera.h]</kbd> The camera class skeleton]
 
-</div>
 
-<div class='together'>
 To begin with, let's fill in the `ray_color()` function from `main.cc`:
 
     ```C++
@@ -1721,11 +1654,8 @@ To begin with, let's fill in the `ray_color()` function from `main.cc`:
 
     #endif
     ```
-    [Listing [camera-ray-color]: <kbd>[camera.h]</kbd> The camera::ray_color function]
 
-</div>
 
-<div class='together'>
 Now we move almost everything from the `main()` function into our new camera class.
 The only thing remaining in the `main()` function is the world construction.
 Here's the camera class with newly migrated code:
@@ -1810,11 +1740,8 @@ Here's the camera class with newly migrated code:
 
     #endif
     ```
-    [Listing [camera-working]: <kbd>[camera.h]</kbd> The working camera class]
 
-</div>
 
-<div class='together'>
 And here's the much reduced main:
 
     ```highlight
@@ -1838,9 +1765,7 @@ And here's the much reduced main:
         cam.render(world);
     }
     ```
-    [Listing [main-with-new-camera]: <kbd>[main.cc]</kbd> The new main, using the new camera]
 
-</div>
 
 Running this newly refactored program should give us the same rendered image as before.
 
@@ -1918,7 +1843,6 @@ Hence we can get a real random number as desired with the following code snippet
         return min + (max-min)*random_double();
     }
     ```
-    [Listing [random-double]: <kbd>[rtweekend.h]</kbd> random_double() functions]
 
 C++ did not traditionally have a standard random number generator, but newer versions of C++ have
 addressed this issue with the `<random>` header (if imperfectly according to some experts).
@@ -1933,7 +1857,6 @@ If you want to use this, you can obtain a random number with the conditions we n
         return distribution(generator);
     }
     ```
-    [Listing [random-double-alt]: <kbd>[rtweekend.h]</kbd> random_double(), alternate implemenation]
 
 
 ### Generating Pixels with Multiple Samples
@@ -1967,7 +1890,6 @@ we'll add and use a small helper function: `interval::clamp(x)`.
         ...
     };
     ```
-    [Listing [clamp]: <kbd>[interval.h]</kbd> The interval::clamp() utility function]
 
 And here's the updated `write_color()` function that takes the sum total of all light for the pixel
 and the number of samples involved:
@@ -1991,7 +1913,6 @@ and the number of samples involved:
             << static_cast<int>(256 * intensity.clamp(b)) << '\n';
     }
     ```
-    [Listing [write-color-clamped]: <kbd>[color.h]</kbd> The multi-sample write_color() function]
 
 Now let's update the camera class to define and use a new `camera::get_ray(i,j)` function, which
 will generate different samples for each pixel.
@@ -2064,16 +1985,13 @@ currently sampling.
 
     #endif
     ```
-    [Listing [camera-spp]: <kbd>[camera.h]</kbd> Camera with samples-per-pixel parameter]
 
-</div>
 
 (In addition to the new `pixel_sample_square()` function above, you'll also find the function
 `pixel_sample_disk()` in the Github source code. This is included in case you'd like to experiment
 with non-square pixels, but we won't be using it in this book. `pixel_sample_disk()` depends on the
 function `random_in_unit_disk()` which is defined later on.)
 
-<div class='together'>
 Main is updated to set the new camera parameter.
 
     ```C++
@@ -2091,17 +2009,13 @@ Main is updated to set the new camera parameter.
         cam.render(world);
     }
     ```
-    [Listing [main-spp]: <kbd>[main.cc]</kbd> Setting the new samples-per-pixel parameter]
 
-</div>
 
-<div class='together'>
 Zooming into the image that is produced, we can see the difference in edge pixels.
 
   ![<span class='num'>Image 6:</span> Before and after antialiasing
   ](../images/img-1.06-antialias-before-after.png class='pixel')
 
-</div>
 
 
 
@@ -2157,7 +2071,6 @@ generate arbitrary random vectors:
     ```C++
     };
     ```
-    [Listing [vec-rand-util]: <kbd>[vec3.h]</kbd> vec3 random utility functions]
 
 Then we need to figure out how to manipulate a random vector so that we only get results that are on
 the surface of a hemisphere. There are analytical methods of doing this, but they are actually
@@ -2173,7 +2086,6 @@ method, but for our purposes we will go with the simplest, which is:
 2. Normalize this vector
 3. Invert the normalized vector if it falls onto the wrong hemisphere
 
-<div class='together'>
 First, we will use a rejection method to generate the random vector inside of the unit sphere. Pick
 a random point in the unit cube, where $x$, $y$, and $z$ all range from -1 to +1, and reject this
 point if it is outside the unit sphere.
@@ -2198,11 +2110,8 @@ point if it is outside the unit sphere.
         }
     }
     ```
-    [Listing [random-in-unit-sphere]: <kbd>[vec3.h]</kbd> The random_in_unit_sphere() function]
 
-</div>
 
-<div class='together'>
 Once we have a random vector in the unit sphere we need to normalize it to get a vector _on_ the
 unit sphere.
 
@@ -2226,20 +2135,15 @@ unit sphere.
         return unit_vector(random_in_unit_sphere());
     }
     ```
-    [Listing [random-unit-vec]: <kbd>[vec3.h]</kbd> Random vector on the unit sphere]
 
-</div>
 
-<div class='together'>
 And now that we have a random vector on the surface of the unit sphere, we can determine if it is on
 the correct hemisphere by comparing against the surface normal:
 
   ![Figure [normal-hor]: The normal vector tells us which hemisphere we need
   ](../images/fig-1.13-surface-normal.jpg)
 
-</div>
 
-<div class='together'>
 We can take the dot product of the surface normal and our random vector to determine if it's in the
 correct hemisphere. If the dot product is positive, then the vector is in the correct hemisphere. If
 the dot product is negative, then we need to invert the vector.
@@ -2261,9 +2165,7 @@ the dot product is negative, then we need to invert the vector.
             return -on_unit_sphere;
     }
     ```
-    [Listing [random-in-hemisphere]: <kbd>[vec3.h]</kbd> The random_in_hemisphere() function]
 
-</div>
 
 If a ray bounces off of a material and keeps 100% of its color, then we say that the material is
 _white_. If a ray bounces off of a material and keeps 0% of its color, then we say that the
@@ -2291,16 +2193,13 @@ function to return 50% of the color from a bounce. We should expect to get a nic
         }
     };
     ```
-    [Listing [ray-color-random-unit]: <kbd>[camera.h]</kbd>
         ray_color() using a random ray direction]
 
-<div class='together'>
 ... Indeed we do get rather nice gray spheres:
 
   ![<span class='num'>Image 7:</span> First render of a diffuse sphere
   ](../images/img-1.07-first-diffuse.png class='pixel')
 
-</div>
 
 
 ### Limiting the Number of Child Rays
@@ -2368,9 +2267,7 @@ depth, returning no light contribution at the maximum depth:
         }
     };
     ```
-    [Listing [ray-color-depth]: <kbd>[camera.h]</kbd> camera::ray_color() with depth limiting]
 
-<div class='together'>
 Update the main() function to use this new depth limit:
 
     ```C++
@@ -2389,17 +2286,13 @@ Update the main() function to use this new depth limit:
         cam.render(world);
     }
     ```
-    [Listing [main-ray-depth]: <kbd>[main.cc]</kbd> Using the new ray depth limiting]
 
-</div>
 
-<div class='together'>
 For this very simple scene we should get basically the same result:
 
   ![<span class='num'>Image 8:</span> Second render of a diffuse sphere with limited bounces
   ](../images/img-1.08-second-diffuse.png class='pixel')
 
-</div>
 
 
 ### Fixing Shadow Acne
@@ -2439,16 +2332,13 @@ to address this is just to ignore hits that are very close to the calculated int
         }
     };
     ```
-    [Listing [reflect-tolerance]: <kbd>[camera.h]</kbd>
         Calculating reflected ray origins with tolerance]
 
-<div class='together'>
 This gets rid of the shadow acne problem. Yes it is really called that. Here's the result:
 
   ![<span class='num'>Image 9:</span> Diffuse sphere with no shadow acne
   ](../images/img-1.09-no-acne.png class='pixel')
 
-</div>
 
 
 ### True Lambertian Reflection
@@ -2484,7 +2374,6 @@ point $\mathbf{P}$ to the random point $\mathbf{S}$ (this is the vector $(\mathb
   ![Figure [rand-unitvec]: Randomly generating a vector according to Lambertian distribution
   ](../images/fig-1.14-rand-unitvec.jpg)
 
-<div class='together'>
 The change is actually fairly minimal:
 
     ```C++
@@ -2510,17 +2399,13 @@ The change is actually fairly minimal:
         }
     };
     ```
-    [Listing [ray-color-unit-sphere]: <kbd>[camera.h]</kbd> ray_color() with replacement diffuse]
 
-</div>
 
-<div class='together'>
 After rendering we get a similar image:
 
   ![<span class='num'>Image 10:</span> Correct rendering of Lambertian spheres
   ](../images/img-1.10-correct-lambertian.png class='pixel')
 
-</div>
 
 It's hard to tell the difference between these two diffuse methods, given that our scene of two
 spheres is so simple, but you should be able to notice two important visual differences:
@@ -2570,7 +2455,6 @@ class camera {
     }
 };
 ```
-[Listing [ray-color-gamut]: <kbd>[camera.h]</kbd> ray_color() with 10% reflectance]
 
 We render out at this new 10% reflectance. We then set reflectance to 30% and render again. We
 repeat for 50%, 70%, and finally 90%. You can overlay these images from left to right in the photo
@@ -2630,16 +2514,13 @@ exponent of $1/\mathit{gamma}$, which is just the square-root.
             << static_cast<int>(256 * intensity.clamp(b)) << '\n';
     }
     ```
-    [Listing [write-color-gamma]: <kbd>[color.h]</kbd> write_color(), with gamma correction]
 
 
-<div class='together'>
 Using this gamma correction, we now get a much more consistent ramp from darkness to lightness:
 
   ![<span class='num'>Image 12:</span> The gamma-corrected render of two diffuse spheres
   ](../images/img-1.12-gamma-gamut.png class='pixel')
 
-</div>
 
 
 ## Metal
@@ -2654,7 +2535,6 @@ program the material needs to do two things:
   1. Produce a scattered ray (or say it absorbed the incident ray).
   2. If scattered, say how much the ray should be attenuated.
 
-<div class='together'>
 This suggests the abstract class:
 
     ```C++
@@ -2675,9 +2555,7 @@ This suggests the abstract class:
 
     #endif
     ```
-    [Listing [material-initial]: <kbd>[material.h]</kbd> The material class]
 
-</div>
 
 
 ### A Data Structure to Describe Ray-Object Intersections
@@ -2712,7 +2590,6 @@ doesn't need to know the details of the class, solving the circular reference is
         }
     };
     ```
-    [Listing [hit-with-material]: <kbd>[hittable.h]</kbd> Hit record with added material pointer]
 
 `hit_record` is just a way to stuff a bunch of arguments into a class so we can send them as a
 group. When a ray hits a surface (a particular sphere for example), the material pointer in the
@@ -2720,7 +2597,6 @@ group. When a ray hits a surface (a particular sphere for example), the material
 `main()` when we start. When the `ray_color()` routine gets the `hit_record` it can call member
 functions of the material pointer to find out what ray, if any, is scattered.
 
-<div class='together'>
 To achieve this, `hit_record` needs to be told the material that is assigned to the sphere.
 
     ```C++
@@ -2753,10 +2629,8 @@ To achieve this, `hit_record` needs to be told the material that is assigned to 
     ```C++
     };
     ```
-    [Listing [sphere-material]: <kbd>[sphere.h]</kbd>
         Ray-sphere intersection with added material information]
 
-</div>
 
 
 ### Modeling Light Scatter and Reflectance
@@ -2788,7 +2662,6 @@ those strategies. We will choose to always scatter, so Lambertian materials beco
         color albedo;
     };
     ```
-    [Listing [lambertian-initial]: <kbd>[material.h]</kbd> The new lambertian material class]
 
 Note the third option that we could scatter with some fixed probability $p$ and have attenuation be
 $\mathit{albedo}/p$. Your choice.
@@ -2821,7 +2694,6 @@ the vector is very close to zero in all dimensions.
         ...
     };
     ```
-    [Listing [vec3-near-zero]: <kbd>[vec3.h]</kbd> The vec3::near_zero() method]
 
     ```C++
     class lambertian : public material {
@@ -2848,7 +2720,6 @@ the vector is very close to zero in all dimensions.
         color albedo;
     };
     ```
-    [Listing [lambertian-catch-zero]: <kbd>[material.h]</kbd> Lambertian scatter, bullet-proof]
 
 
 ### Mirrored Light Reflection
@@ -2877,9 +2748,7 @@ is a unit vector, but $\mathbf{v}$ may not be. The length of $\mathbf{b}$ should
 
     ...
     ```
-    [Listing [vec3-reflect]: <kbd>[vec3.h]</kbd> vec3 reflection function]
 
-<div class='together'>
 The metal material just reflects rays using that formula:
 
     ```C++
@@ -2907,11 +2776,8 @@ The metal material just reflects rays using that formula:
         color albedo;
     };
     ```
-    [Listing [metal-material]: <kbd>[material.h]</kbd> Metal material with reflectance function]
 
-</div>
 
-<div class='together'>
 We need to modify the `ray_color()` function for all of our changes:
 
     ```C++
@@ -2952,9 +2818,7 @@ We need to modify the `ray_color()` function for all of our changes:
         }
     };
     ```
-    [Listing [ray-color-scatter]: <kbd>[camera.h]</kbd> Ray color with scattered reflectance]
 
-</div>
 
 
 ### A Scene with Metal Spheres
@@ -2999,15 +2863,12 @@ Now let’s add some metal spheres to our scene:
         cam.render(world);
     }
     ```
-    [Listing [scene-with-metal]: <kbd>[main.cc]</kbd> Scene with metal spheres]
 
-<div class='together'>
 Which gives:
 
   ![<span class='num'>Image 13:</span> Shiny metal
   ](../images/img-1.13-metal-shiny.png class='pixel')
 
-</div>
 
 
 ### Fuzzy Reflection
@@ -3049,9 +2910,7 @@ absorb those.
     ```C++
     };
     ```
-    [Listing [metal-fuzz]: <kbd>[material.h]</kbd> Metal material fuzziness]
 
-<div class='together'>
 We can try that out by adding fuzziness 0.3 and 1.0 to the metals:
 
     ```C++
@@ -3066,12 +2925,10 @@ We can try that out by adding fuzziness 0.3 and 1.0 to the metals:
         ...
     }
     ```
-    [Listing [metal-fuzz-spheres]: <kbd>[main.cc]</kbd> Metal spheres with fuzziness]
 
   ![<span class='num'>Image 14:</span> Fuzzed metal
   ](../images/img-1.14-metal-fuzz.png class='pixel')
 
-</div>
 
 
 ## Dielectrics
@@ -3137,7 +2994,6 @@ We can now rewrite $\mathbf{R'}_{\bot}$ in terms of known quantities:
   $$ \mathbf{R'}_{\bot} =
      \frac{\eta}{\eta'} (\mathbf{R} + (\mathbf{-R} \cdot \mathbf{n}) \mathbf{n}) $$
 
-<div class='together'>
 When we combine them back together, we can write a function to calculate $\mathbf{R'}$:
 
     ```C++
@@ -3156,11 +3012,8 @@ When we combine them back together, we can write a function to calculate $\mathb
         return r_out_perp + r_out_parallel;
     }
     ```
-    [Listing [refract]: <kbd>[vec3.h]</kbd> Refraction function]
 
-</div>
 
-<div class='together'>
 And the dielectric material that always refracts is:
 
     ```C++
@@ -3192,12 +3045,9 @@ And the dielectric material that always refracts is:
         double ir; // Index of Refraction
     };
     ```
-    [Listing [dielectric-always-refract]: <kbd>[material.h]</kbd>
         Dielectric material class that always refracts]
 
-</div>
 
-<div class='together'>
 Now we'll update the scene to change the left and center spheres to glass:
 
     ```C++
@@ -3208,17 +3058,13 @@ Now we'll update the scene to change the left and center spheres to glass:
     ```C++
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
     ```
-    [Listing [two-glass]: <kbd>[main.cc]</kbd> Changing left and center spheres to glass]
 
-</div>
 
-<div class='together'>
 This gives us the following result:
 
   ![<span class='num'>Image 16:</span> Glass sphere that always refracts
   ](../images/img-1.16-glass-always-refract.png class='pixel')
 
-</div>
 
 
 ### Total Internal Reflection
@@ -3232,7 +3078,6 @@ If the ray is inside glass and outside is air ($\eta = 1.5$ and $\eta' = 1.0$):
 
   $$ \sin\theta' = \frac{1.5}{1.0} \cdot \sin\theta $$
 
-<div class='together'>
 The value of $\sin\theta'$ cannot be greater than 1. So, if,
 
   $$ \frac{1.5}{1.0} \cdot \sin\theta > 1.0 $$
@@ -3249,8 +3094,6 @@ solution does not exist, the glass cannot refract, and therefore must reflect th
         ...
     }
     ```
-    [Listing [dielectric-can-refract-1]: <kbd>[material.h]</kbd> Determining if the ray can refract]
-</div>
 
 Here all the light is reflected, and because in practice that is usually inside solid objects, it
 is called “total internal reflection”. This is why sometimes the water-air boundary acts as a
@@ -3276,9 +3119,7 @@ and
         ...
     }
     ```
-    [Listing [dielectric-can-refract-2]: <kbd>[material.h]</kbd> Determining if the ray can refract]
 
-<div class='together'>
 And the dielectric material that always refracts (when possible) is:
 
     ```C++
@@ -3313,12 +3154,9 @@ And the dielectric material that always refracts (when possible) is:
         double ir; // Index of Refraction
     };
     ```
-    [Listing [dielectric-with-refraction]: <kbd>[material.h]</kbd>
         Dielectric material class with reflection]
 
-</div>
 
-<div class='together'>
 Attenuation is always 1 -- the glass surface absorbs nothing. If we try that out with these
 parameters:
 
@@ -3328,17 +3166,13 @@ parameters:
     auto material_left   = make_shared<dielectric>(1.5);
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
     ```
-    [Listing [scene-dielectric]: <kbd>[main.cc]</kbd> Scene with dielectric and shiny sphere]
 
-</div>
 
-<div class='together'>
 We get:
 
   ![<span class='num'>Image 17:</span> Glass sphere that sometimes refracts
   ](../images/img-1.17-glass-sometimes-refract.png class='pixel')
 
-</div>
 
 
 ### Schlick Approximation
@@ -3389,7 +3223,6 @@ material:
     ```C++
     };
     ```
-    [Listing [glass]: <kbd>[material.h]</kbd> Full glass material]
 
 
 ### Modeling a Hollow Glass Sphere
@@ -3408,15 +3241,12 @@ make a hollow glass sphere:
     world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
     ...
     ```
-    [Listing [scene-hollow-glass]: <kbd>[main.cc]</kbd> Scene with hollow glass sphere]
 
-<div class='together'>
 This gives:
 
   ![<span class='num'>Image 18:</span> A hollow glass sphere
   ](../images/img-1.18-glass-hollow.png class='pixel')
 
-</div>
 
 
 
@@ -3438,7 +3268,6 @@ setup:
   ![Figure [cam-view-geom]: Camera viewing geometry (from the side)
   ](../images/fig-1.18-cam-view-geom.jpg)
 
-<div class='together'>
 This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
 
     ```C++
@@ -3492,11 +3321,8 @@ This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
         ...
     };
     ```
-    [Listing [camera-fov]: <kbd>[camera.h]</kbd> Camera with adjustable field-of-view (fov)]
 
-</div>
 
-<div class='together'>
 We'll test out these changes with a simple scene of two touching spheres, using a 90° field of view.
 
     ```C++
@@ -3529,17 +3355,13 @@ We'll test out these changes with a simple scene of two touching spheres, using 
         cam.render(world);
     }
     ```
-    [Listing [scene-wide-angle]: <kbd>[main.cc]</kbd> Scene with wide-angle camera]
 
-</div>
 
-<div class='together'>
 This gives us the rendering:
 
   ![<span class='num'>Image 19:</span> A wide-angle view
   ](../images/img-1.19-wide-view.png class='pixel')
 
-</div>
 
 
 ### Positioning and Orienting the Camera
@@ -3647,9 +3469,7 @@ experiment with crazy camera angles.
       private:
     };
     ```
-    [Listing [camera-orient]: <kbd>[camera.h]</kbd> Positionable and orientable camera]
 
-<div class='together'>
 We'll change back to the prior scene, and use the new viewpoint:
 
     ```C++
@@ -3688,34 +3508,25 @@ We'll change back to the prior scene, and use the new viewpoint:
         cam.render(world);
     }
     ```
-    [Listing [scene-free-view]: <kbd>[main.cc]</kbd> Scene with alternate viewpoint]
 
-</div>
 
-<div class='together'>
 to get:
 
   ![<span class='num'>Image 20:</span> A distant view
   ](../images/img-1.20-view-distant.png class='pixel')
 
-</div>
 
-<div class='together'>
 And we can change field of view:
 
     ```highlight
         cam.vfov     = 20;
     ```
-    [Listing [change-field-view]: <kbd>[main.cc]</kbd> Change field of view]
 
-</div>
 
-<div class='together'>
 to get:
 
   ![<span class='num'>Image 21:</span> Zooming in](../images/img-1.21-view-zoom.png class='pixel')
 
-</div>
 
 
 
@@ -3814,7 +3625,6 @@ dimensions.
         }
     }
     ```
-    [Listing [rand-in-unit-disk]: <kbd>[vec3.h]</kbd> Generate random point inside unit disk]
 
 Now let's update the camera to originate rays from the defocus disk:
 
@@ -3929,9 +3739,7 @@ Now let's update the camera to originate rays from the defocus disk:
         ...
     };
     ```
-    [Listing [camera-dof]: <kbd>[camera.h]</kbd> Camera with adjustable depth-of-field (dof)]
 
-<div class='together'>
 Using a large aperture:
 
     ```C++
@@ -3959,17 +3767,13 @@ Using a large aperture:
         cam.render(world);
     }
     ```
-    [Listing [scene-camera-dof]: <kbd>[main.cc]</kbd> Scene camera with depth-of-field]
 
-</div>
 
-<div class='together'>
 We get:
 
   ![<span class='num'>Image 22:</span> Spheres with depth-of-field
   ](../images/img-1.22-depth-of-field.png class='pixel')
 
-</div>
 
 
 
@@ -4046,19 +3850,16 @@ Let’s make the image on the cover of this book -- lots of random spheres.
         cam.render(world);
     }
     ```
-    [Listing [scene-final]: <kbd>[main.cc]</kbd> Final scene]
 
 (Note that the code above differs slightly from the project sample code: the `samples_per_pixel` is
 set to 500 above for a high-quality image that will take quite a while to render.
 The sample code uses a value of 10 in the interest of reasonable run times while developing and
 validating.)
 
-<div class='together'>
 This gives:
 
   ![<span class='num'>Image 23:</span> Final scene](../images/img-1.23-book1-final.jpg)
 
-</div>
 
 An interesting thing you might note is the glass balls don’t really have shadows which makes them
 look like they are floating. This is not a bug -- you don’t see glass balls much in real life, where
