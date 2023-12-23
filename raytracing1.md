@@ -13,8 +13,7 @@
 
 
 
-Overview
-====================================================================================================
+## Overview
 I’ve taught many graphics classes over the years. Often I do them in ray tracing, because you are
 forced to write all the code, but you can still get cool images with no API. I decided to adapt my
 course notes into a how-to, to get you to a cool program as quickly as possible. It will not be a
@@ -85,8 +84,7 @@ Let’s get on with it!
 
 
 
-Output an Image
-====================================================================================================
+## Output an Image
 
 The PPM Image Format
 ---------------------
@@ -260,8 +258,7 @@ runs so fast that you don't even see it! Don't worry -- you'll have lots of time
 watch a slowly updating progress line as we expand our ray tracer.
 
 
-The vec3 Class
-====================================================================================================
+## The vec3 Class
 Almost all graphics programs have some class(es) for storing geometric vectors and colors. In many
 systems these vectors are 4D (3D position plus a homogeneous coordinate for geometry, or RGB plus an
 alpha transparency component for colors). For our purposes, three coordinates suffice. We’ll use the
@@ -455,8 +452,7 @@ And you should get the exact same picture as before.
 
 
 
-Rays, a Simple Camera, and Background
-====================================================================================================
+## Rays, a Simple Camera, and Background
 
 The ray Class
 --------------
@@ -744,8 +740,7 @@ In our case this produces:
 
 
 
-Adding a Sphere
-====================================================================================================
+## Adding a Sphere
 Let’s add a single object to our ray tracer. People often use spheres in ray tracers because
 calculating whether a ray hits a sphere is relatively simple.
 
@@ -884,8 +879,7 @@ feature! We’ll fix those issues next.
 
 
 
-Surface Normals and Multiple Objects
-====================================================================================================
+## Surface Normals and Multiple Objects
 
 Shading with Surface Normals
 -----------------------------
@@ -1652,8 +1646,7 @@ and a maximum. We'll end up using this class quite often as we proceed.
 
 
 
-Moving Camera Code Into Its Own Class
-====================================================================================================
+## Moving Camera Code Into Its Own Class
 Before continuing, now is a good time to consolidate our camera and scene-render code into a single
 new class: the `camera` class.
 The camera class will be responsible for two important jobs:
@@ -1869,8 +1862,7 @@ Running this newly refactored program should give us the same rendered image as 
 
 
 
-Antialiasing
-====================================================================================================
+## Antialiasing
 If you zoom into the rendered images so far, you might notice the harsh "stair step" nature of edges
 in our rendered images.
 This stair-stepping is commonly referred to as "aliasing", or "jaggies".
@@ -2131,8 +2123,7 @@ Zooming into the image that is produced, we can see the difference in edge pixel
 
 
 
-Diffuse Materials
-====================================================================================================
+## Diffuse Materials
 Now that we have objects and multiple rays per pixel, we can make some realistic looking materials.
 We’ll start with diffuse materials (also called _matte_). One question is whether we mix and match
 geometry and materials (so that we can assign a material to multiple spheres, or vice versa) or if
@@ -2674,8 +2665,7 @@ Using this gamma correction, we now get a much more consistent ramp from darknes
 </div>
 
 
-Metal
-====================================================================================================
+## Metal
 
 An Abstract Class for Materials
 --------------------------------
@@ -3113,8 +3103,7 @@ We can try that out by adding fuzziness 0.3 and 1.0 to the metals:
 </div>
 
 
-Dielectrics
-====================================================================================================
+## Dielectrics
 Clear materials such as water, glass, and diamond are dielectrics. When a light ray hits them, it
 splits into a reflected ray and a refracted (transmitted) ray. We’ll handle that by randomly
 choosing between reflection and refraction, only generating one scattered ray per interaction.
@@ -3465,8 +3454,7 @@ This gives:
 
 
 
-Positionable Camera
-====================================================================================================
+## Positionable Camera
 Cameras, like dielectrics, are a pain to debug, so I always develop mine incrementally.
 First, let’s allow for an adjustable field of view (_fov_).
 This is the visual angle from edge to edge of the rendered image.
@@ -3767,8 +3755,7 @@ to get:
 
 
 
-Defocus Blur
-====================================================================================================
+## Defocus Blur
 Now our final feature: _defocus blur_.
 Note, photographers call this _depth of field_, so be sure to only use the term _defocus blur_ among
 your raytracing friends.
@@ -4024,8 +4011,7 @@ We get:
 
 
 
-Where Next?
-====================================================================================================
+## Where Next?
 
 A Final Render
 ---------------
@@ -4155,8 +4141,7 @@ Have fun, and please send me your cool images!
 
 
 
-Citing This Book
-====================================================================================================
+## Citing This Book
 Consistent citations make it easier to identify the source, location and versions of this work. If
 you are citing this book, we ask that you try to use one of the following forms if possible.
 
