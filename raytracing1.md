@@ -1,18 +1,3 @@
-<meta charset="utf-8">
-<link rel="icon" type="image/png" href="../favicon.png">
-<!-- Markdeep: https://casual-effects.com/markdeep/ -->
-
-
-
-                                   **Ray Tracing in One Weekend**
-                   [Peter Shirley][], [Trevor David Black][], [Steve Hollasch][]
-                                                <br>
-                                     Version 4.0.0-alpha.1, 2023-08-06
-                                                <br>
-                      Copyright 2018-2023 Peter Shirley. All rights reserved.
-
-
-
 ## Overview
 I’ve taught many graphics classes over the years. Often I do them in ray tracing, because you are
 forced to write all the code, but you can still get cool images with no API. I decided to adapt my
@@ -3770,12 +3755,3 @@ Accessed DD MMM. YYYY.
 [gfx-codex]:          https://graphicscodex.com/
 [repo]:               https://github.com/RayTracing/raytracing.github.io/
 [square-pixels]:      https://www.researchgate.net/publication/244986797
-
-
-
-<!-- Markdeep: https://casual-effects.com/markdeep/ -->
-<link rel='stylesheet' href='../style/book.css'>
-<style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style>
-<script src="markdeep.min.js"></script>
-<script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js"></script>
-<script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
