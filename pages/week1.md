@@ -1,4 +1,9 @@
 # Week 1
+
+## Disclaimer
+
+This document is taken from [raytracing.github.io](https://github.com/RayTracing/raytracing.github.io). This site just displays it nicely. All rights belong to owner.
+
 ## Overview
 I’ve taught many graphics classes over the years. Often I do them in ray tracing, because you are
 forced to write all the code, but you can still get cool images with no API. I decided to adapt my
