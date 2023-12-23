@@ -1,3 +1,4 @@
+# Week 1
 ## Overview
 I’ve taught many graphics classes over the years. Often I do them in ray tracing, because you are
 forced to write all the code, but you can still get cool images with no API. I decided to adapt my
@@ -149,7 +150,7 @@ build/inOneWeekend > image.ppm
 Opening the output file (in `ToyViewer` on my Mac, but try it in your favorite image viewer and
 Google “ppm viewer” if your viewer doesn’t support it) shows this result:
 
-  ![<span class='num'>Image 1:</span> First PPM image](../images/img-1.01-first-ppm-image.png class='pixel')
+  ![<span class='num'>Image 1:</span> First PPM image](../images/img-1.01-first-ppm-image.png)
 
 Hooray! This is the graphics “hello world”. If your image doesn’t look like that, open the output
 file in a text editor and see what it looks like. It should start something like this:
@@ -672,7 +673,7 @@ color ray_color(const ray& r) {
 
 In our case this produces:
 
-  ![<span class='num'>Image 2:</span> A blue-to-white gradient depending on ray Y coordinate](../images/img-1.02-blue-to-white.png class='pixel')
+  ![<span class='num'>Image 2:</span> A blue-to-white gradient depending on ray Y coordinate](../images/img-1.02-blue-to-white.png)
 
 
 
@@ -721,7 +722,8 @@ we are looking for any $t$ where this is true:
 which can be found by replacing $\mathbf{P}(t)$ with its expanded form:
 
   $$ ((\mathbf{A} + t \mathbf{b}) - \mathbf{C})
-      \cdot ((\mathbf{A} + t \mathbf{b}) - \mathbf{C}) = r^2 $$
+      \cdot ((\mathbf{A} + t \mathbf{b}) - \mathbf{C}) = r^2
+  $$
 
 We have three vectors on the left dotted by three vectors on the right. If we solved for the full
 dot product we would get nine vectors. You can definitely go through and write everything out, but
@@ -729,7 +731,8 @@ we don't need to work that hard. If you remember, we want to solve for $t$, so w
 terms based on whether there is a $t$ or not:
 
   $$ (t \mathbf{b} + (\mathbf{A} - \mathbf{C}))
-      \cdot (t \mathbf{b} + (\mathbf{A} - \mathbf{C})) = r^2 $$
+      \cdot (t \mathbf{b} + (\mathbf{A} - \mathbf{C})) = r^2
+  $$
 
 And now we follow the rules of vector algebra to distribute the dot product:
 
@@ -793,7 +796,7 @@ color ray_color(const ray& r) {
 
 What we get is this:
 
-  ![<span class='num'>Image 3:</span> A simple red sphere](../images/img-1.03-red-sphere.png class='pixel')
+  ![<span class='num'>Image 3:</span> A simple red sphere](../images/img-1.03-red-sphere.png)
 
 
 Now this lacks all sorts of things -- like shading, reflection rays, and more than one object --
@@ -879,7 +882,7 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
 
 And that yields this picture:
 
-![<span class='num'>Image 4:</span> A sphere colored according to its normal vectors](../images/img-1.04-normals-sphere.png class='pixel')
+![<span class='num'>Image 4:</span> A sphere colored according to its normal vectors](../images/img-1.04-normals-sphere.png)
 
 
 
@@ -1366,7 +1369,7 @@ This yields a picture that is really just a visualization of where the spheres a
 with their surface normal. This is often a great way to view any flaws or specific characteristics
 of a geometric model.
 
-  ![<span class='num'>Image 5:</span> Resulting render of normals-colored sphere with ground](../images/img-1.05-normals-sphere-ground.png class='pixel')
+  ![<span class='num'>Image 5:</span> Resulting render of normals-colored sphere with ground](../images/img-1.05-normals-sphere-ground.png)
 
 
 ### An Interval Class
@@ -1910,7 +1913,7 @@ Main is updated to set the new camera parameter.
 
 Zooming into the image that is produced, we can see the difference in edge pixels.
 
-![<span class='num'>Image 6:</span> Before and after antialiasing](../images/img-1.06-antialias-before-after.png class='pixel')
+![<span class='num'>Image 6:</span> Before and after antialiasing](../images/img-1.06-antialias-before-after.png)
 
 
 
@@ -2082,7 +2085,7 @@ class camera {
 
 ... Indeed we do get rather nice gray spheres:
 
-  ![<span class='num'>Image 7:</span> First render of a diffuse sphere](../images/img-1.07-first-diffuse.png class='pixel')
+  ![<span class='num'>Image 7:</span> First render of a diffuse sphere](../images/img-1.07-first-diffuse.png)
 
 
 
@@ -2162,7 +2165,7 @@ int main() {
 
 For this very simple scene we should get basically the same result:
 
-  ![<span class='num'>Image 8:</span> Second render of a diffuse sphere with limited bounces](../images/img-1.08-second-diffuse.png class='pixel')
+  ![<span class='num'>Image 8:</span> Second render of a diffuse sphere with limited bounces](../images/img-1.08-second-diffuse.png)
 
 
 
@@ -2205,7 +2208,7 @@ class camera {
 
 This gets rid of the shadow acne problem. Yes it is really called that. Here's the result:
 
-  ![<span class='num'>Image 9:</span> Diffuse sphere with no shadow acne](../images/img-1.09-no-acne.png class='pixel')
+  ![<span class='num'>Image 9:</span> Diffuse sphere with no shadow acne](../images/img-1.09-no-acne.png)
 
 
 
@@ -2268,7 +2271,7 @@ class camera {
 
 After rendering we get a similar image:
 
-  ![<span class='num'>Image 10:</span> Correct rendering of Lambertian spheres](../images/img-1.10-correct-lambertian.png class='pixel')
+  ![<span class='num'>Image 10:</span> Correct rendering of Lambertian spheres](../images/img-1.10-correct-lambertian.png)
 
 
 It's hard to tell the difference between these two diffuse methods, given that our scene of two
@@ -2323,7 +2326,7 @@ repeat for 50%, 70%, and finally 90%. You can overlay these images from left to 
 editor of your choice and you should get a very nice visual representation of the increasing
 brightness of your chosen gamut. This is the one that we've been working with so far: 
 
-![<span class='num'>Image 11:</span> The gamut of our renderer so far](../images/img-1.11-linear-gamut.png class='pixel')
+![<span class='num'>Image 11:</span> The gamut of our renderer so far](../images/img-1.11-linear-gamut.png)
 
 If you look closely, or if you use a color picker, you should notice that the 50% reflectance
 render (the one in the middle) is far too dark to be half-way between white and black (middle-gray).
@@ -2376,7 +2379,7 @@ inline double linear_to_gamma(double linear_component)
 
 Using this gamma correction, we now get a much more consistent ramp from darkness to lightness:
 
-![<span class='num'>Image 12:</span> The gamma-corrected render of two diffuse spheres](../images/img-1.12-gamma-gamut.png class='pixel')
+![<span class='num'>Image 12:</span> The gamma-corrected render of two diffuse spheres](../images/img-1.12-gamma-gamut.png)
 
 
 
@@ -2695,7 +2698,7 @@ Now let’s add some metal spheres to our scene:
 
 Which gives:
 
-![<span class='num'>Image 13:</span> Shiny metal](../images/img-1.13-metal-shiny.png class='pixel')
+![<span class='num'>Image 13:</span> Shiny metal](../images/img-1.13-metal-shiny.png)
 
 
 
@@ -2744,7 +2747,7 @@ We can try that out by adding fuzziness 0.3 and 1.0 to the metals:
     }
 ```
 
-![<span class='num'>Image 14:</span> Fuzzed metal](../images/img-1.14-metal-fuzz.png class='pixel')
+![<span class='num'>Image 14:</span> Fuzzed metal](../images/img-1.14-metal-fuzz.png)
 
 
 
@@ -2759,7 +2762,7 @@ The hardest part to debug is the refracted ray. I usually first just have all th
 there is a refraction ray at all. For this project, I tried to put two glass balls in our scene, and
 I got this (I have not told you how to do this right or wrong yet, but soon!):
 
-![<span class='num'>Image 15:</span> Glass first](../images/img-1.15-glass-first.png class='pixel')
+![<span class='num'>Image 15:</span> Glass first](../images/img-1.15-glass-first.png)
 
 Is that right? Glass balls look odd in real life. But no, it isn’t right. The world should be
 flipped upside down and no weird black stuff. I just printed out the ray straight through the middle
@@ -2808,7 +2811,8 @@ $$ \mathbf{a} \cdot \mathbf{b} = \cos\theta $$
 We can now rewrite $\mathbf{R'}_{\bot}$ in terms of known quantities:
 
 $$ \mathbf{R'}_{\bot} =
- \frac{\eta}{\eta'} (\mathbf{R} + (\mathbf{-R} \cdot \mathbf{n}) \mathbf{n}) $$
+ \frac{\eta}{\eta'} (\mathbf{R} + (\mathbf{-R} \cdot \mathbf{n}) \mathbf{n})
+$$
 
 When we combine them back together, we can write a function to calculate $\mathbf{R'}$:
 
@@ -2874,7 +2878,7 @@ auto material_left   = make_shared<dielectric>(1.5);
 
 This gives us the following result:
 
-![<span class='num'>Image 16:</span> Glass sphere that always refracts](../images/img-1.16-glass-always-refract.png class='pixel')
+![<span class='num'>Image 16:</span> Glass sphere that always refracts](../images/img-1.16-glass-always-refract.png)
 
 
 
@@ -2979,7 +2983,7 @@ parameters:
 
 We get:
 
-![<span class='num'>Image 17:</span> Glass sphere that sometimes refracts](../images/img-1.17-glass-sometimes-refract.png class='pixel')
+![<span class='num'>Image 17:</span> Glass sphere that sometimes refracts](../images/img-1.17-glass-sometimes-refract.png)
 
 
 
@@ -3046,7 +3050,7 @@ world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left))
 
 This gives:
 
-![<span class='num'>Image 18:</span> A hollow glass sphere](../images/img-1.18-glass-hollow.png class='pixel')
+![<span class='num'>Image 18:</span> A hollow glass sphere](../images/img-1.18-glass-hollow.png)
 
 
 
@@ -3151,7 +3155,7 @@ We'll test out these changes with a simple scene of two touching spheres, using 
 
 This gives us the rendering:
 
-![<span class='num'>Image 19:</span> A wide-angle view](../images/img-1.19-wide-view.png class='pixel')
+![<span class='num'>Image 19:</span> A wide-angle view](../images/img-1.19-wide-view.png)
 
 
 
@@ -3285,7 +3289,7 @@ We'll change back to the prior scene, and use the new viewpoint:
 
 to get:
 
-![<span class='num'>Image 20:</span> A distant view](../images/img-1.20-view-distant.png class='pixel')
+![<span class='num'>Image 20:</span> A distant view](../images/img-1.20-view-distant.png)
 
 
 And we can change field of view:
@@ -3297,7 +3301,7 @@ And we can change field of view:
 
 to get:
 
-![<span class='num'>Image 21:</span> Zooming in](../images/img-1.21-view-zoom.png class='pixel')
+![<span class='num'>Image 21:</span> Zooming in](../images/img-1.21-view-zoom.png)
 
 
 
@@ -3523,7 +3527,7 @@ int main() {
 
 We get:
 
-  ![<span class='num'>Image 22:</span> Spheres with depth-of-field](../images/img-1.22-depth-of-field.png class='pixel')
+  ![<span class='num'>Image 22:</span> Spheres with depth-of-field](../images/img-1.22-depth-of-field.png)
 
 
 
