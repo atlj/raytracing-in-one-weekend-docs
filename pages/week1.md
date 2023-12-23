@@ -692,7 +692,7 @@ calculating whether a ray hits a sphere is relatively simple.
 The equation for a sphere of radius $r$ that is centered at the origin is an important mathematical
 equation:
 
-    $$ x^2 + y^2 + z^2 = r^2 $$
+  $$ x^2 + y^2 + z^2 = r^2 $$
 
 You can also think of this as saying that if a given point $(x,y,z)$ is on
 the sphere, then $x^2 + y^2 + z^2 = r^2$. If a given point $(x,y,z)$ is _inside_ the sphere, then
