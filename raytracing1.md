@@ -149,8 +149,7 @@ build/inOneWeekend > image.ppm
 Opening the output file (in `ToyViewer` on my Mac, but try it in your favorite image viewer and
 Google “ppm viewer” if your viewer doesn’t support it) shows this result:
 
-  ![<span class='num'>Image 1:</span> First PPM image
-  ](../images/img-1.01-first-ppm-image.png class='pixel')
+  ![<span class='num'>Image 1:</span> First PPM image](../images/img-1.01-first-ppm-image.png class='pixel')
 
 Hooray! This is the graphics “hello world”. If your image doesn’t look like that, open the output
 file in a text editor and see what it looks like. It should start something like this:
@@ -673,8 +672,7 @@ color ray_color(const ray& r) {
 
 In our case this produces:
 
-  ![<span class='num'>Image 2:</span> A blue-to-white gradient depending on ray Y coordinate
-  ](../images/img-1.02-blue-to-white.png class='pixel')
+  ![<span class='num'>Image 2:</span> A blue-to-white gradient depending on ray Y coordinate](../images/img-1.02-blue-to-white.png class='pixel')
 
 
 
@@ -795,8 +793,7 @@ color ray_color(const ray& r) {
 
 What we get is this:
 
-  ![<span class='num'>Image 3:</span> A simple red sphere
-  ](../images/img-1.03-red-sphere.png class='pixel')
+  ![<span class='num'>Image 3:</span> A simple red sphere](../images/img-1.03-red-sphere.png class='pixel')
 
 
 Now this lacks all sorts of things -- like shading, reflection rays, and more than one object --
@@ -882,8 +879,7 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
 
 And that yields this picture:
 
-![<span class='num'>Image 4:</span> A sphere colored according to its normal vectors
-](../images/img-1.04-normals-sphere.png class='pixel')
+![<span class='num'>Image 4:</span> A sphere colored according to its normal vectors](../images/img-1.04-normals-sphere.png class='pixel')
 
 
 
@@ -1037,8 +1033,7 @@ the ray. Alternatively, we can have the normal always point against the ray. If 
 the sphere, the normal will point outward, but if the ray is inside the sphere, the normal will
 point inward.
 
-![Figure [normal-sides]: Possible directions for sphere surface-normal geometry
-](../images/fig-1.07-normal-sides.jpg)
+![Figure [normal-sides]: Possible directions for sphere surface-normal geometry](../images/fig-1.07-normal-sides.jpg)
 
 We need to choose one of these possibilities because we will eventually want to determine which
 side of the surface that the ray is coming from. This is important for objects that are rendered
@@ -1371,8 +1366,7 @@ This yields a picture that is really just a visualization of where the spheres a
 with their surface normal. This is often a great way to view any flaws or specific characteristics
 of a geometric model.
 
-  ![<span class='num'>Image 5:</span> Resulting render of normals-colored sphere with ground
-  ](../images/img-1.05-normals-sphere-ground.png class='pixel')
+  ![<span class='num'>Image 5:</span> Resulting render of normals-colored sphere with ground](../images/img-1.05-normals-sphere-ground.png class='pixel')
 
 
 ### An Interval Class
@@ -1916,8 +1910,7 @@ Main is updated to set the new camera parameter.
 
 Zooming into the image that is produced, we can see the difference in edge pixels.
 
-![<span class='num'>Image 6:</span> Before and after antialiasing
-](../images/img-1.06-antialias-before-after.png class='pixel')
+![<span class='num'>Image 6:</span> Before and after antialiasing](../images/img-1.06-antialias-before-after.png class='pixel')
 
 
 
@@ -1944,8 +1937,7 @@ produce surfaces that look matte. Let's start with the most intuitive: a surface
 bounces a ray equally in all directions. For this material, a ray that hits the surface has an
 equal probability of bouncing in any direction away from the surface.
 
-![Figure [random-vec-hor]: Equal reflection above the horizon
-](../images/fig-1.10-random-vec-horizon.jpg)
+![Figure [random-vec-hor]: Equal reflection above the horizon](../images/fig-1.10-random-vec-horizon.jpg)
 
 This very intuitive material is the simplest kind of diffuse and -- indeed -- many of the first
 raytracing papers used this diffuse method (before adopting a more accurate method that we'll be
@@ -1991,8 +1983,7 @@ First, we will use a rejection method to generate the random vector inside of th
 a random point in the unit cube, where $x$, $y$, and $z$ all range from -1 to +1, and reject this
 point if it is outside the unit sphere.
 
-![Figure [sphere-vec]: Two vectors were rejected before finding a good one
-](../images/fig-1.11-sphere-vec.jpg)
+![Figure [sphere-vec]: Two vectors were rejected before finding a good one](../images/fig-1.11-sphere-vec.jpg)
 
 ```cpp
     ...
@@ -2015,8 +2006,7 @@ inline vec3 random_in_unit_sphere() {
 Once we have a random vector in the unit sphere we need to normalize it to get a vector _on_ the
 unit sphere.
 
-  ![Figure [sphere-vec]: The accepted random vector is normalized to produce a unit vector
-  ](../images/fig-1.12-sphere-unit-vec.jpg)
+  ![Figure [sphere-vec]: The accepted random vector is normalized to produce a unit vector](../images/fig-1.12-sphere-unit-vec.jpg)
 
 ```cpp
 ...
@@ -2039,8 +2029,7 @@ inline vec3 random_in_unit_sphere() {
 And now that we have a random vector on the surface of the unit sphere, we can determine if it is on
 the correct hemisphere by comparing against the surface normal:
 
-![Figure [normal-hor]: The normal vector tells us which hemisphere we need
-](../images/fig-1.13-surface-normal.jpg)
+![Figure [normal-hor]: The normal vector tells us which hemisphere we need](../images/fig-1.13-surface-normal.jpg)
 
 
 We can take the dot product of the surface normal and our random vector to determine if it's in the
@@ -2093,8 +2082,7 @@ class camera {
 
 ... Indeed we do get rather nice gray spheres:
 
-  ![<span class='num'>Image 7:</span> First render of a diffuse sphere
-  ](../images/img-1.07-first-diffuse.png class='pixel')
+  ![<span class='num'>Image 7:</span> First render of a diffuse sphere](../images/img-1.07-first-diffuse.png class='pixel')
 
 
 
@@ -2174,8 +2162,7 @@ int main() {
 
 For this very simple scene we should get basically the same result:
 
-  ![<span class='num'>Image 8:</span> Second render of a diffuse sphere with limited bounces
-  ](../images/img-1.08-second-diffuse.png class='pixel')
+  ![<span class='num'>Image 8:</span> Second render of a diffuse sphere with limited bounces](../images/img-1.08-second-diffuse.png class='pixel')
 
 
 
@@ -2218,8 +2205,7 @@ class camera {
 
 This gets rid of the shadow acne problem. Yes it is really called that. Here's the result:
 
-  ![<span class='num'>Image 9:</span> Diffuse sphere with no shadow acne
-  ](../images/img-1.09-no-acne.png class='pixel')
+  ![<span class='num'>Image 9:</span> Diffuse sphere with no shadow acne](../images/img-1.09-no-acne.png class='pixel')
 
 
 
@@ -2253,8 +2239,7 @@ We want to select the tangent unit sphere that is on the same side of the surfac
 origin. Pick a random point $\mathbf{S}$ on this unit radius sphere and send a ray from the hit
 point $\mathbf{P}$ to the random point $\mathbf{S}$ (this is the vector $(\mathbf{S}-\mathbf{P})$):
 
-  ![Figure [rand-unitvec]: Randomly generating a vector according to Lambertian distribution
-  ](../images/fig-1.14-rand-unitvec.jpg)
+  ![Figure [rand-unitvec]: Randomly generating a vector according to Lambertian distribution](../images/fig-1.14-rand-unitvec.jpg)
 
 The change is actually fairly minimal:
 
@@ -2283,8 +2268,7 @@ class camera {
 
 After rendering we get a similar image:
 
-  ![<span class='num'>Image 10:</span> Correct rendering of Lambertian spheres
-  ](../images/img-1.10-correct-lambertian.png class='pixel')
+  ![<span class='num'>Image 10:</span> Correct rendering of Lambertian spheres](../images/img-1.10-correct-lambertian.png class='pixel')
 
 
 It's hard to tell the difference between these two diffuse methods, given that our scene of two
@@ -2339,8 +2323,7 @@ repeat for 50%, 70%, and finally 90%. You can overlay these images from left to 
 editor of your choice and you should get a very nice visual representation of the increasing
 brightness of your chosen gamut. This is the one that we've been working with so far: 
 
-![<span class='num'>Image 11:</span> The gamut of our renderer so far
-](../images/img-1.11-linear-gamut.png class='pixel')
+![<span class='num'>Image 11:</span> The gamut of our renderer so far](../images/img-1.11-linear-gamut.png class='pixel')
 
 If you look closely, or if you use a color picker, you should notice that the 50% reflectance
 render (the one in the middle) is far too dark to be half-way between white and black (middle-gray).
@@ -2393,8 +2376,7 @@ inline double linear_to_gamma(double linear_component)
 
 Using this gamma correction, we now get a much more consistent ramp from darkness to lightness:
 
-![<span class='num'>Image 12:</span> The gamma-corrected render of two diffuse spheres
-](../images/img-1.12-gamma-gamut.png class='pixel')
+![<span class='num'>Image 12:</span> The gamma-corrected render of two diffuse spheres](../images/img-1.12-gamma-gamut.png class='pixel')
 
 
 
@@ -2713,8 +2695,7 @@ Now let’s add some metal spheres to our scene:
 
 Which gives:
 
-![<span class='num'>Image 13:</span> Shiny metal
-](../images/img-1.13-metal-shiny.png class='pixel')
+![<span class='num'>Image 13:</span> Shiny metal](../images/img-1.13-metal-shiny.png class='pixel')
 
 
 
@@ -2763,8 +2744,7 @@ We can try that out by adding fuzziness 0.3 and 1.0 to the metals:
     }
 ```
 
-![<span class='num'>Image 14:</span> Fuzzed metal
-](../images/img-1.14-metal-fuzz.png class='pixel')
+![<span class='num'>Image 14:</span> Fuzzed metal](../images/img-1.14-metal-fuzz.png class='pixel')
 
 
 
@@ -2779,8 +2759,7 @@ The hardest part to debug is the refracted ray. I usually first just have all th
 there is a refraction ray at all. For this project, I tried to put two glass balls in our scene, and
 I got this (I have not told you how to do this right or wrong yet, but soon!):
 
-![<span class='num'>Image 15:</span> Glass first
-](../images/img-1.15-glass-first.png class='pixel')
+![<span class='num'>Image 15:</span> Glass first](../images/img-1.15-glass-first.png class='pixel')
 
 Is that right? Glass balls look odd in real life. But no, it isn’t right. The world should be
 flipped upside down and no weird black stuff. I just printed out the ray straight through the middle
@@ -2895,8 +2874,7 @@ auto material_left   = make_shared<dielectric>(1.5);
 
 This gives us the following result:
 
-![<span class='num'>Image 16:</span> Glass sphere that always refracts
-](../images/img-1.16-glass-always-refract.png class='pixel')
+![<span class='num'>Image 16:</span> Glass sphere that always refracts](../images/img-1.16-glass-always-refract.png class='pixel')
 
 
 
@@ -3001,8 +2979,7 @@ parameters:
 
 We get:
 
-![<span class='num'>Image 17:</span> Glass sphere that sometimes refracts
-](../images/img-1.17-glass-sometimes-refract.png class='pixel')
+![<span class='num'>Image 17:</span> Glass sphere that sometimes refracts](../images/img-1.17-glass-sometimes-refract.png class='pixel')
 
 
 
@@ -3069,8 +3046,7 @@ world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left))
 
 This gives:
 
-![<span class='num'>Image 18:</span> A hollow glass sphere
-](../images/img-1.18-glass-hollow.png class='pixel')
+![<span class='num'>Image 18:</span> A hollow glass sphere](../images/img-1.18-glass-hollow.png class='pixel')
 
 
 
@@ -3090,8 +3066,7 @@ First, we'll keep the rays coming from the origin and heading to the $z = -1$ pl
 it the $z = -2$ plane, or whatever, as long as we made $h$ a ratio to that distance. Here is our
 setup:
 
-![Figure [cam-view-geom]: Camera viewing geometry (from the side)
-](../images/fig-1.18-cam-view-geom.jpg)
+![Figure [cam-view-geom]: Camera viewing geometry (from the side)](../images/fig-1.18-cam-view-geom.jpg)
 
 This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
 
@@ -3176,8 +3151,7 @@ We'll test out these changes with a simple scene of two touching spheres, using 
 
 This gives us the rendering:
 
-![<span class='num'>Image 19:</span> A wide-angle view
-](../images/img-1.19-wide-view.png class='pixel')
+![<span class='num'>Image 19:</span> A wide-angle view](../images/img-1.19-wide-view.png class='pixel')
 
 
 
@@ -3311,8 +3285,7 @@ We'll change back to the prior scene, and use the new viewpoint:
 
 to get:
 
-![<span class='num'>Image 20:</span> A distant view
-](../images/img-1.20-view-distant.png class='pixel')
+![<span class='num'>Image 20:</span> A distant view](../images/img-1.20-view-distant.png class='pixel')
 
 
 And we can change field of view:
@@ -3550,8 +3523,7 @@ int main() {
 
 We get:
 
-  ![<span class='num'>Image 22:</span> Spheres with depth-of-field
-  ](../images/img-1.22-depth-of-field.png class='pixel')
+  ![<span class='num'>Image 22:</span> Spheres with depth-of-field](../images/img-1.22-depth-of-field.png class='pixel')
 
 
 
