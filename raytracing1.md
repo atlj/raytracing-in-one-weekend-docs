@@ -86,8 +86,7 @@ Let’s get on with it!
 
 ## Output an Image
 
-The PPM Image Format
----------------------
+### The PPM Image Format
 Whenever you start a renderer, you need a way to see an image. The most straightforward way is to
 write it to a file. The catch is, there are so many formats. Many of those are complex. I always
 start with a plain text ppm file. Here’s a nice description from Wikipedia:
@@ -147,8 +146,7 @@ There are some things to note in this code:
      yellow so we should expect the bottom right corner to be yellow.
 
 
-Creating an Image File
------------------------
+### Creating an Image File
 Because the file is written to the standard output stream, you'll need to redirect it to an image
 file. Typically this is done from the command-line by using the `>` redirection operator, like so:
 
@@ -217,8 +215,7 @@ If you want to produce other image formats, I am a fan of `stb_image.h`, a heade
 available on GitHub at https://github.com/nothings/stb.
 
 
-Adding a Progress Indicator
-----------------------------
+### Adding a Progress Indicator
 Before we continue, let's add a progress indicator to our output. This is a handy way to track the
 progress of a long render, and also to possibly identify a run that's stalled out due to an infinite
 loop or other problem.
@@ -384,8 +381,7 @@ programming in limited memory conditions (such as hardware shaders). Either one 
 your own tastes.
 
 
-Color Utility Functions
-------------------------
+### Color Utility Functions
 Using our new `vec3` class, we'll create a new `color.h` header file and define a utility function
 that writes a single pixel's color out to the standard output stream.
 
@@ -454,8 +450,7 @@ And you should get the exact same picture as before.
 
 ## Rays, a Simple Camera, and Background
 
-The ray Class
---------------
+### The ray Class
 The one thing that all ray tracers have is a ray class and a computation of what color is seen along
 a ray. Let’s think of a ray as a function $\mathbf{P}(t) = \mathbf{A} + t \mathbf{b}$. Here
 $\mathbf{P}$ is a 3D position along a line in 3D. $\mathbf{A}$ is the ray origin and $\mathbf{b}$ is
@@ -501,8 +496,7 @@ function that we'll call `ray::at(t)`:
 </div>
 
 
-Sending Rays Into the Scene
-----------------------------
+### Sending Rays Into the Scene
 Now we are ready to turn the corner and make a ray tracer.
 At its core, a ray tracer sends rays through pixels and computes the color seen in the direction of
 those rays. The involved steps are
@@ -745,8 +739,7 @@ Let’s add a single object to our ray tracer. People often use spheres in ray t
 calculating whether a ray hits a sphere is relatively simple.
 
 
-Ray-Sphere Intersection
-------------------------
+### Ray-Sphere Intersection
 The equation for a sphere of radius $r$ that is centered at the origin is an important mathematical
 equation:
 
@@ -830,8 +823,7 @@ we have is:
   ![Figure [ray-sphere]: Ray-sphere intersection results](../images/fig-1.05-ray-sphere.jpg)
 
 
-Creating Our First Raytraced Image
------------------------------------
+### Creating Our First Raytraced Image
 If we take that math and hard-code it into our program, we can test our code by placing a small
 sphere at -1 on the z-axis and then coloring red any pixel that intersects it.
 
@@ -881,8 +873,7 @@ feature! We’ll fix those issues next.
 
 ## Surface Normals and Multiple Objects
 
-Shading with Surface Normals
------------------------------
+### Shading with Surface Normals
 First, let’s get ourselves a surface normal so we can shade. This is a vector that is perpendicular
 to the surface at the point of intersection.
 
@@ -966,8 +957,7 @@ And that yields this picture:
 </div>
 
 
-Simplifying the Ray-Sphere Intersection Code
----------------------------------------------
+### Simplifying the Ray-Sphere Intersection Code
 Let’s revisit the ray-sphere function:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
@@ -1027,8 +1017,7 @@ Using these observations, we can now simplify the sphere-intersection code to th
 </div>
 
 
-An Abstraction for Hittable Objects
-------------------------------------
+### An Abstraction for Hittable Objects
 Now, how about more than one sphere? While it is tempting to have an array of spheres, a very clean
 solution is to make an “abstract class” for anything a ray might hit, and make both a sphere and a
 list of spheres just something that can be hit. What that class should be called is something of a
@@ -1121,8 +1110,7 @@ And here’s the sphere:
 </div>
 
 
-Front Faces Versus Back Faces
-------------------------------
+### Front Faces Versus Back Faces
 The second design decision for normals is whether they should always point out. At present, the
 normal found will always be in the direction of the center to the intersection point (the normal
 points out). If the ray intersects the sphere from the outside, the normal points against the ray.
@@ -1241,8 +1229,7 @@ And then we add the surface side determination to the class:
 </div>
 
 
-A List of Hittable Objects
----------------------------
+### A List of Hittable Objects
 We have a generic object called a `hittable` that the ray can intersect with. We now add a class
 that stores a list of `hittable`s:
 
@@ -1293,8 +1280,7 @@ that stores a list of `hittable`s:
     [Listing [hittable-list-initial]: <kbd>[hittable_list.h]</kbd> The hittable_list class]
 
 
-Some New C++ Features
-----------------------
+### Some New C++ Features
 The `hittable_list` class code uses two C++ features that may trip you up if you're not normally a
 C++ programmer: `vector` and `shared_ptr`.
 
@@ -1350,8 +1336,7 @@ getting `shared_ptr` and `make_shared` from the `std` library, so we don't need 
 `std::` every time we reference them.
 
 
-Common Constants and Utility Functions
----------------------------------------
+### Common Constants and Utility Functions
 We need some math constants that we conveniently define in their own header file. For now we only
 need infinity, but we will also throw our own definition of pi in there, which we will need later.
 There is no standard portable definition of pi, so we just define our own constant for it. We'll
@@ -1505,8 +1490,7 @@ of a geometric model.
   ](../images/img-1.05-normals-sphere-ground.png class='pixel')
 
 
-An Interval Class
-------------------
+### An Interval Class
 Before we continue, we'll implement an interval class to manage real-valued intervals with a minimum
 and a maximum. We'll end up using this class quite often as we proceed.
 
@@ -1896,8 +1880,7 @@ This is not the optimal approach, but it is the most straight-forward.
   ![Figure [pixel-samples]: Pixel samples](../images/fig-1.08-pixel-samples.jpg)
 
 
-Some Random Number Utilities
------------------------------
+### Some Random Number Utilities
 We're going to need need a random number generator that returns real random numbers.
 This function should return a canonical random number, which by convention falls in the range
 $0 ≤ n < 1$.
@@ -1953,8 +1936,7 @@ If you want to use this, you can obtain a random number with the conditions we n
     [Listing [random-double-alt]: <kbd>[rtweekend.h]</kbd> random_double(), alternate implemenation]
 
 
-Generating Pixels with Multiple Samples
-----------------------------------------
+### Generating Pixels with Multiple Samples
 For a single pixel composed of multiple samples, we'll select samples from the area surrounding the
 pixel and average the resulting light (color) values together.
 
@@ -2131,8 +2113,7 @@ geometry and materials are tightly bound (which could be useful for procedural o
 geometry and material are linked). We’ll go with separate -- which is usual in most renderers -- but
 do be aware that there are alternative approaches.
 
-A Simple Diffuse Material
---------------------------
+### A Simple Diffuse Material
 Diffuse objects that don’t emit their own light merely take on the color of their surroundings, but
 they do modulate that with their own intrinsic color. Light that reflects off a diffuse surface has
 its direction randomized, so, if we send three rays into a crack between two diffuse surfaces they will
@@ -2322,8 +2303,7 @@ function to return 50% of the color from a bounce. We should expect to get a nic
 </div>
 
 
-Limiting the Number of Child Rays
-----------------------------------
+### Limiting the Number of Child Rays
 There's one potential problem lurking here. Notice that the `ray_color` function is recursive. When
 will it stop recursing? When it fails to hit anything. In some cases, however, that may be a long
 time — long enough to blow the stack. To guard against that, let's limit the maximum recursion
@@ -2422,8 +2402,7 @@ For this very simple scene we should get basically the same result:
 </div>
 
 
-Fixing Shadow Acne
--------------------
+### Fixing Shadow Acne
 There’s also a subtle bug that we need to address. A ray will attempt to accurately calculate the
 intersection point when it intersects with a surface. Unfortunately for us, this calculation is
 susceptible to floating point rounding errors which can cause the intersection point to be ever so
@@ -2472,8 +2451,7 @@ This gets rid of the shadow acne problem. Yes it is really called that. Here's t
 </div>
 
 
-True Lambertian Reflection
----------------------------
+### True Lambertian Reflection
 Scattering reflected rays evenly about the hemisphere produces a nice soft diffuse model, but we can
 definitely do better.
 A more accurate representation of real diffuse objects is the _Lambertian_ distribution.
@@ -2562,8 +2540,7 @@ Most scenes of interest will contain a large amount of diffuse materials. You ca
 insight by understanding the effect of different diffuse methods on the lighting of a scene.
 
 
-Using Gamma Correction for Accurate Color Intensity
-----------------------------------------------------
+### Using Gamma Correction for Accurate Color Intensity
 Note the shadowing under the sphere. The picture is very dark, but our spheres only absorb half the
 energy of each bounce, so they are 50% reflectors. The spheres should look pretty bright (in real
 life, a light grey) but they appear to be rather dark. We can see this more clearly if we walk
@@ -2667,8 +2644,7 @@ Using this gamma correction, we now get a much more consistent ramp from darknes
 
 ## Metal
 
-An Abstract Class for Materials
---------------------------------
+### An Abstract Class for Materials
 If we want different objects to have different materials, we have a design decision. We could have
 a universal material type with lots of parameters so any individual material type could just ignore
 the parameters that don't affect it. This is not a bad approach. Or we could have an abstract
@@ -2704,8 +2680,7 @@ This suggests the abstract class:
 </div>
 
 
-A Data Structure to Describe Ray-Object Intersections
-------------------------------------------------------
+### A Data Structure to Describe Ray-Object Intersections
 The `hit_record` is to avoid a bunch of arguments so we can stuff whatever info we want in there.
 You can use arguments instead of an encapsulated type, it’s just a matter of taste. Hittables and
 materials need to be able to reference the other's type in code so there is some circularity of the
@@ -2784,8 +2759,7 @@ To achieve this, `hit_record` needs to be told the material that is assigned to 
 </div>
 
 
-Modeling Light Scatter and Reflectance
----------------------------------------
+### Modeling Light Scatter and Reflectance
 For the Lambertian (diffuse) case we already have, it can either always scatter and attenuate by
 its reflectance $R$, or it can sometimes scatter (with probabilty $1-R$) with no attenuation (where
 a ray that isn't scattered is just absorbed into the material). It could also be a mixture of both
@@ -2877,8 +2851,7 @@ the vector is very close to zero in all dimensions.
     [Listing [lambertian-catch-zero]: <kbd>[material.h]</kbd> Lambertian scatter, bullet-proof]
 
 
-Mirrored Light Reflection
---------------------------
+### Mirrored Light Reflection
 For polished metals the ray won’t be randomly scattered. The key question is: How does a ray get
 reflected from a metal mirror? Vector math is our friend here:
 
@@ -2984,8 +2957,7 @@ We need to modify the `ray_color()` function for all of our changes:
 </div>
 
 
-A Scene with Metal Spheres
----------------------------
+### A Scene with Metal Spheres
 Now let’s add some metal spheres to our scene:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
@@ -3038,8 +3010,7 @@ Which gives:
 </div>
 
 
-Fuzzy Reflection
------------------
+### Fuzzy Reflection
 We can also randomize the reflected direction by using a small sphere and choosing a new endpoint
 for the ray.
 We'll use a random point from the surface of a sphere centered on the original endpoint, scaled by
@@ -3109,8 +3080,7 @@ splits into a reflected ray and a refracted (transmitted) ray. We’ll handle th
 choosing between reflection and refraction, only generating one scattered ray per interaction.
 
 
-Refraction
------------
+### Refraction
 The hardest part to debug is the refracted ray. I usually first just have all the light refract if
 there is a refraction ray at all. For this project, I tried to put two glass balls in our scene, and
 I got this (I have not told you how to do this right or wrong yet, but soon!):
@@ -3123,8 +3093,7 @@ flipped upside down and no weird black stuff. I just printed out the ray straigh
 of the image and it was clearly wrong. That often does the job.
 
 
-Snell's Law
-------------
+### Snell's Law
 The refraction is described by Snell’s law:
 
   $$ \eta \cdot \sin\theta = \eta' \cdot \sin\theta' $$
@@ -3252,8 +3221,7 @@ This gives us the following result:
 </div>
 
 
-Total Internal Reflection
---------------------------
+### Total Internal Reflection
 That definitely doesn't look right. One troublesome practical issue is that when the ray is in the
 material with the higher refractive index, there is no real solution to Snell’s law, and thus there
 is no refraction possible. If we refer back to Snell's law and the derivation of $\sin\theta'$:
@@ -3373,8 +3341,7 @@ We get:
 </div>
 
 
-Schlick Approximation
-----------------------
+### Schlick Approximation
 Now real glass has reflectivity that varies with angle -- look at a window at a steep angle and it
 becomes a mirror. There is a big ugly equation for that, but almost everybody uses a cheap and
 surprisingly accurate polynomial approximation by Christophe Schlick. This yields our full glass
@@ -3425,8 +3392,7 @@ material:
     [Listing [glass]: <kbd>[material.h]</kbd> Full glass material]
 
 
-Modeling a Hollow Glass Sphere
--------------------------------
+### Modeling a Hollow Glass Sphere
 An interesting and easy trick with dielectric spheres is to note that if you use a negative radius,
 the geometry is unaffected, but the surface normal points inward. This can be used as a bubble to
 make a hollow glass sphere:
@@ -3464,8 +3430,7 @@ I also usually specify it in degrees and change to radians inside a constructor 
 personal taste.
 
 
-Camera Viewing Geometry
-------------------------
+### Camera Viewing Geometry
 First, we'll keep the rays coming from the origin and heading to the $z = -1$ plane. We could make
 it the $z = -2$ plane, or whatever, as long as we made $h$ a ratio to that distance. Here is our
 setup:
@@ -3577,8 +3542,7 @@ This gives us the rendering:
 </div>
 
 
-Positioning and Orienting the Camera
--------------------------------------
+### Positioning and Orienting the Camera
 To get an arbitrary viewpoint, let’s first name the points we care about. We’ll call the position
 where we place the camera _lookfrom_, and the point we look at _lookat_. (Later, if you want, you
 could define a direction to look in instead of a point to look at.)
@@ -3787,8 +3751,7 @@ For our virtual camera, we can have a perfect sensor and never need more light, 
 aperture when we want defocus blur.
 
 
-A Thin Lens Approximation
---------------------------
+### A Thin Lens Approximation
 A real camera has a complicated compound lens. For our code, we could simulate the order: sensor,
 then lens, then aperture. Then we could figure out where to send the rays, and flip the image after
 it's computed (the image is projected upside down on the film). Graphics people, however, usually
@@ -3815,8 +3778,7 @@ Putting everything together:
   ![Figure [cam-film-plane]: Camera focus plane](../images/fig-1.22-cam-film-plane.jpg)
 
 
-Generating Sample Rays
------------------------
+### Generating Sample Rays
 Without defocus blur, all scene rays originate from the camera center (or `lookfrom`).
 In order to accomplish defocus blur, we construct a disk centered at the camera center.
 The larger the radius, the greater the defocus blur.
@@ -4013,8 +3975,7 @@ We get:
 
 ## Where Next?
 
-A Final Render
----------------
+### A Final Render
 Let’s make the image on the cover of this book -- lots of random spheres.
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
@@ -4106,8 +4067,7 @@ under a glass ball still has lots of light hitting it because the sky is re-orde
 blocked.
 
 
-Next Steps
------------
+### Next Steps
 You now have a cool ray tracer! What next?
 
   1. Lights -- You can do this explicitly, by sending shadow rays to lights, or it can be done
@@ -4145,8 +4105,7 @@ Have fun, and please send me your cool images!
 Consistent citations make it easier to identify the source, location and versions of this work. If
 you are citing this book, we ask that you try to use one of the following forms if possible.
 
-Basic Data
------------
+### Basic Data
   - **Title (series)**: “Ray Tracing in One Weekend Series”
   - **Title (book)**: “Ray Tracing in One Weekend”
   - **Author**: Peter Shirley, Trevor David Black, Steve Hollasch
@@ -4155,8 +4114,7 @@ Basic Data
   - **URL (series)**: https://raytracing.github.io/
   - **URL (book)**: https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-Snippets
----------
+### Snippets
 
   ### Markdown
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
