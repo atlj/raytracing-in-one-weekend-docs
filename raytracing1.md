@@ -80,7 +80,7 @@ start with a plain text ppm file. Here’s a nice description from Wikipedia:
 
 Let’s make some C++ code to output such a thing:
 
-```C++
+```cpp
 #include <iostream>
 
 int main() {
@@ -204,7 +204,7 @@ loop or other problem.
 Our program outputs the image to the standard output stream (`std::cout`), so leave that alone and
 instead write to the logging output stream (`std::clog`):
 
-```C++
+```cpp
     for (int j = 0; j < image_height; ++j) {
             std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
         for (int i = 0; i < image_width; ++i) {
@@ -245,7 +245,7 @@ the code a little bit easier to read and to understand.
 We define the `vec3` class in the top half of a new `vec3.h` header file, and define a set of useful
 vector utility functions in the bottom half:
 
-```C++
+```cpp
     #ifndef VEC3_H
     #define VEC3_H
 
@@ -359,7 +359,7 @@ your own tastes.
 Using our new `vec3` class, we'll create a new `color.h` header file and define a utility function
 that writes a single pixel's color out to the standard output stream.
 
-```C++
+```cpp
     #ifndef COLOR_H
     #define COLOR_H
 
@@ -381,7 +381,7 @@ that writes a single pixel's color out to the standard output stream.
 
 Now we can change our main to use both of these:
 
-```C++
+```cpp
     #include "color.h"
     #include "vec3.h"
 
@@ -431,7 +431,7 @@ and this is what is often called a half-line or a ray.
 We can represent the idea of a ray as a class, and represent the function $\mathbf{P}(t)$ as a
 function that we'll call `ray::at(t)`:
 
-```C++
+```cpp
 #ifndef RAY_H
 #define RAY_H
 
@@ -501,7 +501,7 @@ To start things off, we'll choose an arbitrary viewport height of 2.0, and scale
 to give us the desired aspect ratio.
 Here's a snippet of what this code will look like:
 
-```C++
+```cpp
 auto aspect_ratio = 16.0 / 9.0;
 int image_width = 400;
 
@@ -565,7 +565,7 @@ Drawing from all of this, here's the code that implements the camera.
 We'll stub in a function `ray_color(const ray& r)` that returns the color for a given scene ray
   -- which we'll set to always return black for now.
 
-```C++
+```cpp
 #include "color.h"
     #include "ray.h"
 #include "vec3.h"
@@ -653,7 +653,7 @@ with $a$ going from zero to one.
 
 Putting all this together, here's what we get:
 
-```C++
+```cpp
 #include "color.h"
 #include "ray.h"
 #include "vec3.h"
@@ -772,7 +772,7 @@ we have is:
 If we take that math and hard-code it into our program, we can test our code by placing a small
 sphere at -1 on the z-axis and then coloring red any pixel that intersects it.
 
-```C++
+```cpp
 bool hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = r.origin() - center;
     auto a = dot(r.direction(), r.direction());
@@ -851,7 +851,7 @@ about negative values of $t$ yet.
 We'll just assume the closest hit point (smallest $t$) is the one that we want.
 These changes in the code let us compute and visualize $\mathbf{n}$:
 
-```C++
+```cpp
 double hit_sphere(const point3& center, double radius, const ray& r) {
         vec3 oc = r.origin() - center;
         auto a = dot(r.direction(), r.direction());
@@ -890,7 +890,7 @@ And that yields this picture:
 ### Simplifying the Ray-Sphere Intersection Code
 Let’s revisit the ray-sphere function:
 
-```C++
+```cpp
     double hit_sphere(const point3& center, double radius, const ray& r) {
         vec3 oc = r.origin() - center;
         auto a = dot(r.direction(), r.direction());
@@ -921,7 +921,7 @@ $$ = \frac{-h \pm \sqrt{h^2 - ac}}{a} $$
 
 Using these observations, we can now simplify the sphere-intersection code to this:
 
-```C++
+```cpp
     double hit_sphere(const point3& center, double radius, const ray& r) {
         vec3 oc = r.origin() - center;
     auto a = r.direction().length_squared();
@@ -957,7 +957,7 @@ the normal if we hit something. We might end up hitting something closer as we d
 will only need the normal of the closest thing. I will go with the simple solution and compute a
 bundle of stuff I will store in some structure. Here’s the abstract class:
 
-```C++
+```cpp
     #ifndef HITTABLE_H
     #define HITTABLE_H
 
@@ -982,7 +982,7 @@ bundle of stuff I will store in some structure. Here’s the abstract class:
 
 And here’s the sphere:
 
-```C++
+```cpp
     #ifndef SPHERE_H
     #define SPHERE_H
 
@@ -1052,7 +1052,7 @@ face in the opposite direction, then the ray is outside the object. This can be 
 taking the dot product of the two vectors, where if their dot is positive, the ray is inside the
 sphere.
 
-```C++
+```cpp
     if (dot(ray_direction, outward_normal) > 0.0) {
         // ray is inside the sphere
         ...
@@ -1066,7 +1066,7 @@ If we decide to have the normals always point against the ray, we won't be able 
 product to determine which side of the surface the ray is on. Instead, we would need to store that
 information:
 
-```C++
+```cpp
     bool front_face;
     if (dot(ray_direction, outward_normal) > 0.0) {
         // ray is inside the sphere
@@ -1094,7 +1094,7 @@ unit length.
 We could always normalize the parameter explicitly, but it's more efficient if the geometry code
 does this, as it's usually easier when you know more about the specific geometry.
 
-```C++
+```cpp
     class hit_record {
       public:
         point3 p;
@@ -1115,7 +1115,7 @@ does this, as it's usually easier when you know more about the specific geometry
 
 And then we add the surface side determination to the class:
 
-```C++
+```cpp
     class sphere : public hittable {
       public:
         ...
@@ -1139,7 +1139,7 @@ And then we add the surface side determination to the class:
 We have a generic object called a `hittable` that the ray can intersect with. We now add a class
 that stores a list of `hittable`s:
 
-```C++
+```cpp
     #ifndef HITTABLE_LIST_H
     #define HITTABLE_LIST_H
 
@@ -1197,7 +1197,7 @@ deleted.
 
 Typically, a shared pointer is first initialized with a newly-allocated object, something like this:
 
-```C++
+```cpp
     shared_ptr<double> double_ptr = make_shared<double>(0.37);
     shared_ptr<vec3>   vec3_ptr   = make_shared<vec3>(1.414214, 2.718281, 1.618034);
     shared_ptr<sphere> sphere_ptr = make_shared<sphere>(point3(0,0,0), 1.0);
@@ -1210,7 +1210,7 @@ the constructor parameters. It returns a `shared_ptr<thing>`.
 Since the type can be automatically deduced by the return type of `make_shared<type>(...)`, the
 above lines can be more simply expressed using C++'s `auto` type specifier:
 
-```C++
+```cpp
     auto double_ptr = make_shared<double>(0.37);
     auto vec3_ptr   = make_shared<vec3>(1.414214, 2.718281, 1.618034);
     auto sphere_ptr = make_shared<sphere>(point3(0,0,0), 1.0);
@@ -1242,7 +1242,7 @@ There is no standard portable definition of pi, so we just define our own consta
 throw common useful constants and future utility functions in `rtweekend.h`, our general main header
 file.
 
-```C++
+```cpp
     #ifndef RTWEEKEND_H
     #define RTWEEKEND_H
 
@@ -1278,7 +1278,7 @@ file.
 
 And the new main:
 
-```C++
+```cpp
     #include "rtweekend.h"
 
 #include "color.h"
@@ -1379,7 +1379,7 @@ of a geometric model.
 Before we continue, we'll implement an interval class to manage real-valued intervals with a minimum
 and a maximum. We'll end up using this class quite often as we proceed.
 
-```C++
+```cpp
 #ifndef INTERVAL_H
 #define INTERVAL_H
 
@@ -1409,7 +1409,7 @@ const static interval universe(-infinity, +infinity);
 ```
 
 
-```C++
+```cpp
 // Common Headers
 
 
@@ -1419,7 +1419,7 @@ const static interval universe(-infinity, +infinity);
 ```
 
 
-```C++
+```cpp
 class hittable {
   public:
     ...
@@ -1428,7 +1428,7 @@ class hittable {
 ```
 
 
-```C++
+```cpp
 class hittable_list : public hittable {
   public:
     ...
@@ -1453,7 +1453,7 @@ class hittable_list : public hittable {
         hittable_list::hit() using interval]
 
 
-```C++
+```cpp
 class sphere : public hittable {
   public:
     ...
@@ -1474,7 +1474,7 @@ class sphere : public hittable {
 ```
 
 
-```C++
+```cpp
 ...
 color ray_color(const ray& r, const hittable& world) {
     hit_record rec;
@@ -1518,7 +1518,7 @@ The `render()` method will prepare the camera for rendering and then execute the
 
 Here's the skeleton of our new `camera` class:
 
-```C++
+```cpp
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -1553,7 +1553,7 @@ class camera {
 
 To begin with, let's fill in the `ray_color()` function from `main.cc`:
 
-```C++
+```cpp
 class camera {
   ...
 
@@ -1582,7 +1582,7 @@ Now we move almost everything from the `main()` function into our new camera cla
 The only thing remaining in the `main()` function is the world construction.
 Here's the camera class with newly migrated code:
 
-```C++
+```cpp
 ...
 #include "rtweekend.h"
 
@@ -1660,7 +1660,7 @@ class camera {
 
 And here's the much reduced main:
 
-```C++
+```cpp
 #include "rtweekend.h"
 
 #include "camera.h"
@@ -1732,7 +1732,7 @@ returns a random integer in the range 0 and `RAND_MAX`.
 Hence we can get a real random number as desired with the following code snippet, added to
 `rtweekend.h`:
 
-```C++
+```cpp
 #include <cmath>
     #include <cstdlib>
 #include <limits>
@@ -1761,7 +1761,7 @@ C++ did not traditionally have a standard random number generator, but newer ver
 addressed this issue with the `<random>` header (if imperfectly according to some experts).
 If you want to use this, you can obtain a random number with the conditions we need as follows:
 
-```C++
+```cpp
     #include <random>
 
     inline double random_double() {
@@ -1783,7 +1783,7 @@ the number of samples) at the end, before writing out the color.
 To ensure that the color components of the final result remain within the proper $[0,1]$ bounds,
 we'll add and use a small helper function: `interval::clamp(x)`.
 
-```C++
+```cpp
     class interval {
       public:
         ...
@@ -1805,7 +1805,7 @@ we'll add and use a small helper function: `interval::clamp(x)`.
 And here's the updated `write_color()` function that takes the sum total of all light for the pixel
 and the number of samples involved:
 
-```C++
+```cpp
     void write_color(std::ostream &out, color pixel_color, int samples_per_pixel) {
         auto r = pixel_color.x();
         auto g = pixel_color.y();
@@ -1832,7 +1832,7 @@ point within the unit square centered at the origin.
 We then transform the random sample from this ideal square back to the particular pixel we're
 currently sampling.
 
-```C++
+```cpp
     class camera {
       public:
         double aspect_ratio      = 1.0;  // Ratio of image width over height
@@ -1899,7 +1899,7 @@ function `random_in_unit_disk()` which is defined later on.)
 
 Main is updated to set the new camera parameter.
 
-```C++
+```cpp
     int main() {
         ...
 
@@ -1953,7 +1953,7 @@ implementing a little bit later). We don't currently have a way to randomly refl
 need to add a few functions to our vector utility header. The first thing we need is the ability to
 generate arbitrary random vectors:
 
-```C++
+```cpp
     class vec3 {
       public:
         ...
@@ -1994,7 +1994,7 @@ point if it is outside the unit sphere.
 ![Figure [sphere-vec]: Two vectors were rejected before finding a good one
 ](../images/fig-1.11-sphere-vec.jpg)
 
-```C++
+```cpp
     ...
 
     inline vec3 unit_vector(vec3 v) {
@@ -2018,7 +2018,7 @@ unit sphere.
   ![Figure [sphere-vec]: The accepted random vector is normalized to produce a unit vector
   ](../images/fig-1.12-sphere-unit-vec.jpg)
 
-```C++
+```cpp
 ...
 
 inline vec3 random_in_unit_sphere() {
@@ -2047,7 +2047,7 @@ We can take the dot product of the surface normal and our random vector to deter
 correct hemisphere. If the dot product is positive, then the vector is in the correct hemisphere. If
 the dot product is negative, then we need to invert the vector.
 
-```C++
+```cpp
     ...
 
     inline vec3 random_unit_vector() {
@@ -2070,7 +2070,7 @@ _white_. If a ray bounces off of a material and keeps 0% of its color, then we s
 material is black. As a first demonstration of our new diffuse material we'll set the `ray_color`
 function to return 50% of the color from a bounce. We should expect to get a nice gray color.
 
-```C++
+```cpp
 class camera {
   ...
   private:
@@ -2104,7 +2104,7 @@ will it stop recursing? When it fails to hit anything. In some cases, however, t
 time — long enough to blow the stack. To guard against that, let's limit the maximum recursion
 depth, returning no light contribution at the maximum depth:
 
-```C++
+```cpp
 class camera {
   public:
     double aspect_ratio      = 1.0;  // Ratio of image width over height
@@ -2156,7 +2156,7 @@ class camera {
 
 Update the main() function to use this new depth limit:
 
-```C++
+```cpp
 int main() {
     ...
 
@@ -2190,7 +2190,7 @@ intersect with that surface again. Which means that it will find the nearest sur
 $t=0.00000001$ or whatever floating point approximation the hit function gives us. The simplest hack
 to address this is just to ignore hits that are very close to the calculated intersection point:
 
-```C++
+```cpp
 class camera {
   ...
   private:
@@ -2258,7 +2258,7 @@ point $\mathbf{P}$ to the random point $\mathbf{S}$ (this is the vector $(\mathb
 
 The change is actually fairly minimal:
 
-```C++
+```cpp
 class camera {
     ...
     color ray_color(const ray& r, int depth, const hittable& world) const {
@@ -2312,7 +2312,7 @@ life, a light grey) but they appear to be rather dark. We can see this more clea
 through the full brightness gamut for our diffuse material. We start by setting the reflectance of
 the `ray_color` function from `0.5` (50%) to `0.1` (10%):
 
-```C++
+```cpp
 class camera {
     ...
     color ray_color(const ray& r, int depth, const hittable& world) const {
@@ -2359,7 +2359,7 @@ transform, which is the power that you use when going from gamma space to linear
 go from linear space to gamma space, which means taking the inverse of "gamma 2", which means an
 exponent of $1/\mathit{gamma}$, which is just the square-root.
 
-```C++
+```cpp
 inline double linear_to_gamma(double linear_component)
 {
     return sqrt(linear_component);
@@ -2412,7 +2412,7 @@ program the material needs to do two things:
 
 This suggests the abstract class:
 
-```C++
+```cpp
     #ifndef MATERIAL_H
     #define MATERIAL_H
 
@@ -2441,7 +2441,7 @@ references. In C++ we add the line `class material;` to tell the compiler that `
 that will be defined later. Since we're just specifying a pointer to the class, the compiler
 doesn't need to know the details of the class, solving the circular reference issue.
 
-```C++
+```cpp
 
 #include "rtweekend.h"
 
@@ -2470,7 +2470,7 @@ functions of the material pointer to find out what ray, if any, is scattered.
 
 To achieve this, `hit_record` needs to be told the material that is assigned to the sphere.
 
-```C++
+```cpp
     class sphere : public hittable {
       public:
     sphere(point3 _center, double _radius, shared_ptr<material> _material)
@@ -2504,7 +2504,7 @@ its reflectance $R$, or it can sometimes scatter (with probabilty $1-R$) with no
 a ray that isn't scattered is just absorbed into the material). It could also be a mixture of both
 those strategies. We will choose to always scatter, so Lambertian materials become this simple class:
 
-```C++
+```cpp
     class material {
         ...
     };
@@ -2538,7 +2538,7 @@ NaNs), so we need to intercept the condition before we pass it on.
 In service of this, we'll create a new vector method -- `vec3::near_zero()` -- that returns true if
 the vector is very close to zero in all dimensions.
 
-```C++
+```cpp
 class vec3 {
     ...
 
@@ -2557,7 +2557,7 @@ class vec3 {
 };
 ```
 
-```C++
+```cpp
 class lambertian : public material {
   public:
     lambertian(const color& a) : albedo(a) {}
@@ -2592,7 +2592,7 @@ The reflected ray direction in red is just $\mathbf{v} + 2\mathbf{b}$. In our de
 is a unit vector, but $\mathbf{v}$ may not be. The length of $\mathbf{b}$ should be $\mathbf{v}
 \cdot \mathbf{n}$. Because $\mathbf{v}$ points in, we will need a minus sign, yielding:
 
-```C++
+```cpp
 ...
 
 inline vec3 random_on_hemisphere(const vec3& normal) {
@@ -2609,7 +2609,7 @@ inline vec3 random_on_hemisphere(const vec3& normal) {
 
 The metal material just reflects rays using that formula:
 
-```C++
+```cpp
 ...
 
 class lambertian : public material {
@@ -2637,7 +2637,7 @@ class lambertian : public material {
 
 We need to modify the `ray_color()` function for all of our changes:
 
-```C++
+```cpp
     ...
     #include "rtweekend.h"
 
@@ -2677,7 +2677,7 @@ We need to modify the `ray_color()` function for all of our changes:
 ### A Scene with Metal Spheres
 Now let’s add some metal spheres to our scene:
 
-```C++
+```cpp
     #include "rtweekend.h"
 
     #include "camera.h"
@@ -2731,7 +2731,7 @@ parameter that is just the radius of the sphere (so zero is no perturbation). Th
 big spheres or grazing rays, we may scatter below the surface. We can just have the surface
 absorb those.
 
-```C++
+```cpp
     class metal : public material {
       public:
     metal(const color& a, double f) : albedo(a), fuzz(f < 1 ? f : 1) {}
@@ -2752,7 +2752,7 @@ absorb those.
 
 We can try that out by adding fuzziness 0.3 and 1.0 to the metals:
 
-```C++
+```cpp
     int main() {
         ...
         auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
@@ -2833,7 +2833,7 @@ $$ \mathbf{R'}_{\bot} =
 
 When we combine them back together, we can write a function to calculate $\mathbf{R'}$:
 
-```C++
+```cpp
     ...
 
     inline vec3 reflect(const vec3& v, const vec3& n) {
@@ -2852,7 +2852,7 @@ inline vec3 refract(const vec3& uv, const vec3& n, double etai_over_etat) {
 
 And the dielectric material that always refracts is:
 
-```C++
+```cpp
 ...
 
 class metal : public material {
@@ -2885,7 +2885,7 @@ class metal : public material {
 
 Now we'll update the scene to change the left and center spheres to glass:
 
-```C++
+```cpp
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
 auto material_center = make_shared<dielectric>(1.5);
 auto material_left   = make_shared<dielectric>(1.5);
@@ -2918,7 +2918,7 @@ $$ \frac{1.5}{1.0} \cdot \sin\theta > 1.0 $$
 the equality between the two sides of the equation is broken, and a solution cannot exist. If a
 solution does not exist, the glass cannot refract, and therefore must reflect the ray:
 
-```C++
+```cpp
     if (refraction_ratio * sin_theta > 1.0) {
         // Must Reflect
         ...
@@ -2940,7 +2940,7 @@ and
 
 $$ \cos\theta = \mathbf{R} \cdot \mathbf{n} $$
 
-```C++
+```cpp
     double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
     double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
 
@@ -2955,7 +2955,7 @@ $$ \cos\theta = \mathbf{R} \cdot \mathbf{n} $$
 
 And the dielectric material that always refracts (when possible) is:
 
-```C++
+```cpp
     class dielectric : public material {
       public:
         dielectric(double index_of_refraction) : ir(index_of_refraction) {}
@@ -2991,7 +2991,7 @@ And the dielectric material that always refracts (when possible) is:
 Attenuation is always 1 -- the glass surface absorbs nothing. If we try that out with these
 parameters:
 
-```C++
+```cpp
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
     auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
     auto material_left   = make_shared<dielectric>(1.5);
@@ -3012,7 +3012,7 @@ becomes a mirror. There is a big ugly equation for that, but almost everybody us
 surprisingly accurate polynomial approximation by Christophe Schlick. This yields our full glass
 material:
 
-```C++
+```cpp
     class dielectric : public material {
       public:
         dielectric(double index_of_refraction) : ir(index_of_refraction) {}
@@ -3057,7 +3057,7 @@ An interesting and easy trick with dielectric spheres is to note that if you use
 the geometry is unaffected, but the surface normal points inward. This can be used as a bubble to
 make a hollow glass sphere:
 
-```C++
+```cpp
     ...
     world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
@@ -3095,7 +3095,7 @@ setup:
 
 This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
 
-```C++
+```cpp
     class camera {
       public:
         double aspect_ratio      = 1.0;  // Ratio of image width over height
@@ -3146,7 +3146,7 @@ This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
 
 We'll test out these changes with a simple scene of two touching spheres, using a 90° field of view.
 
-```C++
+```cpp
     int main() {
         hittable_list world;
 
@@ -3211,7 +3211,7 @@ Keep in mind that we can -- but we don’t have to -- use world up $(0,1,0)$ to 
 This is convenient and will naturally keep your camera horizontally level until you decide to
 experiment with crazy camera angles.
 
-```C++
+```cpp
     class camera {
       public:
         double aspect_ratio      = 1.0;  // Ratio of image width over height
@@ -3275,7 +3275,7 @@ experiment with crazy camera angles.
 
 We'll change back to the prior scene, and use the new viewpoint:
 
-```C++
+```cpp
     int main() {
         hittable_list world;
 
@@ -3317,7 +3317,7 @@ to get:
 
 And we can change field of view:
 
-```C++
+```cpp
         cam.vfov     = 20;
 ```
 
@@ -3409,7 +3409,7 @@ Since we'll be choosing random points from the defocus disk, we'll need a functi
 This function works using the same kind of method we use in `random_in_unit_sphere()`, just for two
 dimensions.
 
-```C++
+```cpp
     inline vec3 unit_vector(vec3 u) {
         return v / v.length();
     }
@@ -3426,7 +3426,7 @@ inline vec3 random_in_unit_disk() {
 
 Now let's update the camera to originate rays from the defocus disk:
 
-```C++
+```cpp
 class camera {
   public:
     double aspect_ratio      = 1.0;  // Ratio of image width over height
@@ -3523,7 +3523,7 @@ class camera {
 
 Using a large aperture:
 
-```C++
+```cpp
 int main() {
     ...
 
@@ -3561,7 +3561,7 @@ We get:
 ### A Final Render
 Let’s make the image on the cover of this book -- lots of random spheres.
 
-```C++
+```cpp
 int main() {
     hittable_list world;
 
